@@ -1,0 +1,14 @@
+.narrow
+  .form-login
+    .page-header
+      %h1 Авторизация
+    =form_tag login_path do
+      .form-group
+        =label_tag :Login, "Логин/Почта"
+        =text_field :Login, @user.try(:Login), class: 'form-control'
+      .form-group
+        =label_tag :Password, User.human_attribute_name(:password)
+        =password_field_tag :Password, nil, class: 'form-control'
+      .form-actions
+        =submit_tag 'Войти', class: 'btn btn-primary btn-md' 
+
