@@ -33,8 +33,11 @@ gem 'json'
 
 gem 'haml-rails'
 
+gem 'paperclip'
+
+gem 'protected_attributes'
+gem 'twitter-bootstrap-rails'
 gem 'devise'
 gem 'omniauth'
-gem 'omniauth-twitter'
 gem 'omniauth-facebook'
 gem 'omniauth-vkontakte'

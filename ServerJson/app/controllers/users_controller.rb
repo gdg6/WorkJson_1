@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :check_auth
 
   # GET /users
   # GET /users.json
@@ -42,11 +43,26 @@ class UsersController < ApplicationController
   def update
     respond_to do |format|
       if @user.update(user_params)
+        sign_in(@user == current_user ? @user : current_user, :bypass => true)
         format.html { redirect_to @user, notice: 'User was successfully updated.' }
         format.json { render :show, status: :ok, location: @user }
       else
         format.html { render :edit }
         format.json { render json: @user.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # GET/PATCH /users/:id/finish_signup
+  def finish_signup
+    # authorize! :update, @user
+    if request.patch? && params[:user] #&& params[:user][:email]
+      if @user.update(user_params)
+        @user.skip_reconfirmation!
+        sign_in(@user, :bypass => true)
+        redirect_to @user, notice: 'Your profile was successfully updated.'
+      else
+        @show_errors = true
       end
     end
   end
@@ -69,6 +85,6 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:UserId, :Login, :Email, :Password, :password_confirmation, :CharacterName, :City, :Admin)
+      params.require(:user).permit(:UserId, :Login, :email, :password, :password_confirmation, :CharacterName, :City, :Admin, :nickname, :provider, :url, :name)
     end
 end

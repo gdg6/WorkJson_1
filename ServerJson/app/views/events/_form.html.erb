@@ -12,13 +12,13 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :EventId %><br>
-    <%= f.number_field :EventId %>
-  </div>
-  <div class="field">
     <%= f.label :Name %><br>
     <%= f.text_field :Name %>
   </div>
+    <div class="field">
+      <%= f.label :Image %><br>
+      <%= f.file_field :Image %>
+    </div>
   <div class="field">
     <%= f.label :Adress %><br>
     <%= f.text_field :Adress %>
