@@ -1,7 +1,7 @@
-class Users::OmniauthCallbacksControllerController < Devise::OmniauthCallbacksController
+class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   def facebook
-    # raise "qqq"
+    raise "qqq"
     @user= User.find_for_facebook_oauth request.env["omniauth.auth"]
     if @user.persisted?
       flash[:notice] = I18n.t "devise.omniauth_callbacks.success", :kind => "Facebook"
