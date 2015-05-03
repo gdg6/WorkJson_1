@@ -13,7 +13,6 @@
             %span.icon-bar
             %span.icon-bar
             %span.icon-bar
-          %a.brand(href="#") Authproviders
           .container.nav-collapse
             %ul.nav
               - if user_signed_in?
@@ -24,14 +23,8 @@
         .row
           .span9
             = yield
-          .span3
-            .well.sidebar-nav
-              %h3 Providers
-              %ul.nav.nav-list
-                - if !user_signed_in?
-                  %li= link_to "Sign in with Facebook", user_omniauth_authorize_path(:facebook)
-                  %li= link_to "Sign in with Vkontakte", user_omniauth_authorize_path(:vkontakte)
 
-      %footer
-        %p © Company 2012
+
+      %footer{:style=>"margin-top: 20px;"}
+        %p © Company #{@Year}
     = javascript_include_tag "application"

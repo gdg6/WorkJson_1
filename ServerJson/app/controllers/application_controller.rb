@@ -3,8 +3,15 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
   before_action :load_current_user
+  before_action :setYear
+
+  attr_reader :Year
 
   private
+
+  def setYear
+    @Year = Time.new.year
+  end
 
   def load_current_user
     @current_user = User.where(id: session[:user_id].to_i).take

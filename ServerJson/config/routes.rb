@@ -18,6 +18,8 @@ Rails.application.routes.draw do
 
 
   root :to => "events#index"
+
+  get 'eventTest' => 'events#test', as: :eventTest
   get 'login'=>'sessions#new', as: :login
   post 'login'=>'sessions#create'
   get 'logout'=>'sessions#destroy', as: :logout
