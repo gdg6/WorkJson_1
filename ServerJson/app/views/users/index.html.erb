@@ -3,7 +3,6 @@
 <table>
   <thead>
     <tr>
-      <th>Userid</th>
       <th>Login</th>
       <th>Email</th>
       <th>Password</th>
@@ -17,13 +16,12 @@
   <tbody>
     <% @users.each do |user| %>
       <tr>
-        <td><%= user.UserId %></td>
-        <td><%= user.Login %></td>
-        <td><%= user.Email %></td>
-        <td><%= user.Password %></td>
-        <td><%= user.CharacterName %></td>
-        <td><%= user.City %></td>
-        <td><%= user.Admin %></td>
+        <td><%= user.login %></td>
+        <td><%= user.email %></td>
+        <td><%= user.password %></td>
+        <td><%= user.characterName %></td>
+        <td><%= user.city %></td>
+        <td><%= user.admin %></td>
         <td><%= link_to 'Show', user %></td>
         <td><%= link_to 'Edit', edit_user_path(user) %></td>
         <td><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>

@@ -1,56 +1,79 @@
 class User < ActiveRecord::Base
 
-  # Include default devise modules. Others available are:
-  # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :confirmable, :lockable
-
-  # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me
-  attr_accessible :nickname, :provider, :url, :username
-
-  def self.find_for_facebook_oauth access_token
-    if user = User.where(:url => access_token.info.urls.Facebook).first
-      user
-    else
-      # создание модели не корректно из-за неверных аргументов. Но сюда программа не доходит
-      User.create!(:provider => access_token.provider, :url => access_token.info.urls.Facebook, :username => access_token.extra.raw_info.name, :nickname => access_token.extra.raw_info.username, :email => access_token.extra.raw_info.email, :password => Devise.friendly_token[0,20])
-    end
-  end
-
-  def self.find_for_vkontakte_oauth access_token
-    if user = User.where(:url => access_token.info.urls.Vkontakte).first
-      user
-    else
-      User.create!(:provider => access_token.provider, :url => access_token.info.urls.Vkontakte, :username => access_token.info.name, :nickname => access_token.extra.raw_info.domain, :email => access_token.extra.raw_info.domain+'<hh user=vk>.com', :password => Devise.friendly_token[0,20])
-    end
-  end
-
+  has_secure_password
+  validates :login, uniqueness: true
+  validates :password, length: {minimum: 6, allow_blank: true}
+  # validates :admin, presence: true
+  validates :sign_in_count, presence: true
 
   has_many :comments, dependent: :destroy
   has_many :services, :dependent => :destroy
   has_many :events, :dependent => :destroy
 
-  ROLES=["Пользователь", "Администратор"]
+  before_validation :set_default_sign_count
+  #
+  # # Include default devise modules. Others available are:
+  # # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
+  # devise :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :confirmable, :lockable, :omniauth_providers => [:facebook, :vkontakte]
+  devise :omniauthable, :omniauth_providers => [:facebook, :vkontakte]
 
-  has_secure_password
-  validates :Login, uniqueness: true
-  validates :password, length: {minimum: 6, allow_blank: true}
-  validates :Admin, presence: true
+  # # Setup accessible (or protected) attributes for your model
+  attr_accessible :email, :password, :password_confirmation, :remember_me
+  attr_accessible :login, :provider, :url
 
-  before_validation :set_default_role
-
-  def set_default_role
-    self.Admin||=false
+  def self.find_for_facebook_oauth(access_token)
+    user = User.where(:url => access_token.info.urls.Facebook).first
+    return user if user
+    begin    
+      u = User.new
+        u.provider = access_token.provider
+        u.url = access_token.info.urls.Facebook
+        u.login = access_token.extra.raw_info.name
+        u.characterName = access_token.extra.raw_info.first_name
+        u.email = access_token.extra.raw_info.email
+        u.password = Devise.friendly_token[0,20]
+      u.save!      
+    rescue Exception => e
+      return nil
+    end
+    return u
   end
 
+  def self.find_for_vkontakte_oauth(access_token)
+    user = User.where(:url => access_token.info.urls.Vkontakte).first
+    return user if user
+    # begin    
+    raise access_token.to_s
+      u = User.new
+        u.provider = access_token.provider
+        u.url = access_token.info.urls.Vkontakte
+        u.login = access_token.extra.raw_info.name
+        u.characterName = access_token.extra.raw_info.first_name
+        u.email = (access_token.extra.raw_info.domain.to_s + "vk.com")
+        u.password = Devise.friendly_token[0,20]
+      u.save!
+
+    # rescue Exception => e
+      # return nil
+    # end
+    # return u
+  end
+
+
   def admin?
-    Admin==true
+    return self.admin
   end
 
   def self.edit?(u)
-    u && u.Admin?
+    u && u.admin?
     return 1
   end
+
+  private
+
+  def set_default_sign_count
+    self.sign_in_count ||= 0
+  end
+
 
 end
