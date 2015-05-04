@@ -17,10 +17,8 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     if !@user.nil?
       session[:user_id] = @user.id
       render :json => "YES"
-      # redirect_to root_path
     else
       render :json => "NO"
-      # redirect_to :login
     end
   end
 end

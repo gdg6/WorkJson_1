@@ -1,6 +1,14 @@
 Rails.application.routes.draw do
 
 
+  resources :tags
+
+  resources :genre_tags
+
+  resources :tags_users
+
+  resources :genre_user_tags
+
   namespace :users do
     get 'omniauth_callbacks/facebook'
   end

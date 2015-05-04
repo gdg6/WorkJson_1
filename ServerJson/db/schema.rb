@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150502215304) do
+ActiveRecord::Schema.define(version: 20150504221533) do
 
   create_table "comments", force: true do |t|
     t.integer  "event_id"
@@ -42,6 +42,58 @@ ActiveRecord::Schema.define(version: 20150502215304) do
   end
 
   add_index "events", ["user_id"], name: "index_events_on_user_id"
+
+  create_table "events_to_tags", force: true do |t|
+    t.integer  "event_id"
+    t.integer  "tag_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "events_to_tags", ["event_id"], name: "index_events_to_tags_on_event_id"
+  add_index "events_to_tags", ["tag_id"], name: "index_events_to_tags_on_tag_id"
+
+  create_table "events_to_tags_users", force: true do |t|
+    t.integer  "tags_user_id"
+    t.integer  "event_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "events_to_tags_users", ["event_id"], name: "index_events_to_tags_users_on_event_id"
+  add_index "events_to_tags_users", ["tags_user_id"], name: "index_events_to_tags_users_on_tags_user_id"
+
+  create_table "genre_tags", force: true do |t|
+    t.string   "title"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "genre_user_tags", force: true do |t|
+    t.string   "title",      null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "tags", force: true do |t|
+    t.string   "context"
+    t.integer  "genre_tag_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "tags", ["genre_tag_id"], name: "index_tags_on_genre_tag_id"
+
+  create_table "tags_users", force: true do |t|
+    t.integer  "genre_user_tag_id"
+    t.integer  "user_id"
+    t.string   "context"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "tags_users", ["genre_user_tag_id"], name: "index_tags_users_on_genre_user_tag_id"
+  add_index "tags_users", ["user_id"], name: "index_tags_users_on_user_id"
 
   create_table "users", force: true do |t|
     t.string   "login",                                  null: false

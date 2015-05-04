@@ -1,0 +1,9 @@
+%p#notice= notice
+
+%p
+  %b Title:
+  = @genre_tag.title
+
+= link_to 'Edit', edit_genre_tag_path(@genre_tag)
+\|
+= link_to 'Back', genre_tags_path
