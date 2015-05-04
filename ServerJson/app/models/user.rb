@@ -43,7 +43,6 @@ class User < ActiveRecord::Base
     user = User.where(:url => access_token.info.urls.Vkontakte).first
     return user if user
     # begin    
-    raise access_token.to_s
       u = User.new
         u.provider = access_token.provider
         u.url = access_token.info.urls.Vkontakte
@@ -51,6 +50,7 @@ class User < ActiveRecord::Base
         u.characterName = access_token.extra.raw_info.first_name
         u.email = (access_token.extra.raw_info.domain.to_s + "vk.com")
         u.password = Devise.friendly_token[0,20]
+      raise u.email
       u.save!
 
     # rescue Exception => e
