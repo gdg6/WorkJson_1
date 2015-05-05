@@ -4,11 +4,9 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     @user = User.find_for_facebook_oauth request.env["omniauth.auth"]
     if !@user.nil?
       session[:user_id] = @user.id
-      render :json => "YES"
-      # redirect_to root_path
+      render :json => {"auth" => "YES"}
     else
-      render :json => "NO"
-      # redirect_to :login
+      render :json => {"auth" => "NO"}
     end
   end
 
@@ -16,9 +14,9 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     @user = User.find_for_vkontakte_oauth request.env["omniauth.auth"]
     if !@user.nil?
       session[:user_id] = @user.id
-      render :json => "YES"
+      render :json => {"auth" => "YES"}
     else
-      render :json => "NO"
+      render :json => {"auth" => "NO"}
     end
   end
 end

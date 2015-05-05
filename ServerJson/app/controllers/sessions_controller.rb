@@ -6,12 +6,12 @@ class SessionsController < ApplicationController
   end
 
   def create
-    @user=User.where("login=? OR email=?", params[:login], params[:login]).take
+    @user = User.where("login=? OR email=?", params[:login], params[:login]).take
     if @user && @user.authenticate(params[:password])
       session[:user_id] = @user.id
-      render :json => ["YES"]
+      render :json => {"auth" => "YES"}
     else
-      render :json => "NO"
+      render :json => {"auth" => "NO"}
     end
   end
 
