@@ -26,6 +26,7 @@ J = {
         J.event();
         J.tag();
         J.genre();
+        J.comments();
     },
 
     session: function() {

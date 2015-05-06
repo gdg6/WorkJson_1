@@ -5,12 +5,14 @@ class CommentsController < ApplicationController
   # GET /comments
   # GET /comments.json
   def index
-    @comments = Comment.all
+   return  render :json => [] if Event.select(:id).where(:id => params[:event_id].to_i).take
+   return  render :json => Comment.select(:id, :body, :user_id, :updated_at).find(params[:event_id].to_i).load
   end
 
   # GET /comments/1
   # GET /comments/1.json
   def show
+    return render :json => @comment
   end
 
   # GET /comments/new
@@ -25,17 +27,11 @@ class CommentsController < ApplicationController
   # POST /comments
   # POST /comments.json
   def create
-    @comment = Comment.new(comment_params)
-
-    respond_to do |format|
-      if @comment.save
-        format.html { redirect_to @comment, notice: 'Comment was successfully created.' }
-        format.json { render :show, status: :created, location: @comment }
-      else
-        format.html { render :new }
-        format.json { render json: @comment.errors, status: :unprocessable_entity }
-      end
-    end
+    @comment = Comment.new
+    @comment.body = params[:comment][:body]
+    @comment.user_id = params[:comment][:user_id].to_i
+    @comment.event_id = params[:comment][:event_id].to_i
+    render :json => {'save_success' =>  @comment.save ? 'SUCCESS' : 'FAIL'}
   end
 
   # PATCH/PUT /comments/1
@@ -56,13 +52,11 @@ class CommentsController < ApplicationController
   # DELETE /comments/1.json
   def destroy
     @comment.destroy
-    respond_to do |format|
-      format.html { redirect_to comments_url, notice: 'Comment was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    render :json => {"destroy_success" => 'SUCCESS'}
   end
 
   private
+
     # Use callbacks to share common setup or constraints between actions.
     def set_comment
       @comment = Comment.find(params[:id])
@@ -70,6 +64,6 @@ class CommentsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def comment_params
-      params.require(:comment).permit(:OwnerUser, :Body)
+      params.require(:comment).permit(:event_id, :user_id, :body)
     end
 end
