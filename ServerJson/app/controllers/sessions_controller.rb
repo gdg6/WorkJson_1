@@ -9,14 +9,15 @@ class SessionsController < ApplicationController
     @user = User.where("login=? OR email=?", params[:login], params[:login]).take
     if @user && @user.authenticate(params[:password])
       session[:user_id] = @user.id
-      render :json => {"auth" => "YES"}
+      render :json => {:success => "YES"}
     else
-      render :json => {"auth" => "NO"}
+      render :json => {:success => "NO"}
     end
   end
 
   def destroy
     session.delete(:user_id)
+    # render :json => {"auth" => "LOGOUT"}
     redirect_to :login
   end
 

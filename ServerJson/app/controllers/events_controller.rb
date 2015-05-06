@@ -31,18 +31,17 @@ class EventsController < ApplicationController
   # POST /events.json
   def create
     @event = Event.new(event_params)
-    @event.event_id = params[:EventId].to_i
-    @event.user_id = params[:OwnerUser].to_i
-
-    respond_to do |format|
-      if @event.save
-        format.html { redirect_to @event, notice: 'Event was successfully created.' }
-        format.json { render :show, status: :created, location: @event }
-      else
-        format.html { render :new }
-        format.json { render json: @event.errors, status: :unprocessable_entity }
-      end
-    end
+    @event.user_id = params[:event][:user_id].to_i
+    @event.name = params[:event][:name]
+    @event.adress = params[:event][:adress]
+    @event.date = params[:event][:date]
+    @event.time = params[:event][:time]
+    @event.description = params[:event][:description]
+    @event.price= params[:event][:price].to_i
+    @event.popularity = params[:event][:popularity].to_i
+    # @event.picture = params[:event][:picture]
+      save_success = @event.save
+      render :json => {'save_success' => (save_success ? 'SUCCESS' : 'FAIL')}
   end
 
   # PATCH/PUT /events/1
@@ -77,7 +76,6 @@ class EventsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def event_params
-      # params.require(:event).permit(:EventId, :OwnerUser, :Name, :Adress, :Date, :Time, :Description, :Price, :Popularity)
-      params.require(:event).permit(:Name, :Image, :Adress, :Date, :Time, :Description, :Price, :Popularity)
+      params.require(:event).permit(:user_id, :name, :adress, :date, :time, :description, :price, :popularity, :picture )
     end
 end

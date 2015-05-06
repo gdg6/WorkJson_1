@@ -11,5 +11,6 @@
         =password_field_tag :password, nil, class: 'form-control'
       .form-actions
         =submit_tag 'Войти', class: 'btn btn-primary btn-md'
-        = link_to "Sign in with Facebook", user_omniauth_authorize_path(:facebook)
-        = link_to "Sign in with Vkontakte", user_omniauth_authorize_path(:vkontakte)
+        = link_to "Войти через Facebook", user_omniauth_authorize_path(:facebook)
+        = link_to "Войти через Vkontakte", user_omniauth_authorize_path(:vkontakte)
+        = link_to "Регистрация", registration_path

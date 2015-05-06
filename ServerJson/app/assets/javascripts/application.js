@@ -17,18 +17,75 @@
 //= require_tree .
 
 
-window.fbAsyncInit = function() {
-    FB.init({
-        appId      : '750901265022718',
-        xfbml      : true,
-        version    : 'v2.3'
-    });
+
+J = {
+
+    init: function()
+    {
+        J.session();
+        J.event();
+    },
+
+    session: function() {
+        //registration
+        $(document).off("click", ".sys-reg-user");
+        $(document).on("click", ".sys-reg-user", function() {
+            var form = $(document).find("form");
+            API.registration(form.serialize(), function(code) {
+                alert(code.reg);
+            }, function(code){
+                alert(code);
+            });
+
+        });
+
+
+        //facebook
+        //https://www.facebook.com/dialog/oauth?client_id=750901265022718&redirect_uri=http%3A%2F%2Ff74a6f62.ngrok.io%2Fusers%2Fauth%2Ffacebook%2Fcallback&response_type=code&scope=email&state=c5a9763feae3e272b3f6c15b0ebc8af19ee423f627ecae6a
+        //http://f74a6f62.ngrok.io/users/auth/facebook/callback?code=AQD65zGkJD83i_wCZo7N0pkQQIfcPCdqEj_HQxIcr1L4rzT7lbSh_Wx3nGxhK_d3AfHfcaXvbNJzeFFDswIH3ILo-6hr6wHM7zTMe4UdFurKOB4DQyC88dXsAAZep_1oxe9AOsH21_6FrDiK84s7JJ6xEk_rXIr7yH-JYQhgPM12zZ3-StDICkDqz4RUPEQLtNx4y3B0g_ADRtYiLH1nOAxi1pFHK8b08XwJAkUwy3P0bne5KqJqfQR09g-c0-rIBBeVumMl8i-NQ8zHZKoN4rhqemwD7E-mffmiFDeSXpvpMmSD3uSyMsIA-T1UqNEfdndyd_iUXr35m2muuSiF36yw&state=66353443bcf02ee2c21a6d8121677064f894e2da08c992d0#_=_
+        // request.env["omniauth.auth"]
+
+    },
+
+    event: function()
+    {
+        // add event
+        $(document).off("click", ".sys-add-event");
+        $(document).on("click", ".sys-add-event", function() {
+            var form = $(document).find("form");
+            API.addEvent(form.serialize(), function(code) {
+                alert(code.save_success);
+            }, function(code){
+                alert(code);
+            });
+        });
+
+        //getEventsByTagWithCount
+
+
+    }
+
 };
 
-(function(d, s, id){
-    var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) {return;}
-    js = d.createElement(s); js.id = id;
-    js.src = "//connect.facebook.net/en_US/sdk.js";
-    fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));
+
+$( document ).ready(function() {
+    J.init();
+});
+
+
+//
+//window.fbAsyncInit = function() {
+//    FB.init({
+//        appId      : '750901265022718',
+//        xfbml      : true,
+//        version    : 'v2.3'
+//    });
+//};
+//
+//(function(d, s, id){
+//    var js, fjs = d.getElementsByTagName(s)[0];
+//    if (d.getElementById(id)) {return;}
+//    js = d.createElement(s); js.id = id;
+//    js.src = "//connect.facebook.net/en_US/sdk.js";
+//    fjs.parentNode.insertBefore(js, fjs);
+//}(document, 'script', 'facebook-jssdk'));

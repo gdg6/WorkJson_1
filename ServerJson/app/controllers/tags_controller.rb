@@ -4,8 +4,9 @@ class TagsController < ApplicationController
   respond_to :html
 
   def index
-    @tags = Tag.all
-    respond_with(@tags)
+    count = params[:count].to_i > 0 ? params[:count].to_i : 10
+    return render :json => Tag.select(:context).where(:user_id => params[:user_id].to_i).limit(count).load if User.where(:id => params[:user_id].to_i).take
+    return render :json => {}
   end
 
   def show
@@ -14,21 +15,21 @@ class TagsController < ApplicationController
 
   def new
     @tag = Tag.new
-    respond_with(@tag)
   end
 
   def edit
   end
 
   def create
-    @tag = Tag.new(tag_params)
-    @tag.save
-    respond_with(@tag)
+    @tag = Tag.new
+    @tag.context = params[:tag][:context].to_s
+    @tag.user_id = params[:tag][:user_id].to_i if User.where(:id => params[:user_id].to_i).take
+    @tag.genre_tag = params[:tag][:genre_tag_id].to_i if GenreTag.where(:id => params[:genre_tag_id].to_i).take
+    render :json => {'save_success' => ( @tag.save ? 'SUCCESS' : 'FAIL')}
   end
 
   def update
-    @tag.update(tag_params)
-    respond_with(@tag)
+    render :json => {'update_success' => ( @tag.update(tag_params) ? 'SUCCESS' : 'FAIL')}
   end
 
   def destroy
@@ -42,6 +43,6 @@ class TagsController < ApplicationController
     end
 
     def tag_params
-      params.require(:tag).permit(:context)
+      params.require(:tag).permit(:user_id, :genre_tag_id, :context)
     end
 end

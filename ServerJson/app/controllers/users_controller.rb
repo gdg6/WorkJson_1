@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
-  before_action :check_auth
+  before_action :check_auth, :except => [:new, :create]
+  respond_to :json, :html
 
   # GET /users
   # GET /users.json
@@ -25,17 +26,11 @@ class UsersController < ApplicationController
   # POST /users
   # POST /users.json
   def create
-    @user = User.new(user_params)
-
-    respond_to do |format|
-      if @user.save
-        format.html { redirect_to @user, notice: 'User was successfully created.' }
-        format.json { render :show, status: :created, location: @user }
-      else
-        format.html { render :new }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
-      end
-    end
+    @user = User.new(reg_params)
+    @user.characterName = params[:registration][:characterName]
+    save_success = @user.save
+    session[:user_id] = @user_id if save_success
+    render :json => {'reg' => save_success ? 'YES' : 'NO' }
   end
 
   # PATCH/PUT /users/1
@@ -86,5 +81,11 @@ class UsersController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
       params.require(:user).permit(:login, :email, :password, :password_confirmation, :characterName, :city, :admin, :provider, :url)
+    end
+
+    def reg_params
+      # raise params.to_s
+      # ActiveSupport::JSON.decode(params.to_json).require(:registration).permit(:login, :email, :password, :password_confirmation, :characterName, :city, :admin, :provider, :url)
+      params.require(:registration).permit(:login, :email, :password, :password_confirmation, :characterName, :city, :admin, :provider, :url)
     end
 end

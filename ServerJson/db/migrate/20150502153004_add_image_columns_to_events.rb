@@ -1,9 +1,9 @@
 class AddImageColumnsToEvents < ActiveRecord::Migration
   def self.up
-    add_attachment :events, :Image
+    add_attachment :events, :picture
   end
 
   def self.down
-    remove_attachment :events, :Image
+    remove_attachment :events, :picture
   end
 end

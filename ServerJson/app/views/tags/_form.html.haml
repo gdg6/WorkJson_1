@@ -9,5 +9,14 @@
   .field
     = f.label :context
     = f.text_field :context
+
+  .field
+    = f.label :user_id
+    = f.number_field :user_id
+
+  .field
+    = f.label :genre_tag_id
+    = f.number_field :genre_tag_id
+
   .actions
     = f.submit 'Save'

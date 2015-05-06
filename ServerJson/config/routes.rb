@@ -5,9 +5,10 @@ Rails.application.routes.draw do
 
   resources :genre_tags
 
-  resources :tags_users
+  resources :comments
 
-  resources :genre_user_tags
+  resources :events
+
 
   namespace :users do
     get 'omniauth_callbacks/facebook'
@@ -20,16 +21,15 @@ Rails.application.routes.draw do
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
   resources :users, :only => [:index, :destroy]
 
-  resources :comments
-
-  resources :events
-
-
   root :to => "events#index"
 
   get 'eventTest' => 'events#test', as: :eventTest
-  get 'login'=>'sessions#new', as: :login
-  post 'login'=>'sessions#create'
-  get 'logout'=>'sessions#destroy', as: :logout
+  get 'login' => 'sessions#new', as: :login
+  post 'login' => 'sessions#create'
+  get 'logout' => 'sessions#destroy', as: :logout
+
+
+  get 'registration' => 'users#new', as: :registration
+  post 'registration' => 'users#create'
 
 end
