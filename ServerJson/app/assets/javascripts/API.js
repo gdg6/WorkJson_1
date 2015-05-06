@@ -15,8 +15,20 @@ API = {
         API.del("/events/" + id + ".json", callback, err);
     },
 
+    addTag : function(params, callback, err) {
+      API.post("/tags.json", params, callback, err);
+    },
 
-    // AJAX
+    addGenre : function(params, callback, err) {
+        API.post("/genre_tags.json", params, callback, err);
+    },
+
+    addComment : function(params, callback, err) {
+        API.post("/comments.json", params, callback, err);
+    },
+
+
+    //=====================  AJAX  ============================
     put: function(url, params, callback, err) {
         $.ajax({
             type: "PUT",

@@ -1,5 +1,28 @@
 %h1 New tag
 
-= render 'form'
+= form_for @tag do |f|
+  - if @tag.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@tag.errors.count, "error")} prohibited this tag from being saved:"
+      %ul
+        - @tag.errors.full_messages.each do |msg|
+          %li= msg
+
+  .field
+    = f.label :context
+    = f.text_field :context
+
+  .field
+    = f.label :user_id
+    = f.number_field :user_id
+
+  .field
+    = f.label :genre_tag_id
+    = f.number_field :genre_tag_id
+
+  .actions
+    = link_to 'Save', '#', :class => "sys-add-tag"
+    -#= f.submit 'Save'
+
 
 = link_to 'Back', tags_path

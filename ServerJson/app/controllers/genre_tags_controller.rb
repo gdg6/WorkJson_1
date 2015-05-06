@@ -1,29 +1,27 @@
 class GenreTagsController < ApplicationController
   before_action :set_genre_tag, only: [:show, :edit, :update, :destroy]
-
-  respond_to :html
+  before_action :check_auth
+  before_action :check_admin
 
   def index
-    @genre_tags = GenreTag.all
-    respond_with(@genre_tags)
+    render :json => GenreTag.all
   end
 
   def show
-    respond_with(@genre_tag)
+    render :json => @genre_tag
   end
 
   def new
     @genre_tag = GenreTag.new
-    respond_with(@genre_tag)
   end
 
   def edit
   end
 
   def create
-    @genre_tag = GenreTag.new(genre_tag_params)
-    @genre_tag.save
-    respond_with(@genre_tag)
+    @genre_tag = GenreTag.new
+    @genre_tag.title = params[:genre_tag][:title]
+    render :json => {'save_success' => (@genre_tag.save ? 'SUCCESS' : 'FAIL')}
   end
 
   def update
@@ -32,8 +30,7 @@ class GenreTagsController < ApplicationController
   end
 
   def destroy
-    @genre_tag.destroy
-    respond_with(@genre_tag)
+    render :json => {'destroy_success' => (@genre_tag.destroy ? 'SUCCESS' : 'FAIL')}
   end
 
   private

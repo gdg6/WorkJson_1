@@ -24,6 +24,8 @@ J = {
     {
         J.session();
         J.event();
+        J.tag();
+        J.genre();
     },
 
     session: function() {
@@ -63,8 +65,49 @@ J = {
         //getEventsByTagWithCount
 
 
-    }
+    },
 
+    tag: function()
+    {
+        // add tag
+        $(document).off("click", ".sys-add-tag");
+        $(document).on("click", ".sys-add-tag", function() {
+            var form = $(document).find("form");
+            API.addTag(form.serialize(), function(code) {
+                alert(code.save_success);
+            }, function(code) {
+                alert(code);
+            });
+        });
+    },
+
+    genre: function()
+    {
+        // add genre
+        $(document).off("click", ".sys-add-genre_tag");
+        $(document).on("click", ".sys-add-genre_tag", function() {
+            var form = $(document).find("form");
+            API.addGenre(form.serialize(), function(code) {
+                alert(code.save_success);
+            }, function(code) {
+                alert(code);
+            });
+        });
+    },
+
+    comments: function()
+    {
+        // add comments
+        $(document).off("click", ".sys-add-comment");
+        $(document).on("click", ".sys-add-comment", function() {
+            var form = $(document).find("form");
+            API.addComment(form.serialize(), function(code) {
+                alert(code.save_success);
+            }, function(code) {
+                alert(code);
+            });
+        });
+    }
 };
 
 
