@@ -1,0 +1,12 @@
+%p#notice= notice
+
+%p
+  %b Event:
+  = @favority.event
+%p
+  %b User:
+  = @favority.user
+
+= link_to 'Edit', edit_favority_path(@favority)
+\|
+= link_to 'Back', favorities_path

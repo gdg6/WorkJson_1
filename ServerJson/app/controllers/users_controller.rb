@@ -1,5 +1,6 @@
+require 'bcrypt'
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :set_user, only: [:show, :edit, :update, :destroy, :update_password, :getCity, :setCity, :getCharacterName, :setCharacterName]
   before_action :check_auth, :except => [:new, :create]
   respond_to :json, :html
 
@@ -31,6 +32,33 @@ class UsersController < ApplicationController
     save_success = @user.save
     session[:user_id] = @user_id if save_success
     render :json => {'reg' => save_success ? 'YES' : 'NO' }
+  end
+
+  include BCrypt
+
+  def update_password
+    old_pass = BCrypt::Password.create(params[:old_password])
+    @user.password = params[:new_password] if old_pass == @user.password_digest
+    render :json => {"save_success" => @user.save ? 'SUCCESS' : 'FAIL'}
+  end
+
+  def getCity
+    render :json => {'city' => @user.city}
+  end
+
+  def setCity
+    @user.city = params[:city] if params[:city] != nil
+    render :json => {"save_success" => @user.save ? 'SUCCESS' : 'FAIL'}
+  end
+
+
+  def getCharacterName
+    render :json => {'characterName'=>@user.characterName}
+  end
+
+  def setCharacterName
+    @user.characterName = params[:characterName] if params[:characterName] != nil
+    render :json => {"save_success" => @user.save ? 'SUCCESS' : 'FAIL'}
   end
 
   # PATCH/PUT /users/1
@@ -75,7 +103,11 @@ class UsersController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
-      @user = User.find(params[:id])
+      begin
+        @user = User.find(params[:user_id])
+      rescue
+        return render :json => {"user" => "NOT_FOUND"}
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

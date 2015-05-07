@@ -17,26 +17,85 @@
 //= require_tree .
 
 
-
 J = {
 
-    init: function()
-    {
+    init: function () {
         J.session();
         J.event();
         J.tag();
         J.genre();
         J.comments();
+        J.favorite();
+        J.testUsers();
     },
 
-    session: function() {
+    //========== USERS ===========
+
+    testUsers: function() {
+        //J.editPassword();
+        //J.getCity();
+        //J.setCity();
+        J.getCharacterName();
+    },
+
+    getCharacterName : function() {
+        API.getCharacterName({'user_id':2},
+            function(code)
+            {
+                alert(code.characterName);
+            },
+            function(code)
+            {
+                alert(code);
+            });
+    },
+
+    setCity : function() {
+        API.setCityForUserId({'user_id':2, 'city': 'Moscow'},
+            function(code)
+            {
+                alert(code.save_success);
+            },
+            function(code)
+            {
+                alert(code);
+            });
+    },
+
+    getCity : function() {
+        API.getCityForUserId({'user_id':2},
+            function(code)
+            {
+                alert(code.city);
+            },
+            function(code)
+            {
+                alert(code);
+            });
+    },
+
+    editPassword: function () {
+        API.EditPasswordForUserIdWithOldPassword({'user_id':2, 'old_password':'123456', 'new_password':'123456'},
+        function(code)
+        {
+            alert(code.save_success);
+        },
+        function(code)
+        {
+            alert(code);
+        });
+
+    },
+
+
+    session: function () {
         //registration
         $(document).off("click", ".sys-reg-user");
-        $(document).on("click", ".sys-reg-user", function() {
+        $(document).on("click", ".sys-reg-user", function () {
             var form = $(document).find("form");
-            API.registration(form.serialize(), function(code) {
+            API.registration(form.serialize(), function (code) {
                 alert(code.reg);
-            }, function(code){
+            }, function (code) {
                 alert(code);
             });
 
@@ -50,15 +109,14 @@ J = {
 
     },
 
-    event: function()
-    {
+    event: function () {
         // add event
         $(document).off("click", ".sys-add-event");
-        $(document).on("click", ".sys-add-event", function() {
+        $(document).on("click", ".sys-add-event", function () {
             var form = $(document).find("form");
-            API.addEvent(form.serialize(), function(code) {
+            API.addEvent(form.serialize(), function (code) {
                 alert(code.save_success);
-            }, function(code){
+            }, function (code) {
                 alert(code);
             });
         });
@@ -68,43 +126,52 @@ J = {
 
     },
 
-    tag: function()
-    {
+    tag: function () {
         // add tag
         $(document).off("click", ".sys-add-tag");
-        $(document).on("click", ".sys-add-tag", function() {
+        $(document).on("click", ".sys-add-tag", function () {
             var form = $(document).find("form");
-            API.addTag(form.serialize(), function(code) {
+            API.addTag(form.serialize(), function (code) {
                 alert(code.save_success);
-            }, function(code) {
+            }, function (code) {
                 alert(code);
             });
         });
     },
 
-    genre: function()
-    {
+    genre: function () {
         // add genre
         $(document).off("click", ".sys-add-genre_tag");
-        $(document).on("click", ".sys-add-genre_tag", function() {
+        $(document).on("click", ".sys-add-genre_tag", function () {
             var form = $(document).find("form");
-            API.addGenre(form.serialize(), function(code) {
+            API.addGenre(form.serialize(), function (code) {
                 alert(code.save_success);
-            }, function(code) {
+            }, function (code) {
                 alert(code);
             });
         });
     },
 
-    comments: function()
-    {
+    comments: function () {
         // add comments
         $(document).off("click", ".sys-add-comment");
-        $(document).on("click", ".sys-add-comment", function() {
+        $(document).on("click", ".sys-add-comment", function () {
             var form = $(document).find("form");
-            API.addComment(form.serialize(), function(code) {
+            API.addComment(form.serialize(), function (code) {
                 alert(code.save_success);
-            }, function(code) {
+            }, function (code) {
+                alert(code);
+            });
+        });
+    },
+
+    favorite : function() {
+        $(document).off("click", ".sys-add-favorite");
+        $(document).on("click", ".sys-add-favorite", function () {
+            var form = $(document).find("form");
+            API.addFavorite(form.serialize(), function (code) {
+                alert(code.save_success);
+            }, function (code) {
                 alert(code);
             });
         });
@@ -112,7 +179,7 @@ J = {
 };
 
 
-$( document ).ready(function() {
+$(document).ready(function () {
     J.init();
 });
 

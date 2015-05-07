@@ -2,7 +2,7 @@
 
 API = {
 
-
+    //=================  Test request =========================
     registration : function(params, callback, err) {
       API.post("/registration.json", params,  callback, err);
     },
@@ -25,6 +25,32 @@ API = {
 
     addComment : function(params, callback, err) {
         API.post("/comments.json", params, callback, err);
+    },
+
+    addFavorite : function(params, callback, err) {
+      API.post("/addFavoriteEvent.json", params, callback, err);
+    },
+
+
+    EditPasswordForUserIdWithOldPassword  : function(params, callback, err) {
+      API.post("/EditPasswordForUserId.json", params, callback, err);
+    },
+
+    getCityForUserId : function(params, callback, err) {
+        API.post("/getCityForUserId.json", params, callback, err);
+    },
+
+    setCityForUserId : function(params, callback, err) {
+        API.post("/setCityForUserId.json", params, callback, err);
+    },
+
+    getCharacterName : function(params, callback, err) {
+        API.post("/getCharacterName.json", params, callback, err);
+    },
+
+
+    setCharacterName : function(params, callback, err) {
+        API.post("/setCharacterName.json", params, callback, err);
     },
 
 
@@ -69,7 +95,7 @@ API = {
         $.ajax({
             type: "GET",
             dataType: "json",
-            url:url,
+            url: url,
             data: params,
             time: 30000,
             success: callback,

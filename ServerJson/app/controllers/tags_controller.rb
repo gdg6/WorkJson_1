@@ -6,8 +6,15 @@ class TagsController < ApplicationController
 
   def index
     count = params[:count].to_i > 0 ? params[:count].to_i : 10
-    return render :json => Tag.select(:id, :context).where(:user_id => params[:user_id].to_i).limit(count).load if User.where(:id => params[:user_id].to_i).take
-    return render :json => {}
+    begin
+      User.find(params[:user_id].to_i)
+    rescue
+      @err="NOT_USER"
+    end
+
+    return render :json => {"err" => "NOT_USER"} if @err != nil
+
+    return render :json => Tag.select(:id, :context).where(:user_id => params[:user_id].to_i).limit(count).load
   end
 
   def show

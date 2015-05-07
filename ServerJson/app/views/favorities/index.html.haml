@@ -1,0 +1,23 @@
+%h1 Listing favorities
+
+%table
+  %thead
+    %tr
+      %th Event
+      %th User
+      %th
+      %th
+      %th
+
+  %tbody
+    - @favorities.each do |favority|
+      %tr
+        %td= favority.event
+        %td= favority.user
+        %td= link_to 'Show', favority
+        %td= link_to 'Edit', edit_favority_path(favority)
+        %td= link_to 'Destroy', favority, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Favority', new_favority_path

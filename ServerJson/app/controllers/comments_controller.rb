@@ -5,8 +5,8 @@ class CommentsController < ApplicationController
   # GET /comments
   # GET /comments.json
   def index
-   return  render :json => [] if Event.select(:id).where(:id => params[:event_id].to_i).take
-   return  render :json => Comment.select(:id, :body, :user_id, :updated_at).find(params[:event_id].to_i).load
+   # return  render :json => [] if !Event.select(:id).where(:id => params[:event_id].to_i).take.nil?
+   return  render :json => Comment.select(:id, :body, :user_id, :updated_at).where(:event_id => params[:event_id].to_i).load
   end
 
   # GET /comments/1
