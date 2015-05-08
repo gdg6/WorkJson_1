@@ -30,27 +30,24 @@ J = {
         J.testDailyPost();
     },
 
-    testDailyPost : function()
-    {
+    testDailyPost: function () {
         //set (and create if not exist)
         //J.setDailyPost();
     },
 
 
-    setDailyPost  : function() {
-        API.setDailyPost({'context':'test context daily post'},
-            function(code)
-            {
+    setDailyPost: function () {
+        API.setDailyPost({'context': 'test context daily post'},
+            function (code) {
                 alert(code.save_success);
             },
-            function(code)
-            {
+            function (code) {
                 alert(code);
             });
     },
 
 
-    testUsers: function() {
+    testUsers: function () {
         //J.editPassword();
         //J.getCity();
         //J.setCity();
@@ -63,114 +60,96 @@ J = {
 
     },
 
-    deleteAdminUserByPk : function() {
-        API.deleteAdminUserByPk({'user_id':2},
-            function(code)
-            {
+    deleteAdminUserByPk: function () {
+        API.deleteAdminUserByPk({'user_id': 2},
+            function (code) {
                 alert(code.save_success);
             },
-            function(code)
-            {
+            function (code) {
                 alert(code);
             });
     },
 
-    addAdminUserByPk : function() {
-        API.addAdminUserByPk({'user_id':2},
-            function(code)
-            {
+    addAdminUserByPk: function () {
+        API.addAdminUserByPk({'user_id': 2},
+            function (code) {
                 alert(code.save_success);
             },
-            function(code)
-            {
+            function (code) {
                 alert(code);
             });
     },
 
-    setLogin : function() {
-        API.setLogin({'user_id':2, 'login':'gdg7'},
-            function(code)
-            {
+    setLogin: function () {
+        API.setLogin({'user_id': 2, 'login': 'gdg7'},
+            function (code) {
                 alert(code.save_success);
             },
-            function(code)
-            {
+            function (code) {
                 alert(code);
             });
     },
 
 
-    deleteFavoriteEvent: function() {
-    API.deleteFavoriteEvent({'id':24},
-        function(code)
-        {
-            alert(code.delete_success);
-        },
-        function(code)
-        {
-            alert(code);
-        });
+    deleteFavoriteEvent: function () {
+        API.deleteFavoriteEvent({'id': 24},
+            function (code) {
+                alert(code.delete_success);
+            },
+            function (code) {
+                alert(code);
+            });
     },
 
-        setCharacterName : function() {
-        API.setCharacterName({'user_id':2, 'characterName':'milk'},
-            function(code)
-            {
+    setCharacterName: function () {
+        API.setCharacterName({'user_id': 2, 'characterName': 'milk'},
+            function (code) {
                 alert(code.save_success);
             },
-            function(code)
-            {
+            function (code) {
                 alert(code);
             });
     },
 
 
-    getCharacterName : function() {
-        API.getCharacterName({'user_id':2},
-            function(code)
-            {
+    getCharacterName: function () {
+        API.getCharacterName({'user_id': 2},
+            function (code) {
                 alert(code.characterName);
             },
-            function(code)
-            {
+            function (code) {
                 alert(code);
             });
     },
 
-    setCity : function() {
-        API.setCityForUserId({'user_id':2, 'city': 'Moscow'},
-            function(code)
-            {
+    setCity: function () {
+        API.setCityForUserId({'user_id': 2, 'city': 'Moscow'},
+            function (code) {
                 alert(code.save_success);
             },
-            function(code)
-            {
+            function (code) {
                 alert(code);
             });
     },
 
-    getCity : function() {
-        API.getCityForUserId({'user_id':2},
-            function(code)
-            {
+    getCity: function () {
+        API.getCityForUserId({'user_id': 2},
+            function (code) {
                 alert(code.city);
             },
-            function(code)
-            {
+            function (code) {
                 alert(code);
             });
     },
 
     editPassword: function () {
-        API.EditPasswordForUserIdWithOldPassword({'user_id':2, 'old_password':'123456', 'new_password':'123456'},
-        function(code)
-        {
-            alert(code.save_success);
-        },
-        function(code)
-        {
-            alert(code);
-        });
+        API.EditPasswordForUserIdWithOldPassword({'user_id': 2, 'old_password': '123456', 'new_password': '123456'},
+            function (code) {
+                alert(code.save_success);
+            },
+            function (code) {
+                alert(code);
+            });
 
     },
 
@@ -187,13 +166,6 @@ J = {
             });
 
         });
-
-
-        //facebook
-        //https://www.facebook.com/dialog/oauth?client_id=750901265022718&redirect_uri=http%3A%2F%2Ff74a6f62.ngrok.io%2Fusers%2Fauth%2Ffacebook%2Fcallback&response_type=code&scope=email&state=c5a9763feae3e272b3f6c15b0ebc8af19ee423f627ecae6a
-        //http://f74a6f62.ngrok.io/users/auth/facebook/callback?code=AQD65zGkJD83i_wCZo7N0pkQQIfcPCdqEj_HQxIcr1L4rzT7lbSh_Wx3nGxhK_d3AfHfcaXvbNJzeFFDswIH3ILo-6hr6wHM7zTMe4UdFurKOB4DQyC88dXsAAZep_1oxe9AOsH21_6FrDiK84s7JJ6xEk_rXIr7yH-JYQhgPM12zZ3-StDICkDqz4RUPEQLtNx4y3B0g_ADRtYiLH1nOAxi1pFHK8b08XwJAkUwy3P0bne5KqJqfQR09g-c0-rIBBeVumMl8i-NQ8zHZKoN4rhqemwD7E-mffmiFDeSXpvpMmSD3uSyMsIA-T1UqNEfdndyd_iUXr35m2muuSiF36yw&state=66353443bcf02ee2c21a6d8121677064f894e2da08c992d0#_=_
-        // request.env["omniauth.auth"]
-
     },
 
     event: function () {
@@ -259,7 +231,7 @@ J = {
         });
     },
 
-    favorite : function() {
+    favorite: function () {
         $(document).off("click", ".sys-add-favorite");
         $(document).on("click", ".sys-add-favorite", function () {
             var form = $(document).find("form");

@@ -129,8 +129,6 @@ class UsersController < ApplicationController
   end
 
   def reg_params
-    # raise params.to_s
-    # ActiveSupport::JSON.decode(params.to_json).require(:registration).permit(:login, :email, :password, :password_confirmation, :characterName, :city, :admin, :provider, :url)
     params.require(:registration).permit(:login, :email, :password, :password_confirmation, :characterName, :city, :admin, :provider, :url)
   end
 end
