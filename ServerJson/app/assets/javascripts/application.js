@@ -27,16 +27,103 @@ J = {
         J.comments();
         J.favorite();
         J.testUsers();
+        J.testDailyPost();
     },
 
-    //========== USERS ===========
+    testDailyPost : function()
+    {
+        //set (and create if not exist)
+        //J.setDailyPost();
+    },
+
+
+    setDailyPost  : function() {
+        API.setDailyPost({'context':'test context daily post'},
+            function(code)
+            {
+                alert(code.save_success);
+            },
+            function(code)
+            {
+                alert(code);
+            });
+    },
+
 
     testUsers: function() {
         //J.editPassword();
         //J.getCity();
         //J.setCity();
-        J.getCharacterName();
+        //J.getCharacterName();
+        //J.setCharacterName();
+        //J.deleteFavoriteEvent();
+        //J.setLogin();
+        //J.addAdminUserByPk();
+        //J.deleteAdminUserByPk();
+
     },
+
+    deleteAdminUserByPk : function() {
+        API.deleteAdminUserByPk({'user_id':2},
+            function(code)
+            {
+                alert(code.save_success);
+            },
+            function(code)
+            {
+                alert(code);
+            });
+    },
+
+    addAdminUserByPk : function() {
+        API.addAdminUserByPk({'user_id':2},
+            function(code)
+            {
+                alert(code.save_success);
+            },
+            function(code)
+            {
+                alert(code);
+            });
+    },
+
+    setLogin : function() {
+        API.setLogin({'user_id':2, 'login':'gdg7'},
+            function(code)
+            {
+                alert(code.save_success);
+            },
+            function(code)
+            {
+                alert(code);
+            });
+    },
+
+
+    deleteFavoriteEvent: function() {
+    API.deleteFavoriteEvent({'id':24},
+        function(code)
+        {
+            alert(code.delete_success);
+        },
+        function(code)
+        {
+            alert(code);
+        });
+    },
+
+        setCharacterName : function() {
+        API.setCharacterName({'user_id':2, 'characterName':'milk'},
+            function(code)
+            {
+                alert(code.save_success);
+            },
+            function(code)
+            {
+                alert(code);
+            });
+    },
+
 
     getCharacterName : function() {
         API.getCharacterName({'user_id':2},
@@ -121,9 +208,16 @@ J = {
             });
         });
 
-        //getEventsByTagWithCount
-
-
+        //edit event
+        $(document).off("click", ".sys-edit-event");
+        $(document).on("click", ".sys-edit-event", function () {
+            var form = $(document).find("form");
+            API.editEvent($(document).find("input[id=event_id]").val(), form.serialize(), function (code) {
+                alert(code.save_success);
+            }, function (code) {
+                alert(code);
+            });
+        });
     },
 
     tag: function () {
@@ -182,21 +276,3 @@ J = {
 $(document).ready(function () {
     J.init();
 });
-
-
-//
-//window.fbAsyncInit = function() {
-//    FB.init({
-//        appId      : '750901265022718',
-//        xfbml      : true,
-//        version    : 'v2.3'
-//    });
-//};
-//
-//(function(d, s, id){
-//    var js, fjs = d.getElementsByTagName(s)[0];
-//    if (d.getElementById(id)) {return;}
-//    js = d.createElement(s); js.id = id;
-//    js.src = "//connect.facebook.net/en_US/sdk.js";
-//    fjs.parentNode.insertBefore(js, fjs);
-//}(document, 'script', 'facebook-jssdk'));

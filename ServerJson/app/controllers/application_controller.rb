@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
   end
   
   def check_admin
-    return @current_user.admin
+    return render :json => {"succes" => "NO_ADMIN"} unless @current_user.admin
   end
 
   def not_found_404

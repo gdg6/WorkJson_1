@@ -11,40 +11,45 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :Name %><br>
-    <%= f.text_field :Name %>
-  </div>
     <div class="field">
-      <%= f.label :Image %><br>
-      <%= f.file_field :Image %>
+      <%= f.label :name %><br>
+      <%= f.text_field :name %>
     </div>
-  <div class="field">
-    <%= f.label :Adress %><br>
-    <%= f.text_field :Adress %>
-  </div>
-  <div class="field">
-    <%= f.label :Date %><br>
-    <%= f.text_field :Date %>
-  </div>
-  <div class="field">
-    <%= f.label :Time %><br>
-    <%= f.text_field :Time %>
-  </div>
-  <div class="field">
-    <%= f.label :Description %><br>
-    <%= f.text_field :Description %>
-  </div>
-  <div class="field">
-    <%= f.label :Price %><br>
-    <%= f.number_field :Price %>
-  </div>
-  <div class="field">
-    <%= f.label :Popularity %><br>
-    <%= f.number_field :Popularity %>
-  </div>
-  <div class="actions">
-    <%#= f.submit %>
-    <%= link_to 'Save', "#", class: "sys-reg-user" %>
-  </div>
+    <div class="field">
+      <%= f.label :picture %><br>
+      <%= f.file_field :picture %>
+    </div>
+    <div class="field">
+      <%= f.label :adress %><br>
+      <%= f.text_field :adress %>
+    </div>
+    <div class="field">
+      <%= f.label :date %><br>
+      <%= f.text_field :date %>
+    </div>
+    <div class="field">
+      <%= f.label :time %><br>
+      <%= f.text_field :time %>
+    </div>
+    <div class="field">
+      <%= f.label :description %><br>
+      <%= f.text_field :description %>
+    </div>
+    <div class="field">
+      <%= f.label :price %><br>
+      <%= f.number_field :price %>
+    </div>
+    <div class="field">
+      <%= f.label :popularity %><br>
+      <%= f.number_field :popularity %>
+    </div>
+    <div class="field">
+      <%= f.label :user_id %><br>
+      <%= f.number_field :user_id %>
+    </div>
+    <div class="actions">
+      <!--<%= f.submit %>-->
+      <%= link_to 'Save', '#', :class=>"sys-edit-event" %>
+    </div>
+
 <% end %>

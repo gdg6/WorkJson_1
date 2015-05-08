@@ -56,10 +56,10 @@ class FavoritiesController < ApplicationController
     rescue
       @err = "NOT_EVENT"
     end
-    return render :json =>  Hash['save_success', 'FAIL', "err", @err] if @err != nil
+    return render :json =>  Hash['delete_success', 'FAIL', "err", @err] if @err != nil
     event.popularity -= 1
     event.save
-    render :json => Hash['delete_succes', 'SUCCESS']
+    render :json => Hash['delete_success', 'SUCCESS']
   end
 
   private

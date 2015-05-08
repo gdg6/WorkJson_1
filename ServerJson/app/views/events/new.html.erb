@@ -27,7 +27,7 @@
     </div>
     <div class="field">
       <%= f.label :date %><br>
-      <%= f.text_field :date %>
+      <%= f.number_field :date %>
     </div>
     <div class="field">
       <%= f.label :time %><br>
@@ -50,7 +50,6 @@
       <%= f.number_field :user_id %>
     </div>
     <div class="actions">
-      <!--<%= f.submit %>-->
       <%= link_to 'Save', '#', :class=>"sys-add-event" %>
     </div>
 <% end %>

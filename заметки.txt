@@ -1,0 +1,67 @@
+В случае любой ошибки присутствует ключ "err" c описанием ошибки
+
+
+User.getFavoritesEventsWithUserIdWithCount  (по  умолчанию  count  =  10  –  количество  запрашиваемых  записей)  + 
+http://db453fbe.ngrok.io/getFavoriteEvents/?user_id=1&count=1
+
+
+getTagsForUserId  –  получение  массива  тегов  + 
+http://db453fbe.ngrok.io/tags/?user_id=1 
+
+
+AddAdminUserWithUserId  –  изменение  статуса  пользователя  по  его  id.    + 
+  
+DeleteAdminUserWithUserId  –  изменение  статуса  пользователя  по  его  id.   +  
+  
+AddEventWithEventOptions  –  добавление  объекта  «event»  на  сервер  с  массивом  + 
+свойств  (описание,  название,  цена  и  прочее)  
+  
+DeleteEventWithEventId  –  удаление  события  по  id.    + 
+  
+EditEventWithId  –  редактирование  события  по  id  + 
+getDailyPost  /setDailyPost  (String)  –  ежедневн + 
+
+
+Comment.postCommentWithEventId  –  добавление  комментария  в  +
+соответствующий  массив  у  события,  по  id  записи.    
+   
+  
+Event.getCommentsForEventId  (?)  –  получение  массива  комментариев  к  данному  + 
+событию.  
+  
+Event.getFavoritesEventsForUserIdWithCount  –  получение  избранных  событий  + //user_id, count
+пользователя.
+
+
+Event.getEventsByDateWithCountAndTag  –  получение  событий  по  дате.  + //tag_id, date
+Количество  по  умолчанию  –  10.    
+    
+Event.getEventsByMounthWithCountAndTag  –  получение  событий  за  месяц.  +   //tag_id, date - date is full 19791101. Так как не известно какого года именно необходимо вывести результат
+
+
+
+Event.getEventsByTagWithCount  –  получение  записей  по  тегу  (массиву  тегов).  + //event_id, count
+Количество  по  умолчанию  –  10.
+
+
+User.getFavoritesEventsWithUserIdWithCount  (по  умолчанию  count  =  10  –  
+количество  запрашиваемых  записей)  + // user_id, count
+  
+User.getTagsForUserId  –  получение  массива  тегов    + //user_id
+  
+  
+  
+User.editTagsForUsetId  –  изменение  массива  тегов.    //post
+  
+User.EditPasswordForUserIdWithOldPassword  –  изменение  пароля,  с  проверкой  + //old_password, new_password, user_id
+старого  пароля.    (or  get/set)  
+  
+User.EditCharacterNameForUserId  –  изменение  персонажа  пользователя.    
+  
+User.DeleteFavoriteEventWithIndex    -­‐  удаление  записи  из  массива  избранных  
+записей  по  индексу.    
+  
+User.getCityForUserId/setCityForUserId    -­‐  получение/запись  названия  города  
+пользователя.  
+  
+User.setLoginForUserId  –  изменение  логина  (имени)  пользователя.  

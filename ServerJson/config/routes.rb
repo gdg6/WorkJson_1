@@ -30,16 +30,29 @@ Rails.application.routes.draw do
   get 'registration' => 'users#new', as: :registration
   post 'registration' => 'users#create'
 
+  get 'getEventsByDateWithCountAndTag' => 'events#getEventsByDateWithCountAndTag' #!
+  get 'getEventsByMounthWithCountAndTag' => 'events#getEventsByMounthWithCountAndTag'
+  get 'getEventsByTagWithCount' => 'events#getEventsByTagWithCount'
+
+
   get 'getFavoriteEvents' => 'favorities#index', :as => :getFavotityEvents #params: user_id and count
-  get 'testFavoriteEventsNew' => 'favorities#new'
   post 'addFavoriteEvent' => 'favorities#create'
+  post 'deleteFavoriteEvent' => 'favorities#destroy'
 
   post 'EditPasswordForUserId' => 'users#update_password'
-
-
   post 'getCityForUserId' => 'users#getCity'
   post 'setCityForUserId' => 'users#setCity'
   post 'getCharacterName' => 'users#getCharacterName'
   post 'setCharacterName' => 'users#setCharacterName'
+
+
+
+  post 'setLogin' => 'users#setLogin'
+
+  post 'addAdminByPK' => 'users#addAdmin'
+  post 'deleteAdminByPK' => 'users#deleteAdmin'
+
+  get 'getDailyPost' => 'daily_posts#show'
+  post 'setDailyPost' => 'daily_posts#update'
 
 end

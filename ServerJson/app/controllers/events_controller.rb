@@ -27,9 +27,28 @@ class EventsController < ApplicationController
   def edit
   end
 
+  def getEventsByDateWithCountAndTag
+    count = params[:count].to_i > 0 ? params[:count].to_i : 10
+    event_ids = EventsToTag.select(:event_id).where(:tag_id => params[:tag_id]).load
+    return render :json => Event.where("events.id IN (?) AND events.date = ?", event_ids, params[:date]).last(count)
+  end
+
+
+  def getEventsByMounthWithCountAndTag
+    event_ids = EventsToTag.select(:event_id).where(:tag_id => params[:tag_id]).load
+    return render :json => Event.where("events.id IN (?) AND events.date = ?", event_ids, params[:date]).last(count)
+  end
+
+  def getEventsByTagWithCount
+    count = params[:count].to_i > 0 ? params[:count].to_i : 10
+    event_ids = EventsToTag.select(:event_id).where(:tag_id => params[:tag_id]).load
+    return render :json => Event.where("events.id IN (?)", event_ids).last(count)
+  end
+
   # POST /events
   # POST /events.json
   def create
+    return render :json => {'save_success' => 'FAIL', 'err' => 'NOT_ADMIN'} unless @current_user.admin
     @event = Event.new(event_params)
     @event.user_id = params[:event][:user_id].to_i
     @event.name = params[:event][:name]
@@ -40,32 +59,31 @@ class EventsController < ApplicationController
     @event.price= params[:event][:price].to_i
     @event.popularity = params[:event][:popularity].to_i
     # @event.picture = params[:event][:picture]
-      save_success = @event.save
-      render :json => {'save_success' => (save_success ? 'SUCCESS' : 'FAIL')}
+      render :json => {'save_success' => (@event.save ? 'SUCCESS' : 'FAIL')}
   end
 
   # PATCH/PUT /events/1
   # PATCH/PUT /events/1.json
   def update
-    respond_to do |format|
-      if @event.update(event_params)
-        format.html { redirect_to @event, notice: 'Event was successfully updated.' }
-        format.json { render :show, status: :ok, location: @event }
-      else
-        format.html { render :edit }
-        format.json { render json: @event.errors, status: :unprocessable_entity }
-      end
-    end
+    return render :json => {'save_success' => 'FAIL', 'err' => 'NOT_ADMIN'} unless @current_user.admin
+    @event.user_id = params[:event][:user_id].to_i
+    @event.name = params[:event][:name]
+    @event.adress = params[:event][:adress]
+    @event.date = params[:event][:date]
+    @event.time = params[:event][:time]
+    @event.description = params[:event][:description]
+    @event.price= params[:event][:price].to_i
+    @event.popularity = params[:event][:popularity].to_i
+    # @event.picture = params[:event][:picture]
+    render :json => {'save_success' => (@event.save ? 'SUCCESS' : 'FAIL')}
   end
 
   # DELETE /events/1
   # DELETE /events/1.json
   def destroy
+    return render :json => {'save_success' => 'FAIL', 'err' => 'NOT_ADMIN'} unless @current_user.admin
     @event.destroy
-    respond_to do |format|
-      format.html { redirect_to events_url, notice: 'Event was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    render :json => {'destroy_success' => 'SUCCESS'}
   end
 
   private

@@ -4,7 +4,7 @@ class CreateEvents < ActiveRecord::Migration
       t.belongs_to :user, :index => true
       t.string :name
       t.string :adress
-      t.string :date
+      t.integer :date, :index => true
       t.string :time
       t.string :description
       t.integer :price

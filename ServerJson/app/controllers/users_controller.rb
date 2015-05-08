@@ -1,7 +1,10 @@
 require 'bcrypt'
+
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit, :update, :destroy, :update_password, :getCity, :setCity, :getCharacterName, :setCharacterName]
+  before_action :set_user, only: [:show, :edit, :update, :destroy, :update_password, :getCity, :setCity, :getCharacterName, :setCharacterName, :setLogin, :addAdmin, :deleteAdmin]
   before_action :check_auth, :except => [:new, :create]
+  # FIXME must be check_edit for edit profile user. Is can do only self user or admin
+  # before_action :check_edit, :only => []
   respond_to :json, :html
 
   # GET /users
@@ -31,7 +34,7 @@ class UsersController < ApplicationController
     @user.characterName = params[:registration][:characterName]
     save_success = @user.save
     session[:user_id] = @user_id if save_success
-    render :json => {'reg' => save_success ? 'YES' : 'NO' }
+    render :json => {'reg' => save_success ? 'YES' : 'NO'}
   end
 
   include BCrypt
@@ -53,12 +56,37 @@ class UsersController < ApplicationController
 
 
   def getCharacterName
-    render :json => {'characterName'=>@user.characterName}
+    render :json => {'characterName' => @user.characterName}
   end
 
   def setCharacterName
     @user.characterName = params[:characterName] if params[:characterName] != nil
     render :json => {"save_success" => @user.save ? 'SUCCESS' : 'FAIL'}
+  end
+
+  def setLogin
+    permit = false
+    if @current_user == @user.id or @current_user.admin
+      @user.login = params[:login] if !params[:login].nil?
+      permit = @user.save
+    end
+    render :json => {"save_success" => permit ? 'SUCCESS' : 'FAIL'}
+  end
+
+  def addAdmin
+    if @current_user.admin
+      @user.admin = true
+      return render :json => {"save_success" => @user.save ? 'SUCCESS' : 'FAIL'}
+    end
+    render :json => {"save_success" => 'FAIL', 'err' => 'NOT_ADMIN'}
+  end
+
+  def deleteAdmin
+    if @current_user.admin and @current_user.id != @user.id
+      @user.admin=false
+      return render :json => {"save_success" => @user.save ? 'SUCCESS' : 'FAIL'}
+    end
+    render :json => {"save_success" => 'FAIL', 'err' => 'NOT_ADMIN'}
   end
 
   # PATCH/PUT /users/1
@@ -101,23 +129,23 @@ class UsersController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_user
-      begin
-        @user = User.find(params[:user_id])
-      rescue
-        return render :json => {"user" => "NOT_FOUND"}
-      end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_user
+    begin
+      @user = User.find(params[:user_id])
+    rescue
+      return render :json => {"user" => "NOT_FOUND"}
     end
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def user_params
-      params.require(:user).permit(:login, :email, :password, :password_confirmation, :characterName, :city, :admin, :provider, :url)
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def user_params
+    params.require(:user).permit(:login, :email, :password, :password_confirmation, :characterName, :city, :admin, :provider, :url)
+  end
 
-    def reg_params
-      # raise params.to_s
-      # ActiveSupport::JSON.decode(params.to_json).require(:registration).permit(:login, :email, :password, :password_confirmation, :characterName, :city, :admin, :provider, :url)
-      params.require(:registration).permit(:login, :email, :password, :password_confirmation, :characterName, :city, :admin, :provider, :url)
-    end
+  def reg_params
+    # raise params.to_s
+    # ActiveSupport::JSON.decode(params.to_json).require(:registration).permit(:login, :email, :password, :password_confirmation, :characterName, :city, :admin, :provider, :url)
+    params.require(:registration).permit(:login, :email, :password, :password_confirmation, :characterName, :city, :admin, :provider, :url)
+  end
 end

@@ -11,6 +11,11 @@ API = {
       API.post("/events.json", params, callback, err);
     },
 
+    editEvent : function(id, params, callback, err) {
+        API.put("/events/" + id + ".json", params, callback, err);
+    },
+
+
     deleteEvent : function(id, callback, err) {
         API.del("/events/" + id + ".json", callback, err);
     },
@@ -51,6 +56,27 @@ API = {
 
     setCharacterName : function(params, callback, err) {
         API.post("/setCharacterName.json", params, callback, err);
+    },
+
+    deleteFavoriteEvent : function(params, callback, err) {
+        API.post("/deleteFavoriteEvent.json", params, callback, err);
+    },
+
+    setLogin :  function(params, callback, err) {
+        API.post("/setLogin.json", params, callback, err);
+    },
+
+
+    addAdminUserByPk : function(params, callback, err) {
+        API.post("/addAdminByPK.json", params, callback, err);
+    },
+
+    deleteAdminUserByPk : function(params, callback, err) {
+        API.post("/deleteAdminByPK.json", params, callback, err);
+    },
+
+    setDailyPost : function(params, callback, err) {
+        API.post("/setDailyPost.json", params, callback, err);
     },
 
 
