@@ -27,10 +27,11 @@ Rails.application.configure do
   # config.assets.css_compressor = :sass
 
   # Do not fallback to assets pipeline if a precompiled asset is missed.
-  config.assets.compile = false
+  config.assets.compile = true
+  # config.assets.compile = false
 
   # Generate digests for assets URLs.
-  config.assets.digest = true
+  config.assets.digest = true #FIXME
 
   # `config.assets.precompile` and `config.assets.version` have moved to config/initializers/assets.rb
 
@@ -69,11 +70,6 @@ Rails.application.configure do
 
   # Disable automatic flushing of the log to improve performance.
   # config.autoflush_log = false
-
-  # Debug mode disables concatenation and preprocessing of assets.
-  # This option may cause significant delays in view rendering with a large
-  # number of complex assets.
-  config.assets.debug = true
 
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = ::Logger::Formatter.new
