@@ -1,32 +1,61 @@
+
+При редактировании/добавление в save_succes содержит либо SUCCESS либо FAIL к примеру {'save_success':'FAIL', 'err':'NOT_USER'}
 В случае любой ошибки присутствует ключ "err" c описанием ошибки
 
 
+
+post /registration - регистрация пользователя (обычная) по всем параметрам описанным в тз. Кроме admin (по умолчанию false)
+
+
 User.getFavoritesEventsWithUserIdWithCount  (по  умолчанию  count  =  10  –  количество  запрашиваемых  записей)  + 
-http://db453fbe.ngrok.io/getFavoriteEvents/?user_id=1&count=1
+/getFavoriteEvents/?user_id=1&count=1
 
 
-getTagsForUserId  –  получение  массива  тегов  + 
-http://db453fbe.ngrok.io/tags/?user_id=1 
+getTagsForUserId  –  получение  массива  тегов  + //user_id
+/tags/?user_id=1 
 
 
-AddAdminUserWithUserId  –  изменение  статуса  пользователя  по  его  id.    + 
+AddAdminUserWithUserId  –  изменение  статуса  пользователя  по  его  id.    + //user_id
+
   
-DeleteAdminUserWithUserId  –  изменение  статуса  пользователя  по  его  id.   +  
+DeleteAdminUserWithUserId  –  изменение  статуса  пользователя  по  его  id.   +  //user_id
   
-AddEventWithEventOptions  –  добавление  объекта  «event»  на  сервер  с  массивом  + 
+AddEventWithEventOptions  –  добавление  объекта  «event»  на  сервер  с  массивом  + //all params 
 свойств  (описание,  название,  цена  и  прочее)  
+
+Request
+
+Parameters:
+
+{"utf8"=>"✓",
+ "authenticity_token"=>"5WRHL+ag+43QJBGr7J/Ako+/kN0DSEe3Po7FhZXV37o=",
+ "event"=>{"name"=>"1234",
+ "picture"=>#<ActionDispatch::Http::UploadedFile:0x000000021570f0 @tempfile=#<Tempfile:/tmp/RackMultipart20150509-29103-v4xzb2>,
+ @original_filename="Screenshot - 04.04.2015 - 23:58:58.png",
+ @content_type="image/png",
+ @headers="Content-Disposition: form-data; name=\"event[picture]\"; filename=\"Screenshot - 04.04.2015 - 23:58:58.png\"\r\nContent-Type: image/png\r\n">,
+ "adress"=>"1234",
+ "date"=>"1234",
+ "time"=>"1234",
+ "description"=>"1234",
+ "price"=>"1234",
+ "popularity"=>"1234",
+ "user_id"=>"1234"},
+ "commit"=>"Create Event"}
   
 DeleteEventWithEventId  –  удаление  события  по  id.    + 
   
-EditEventWithId  –  редактирование  события  по  id  + 
-getDailyPost  /setDailyPost  (String)  –  ежедневн + 
+EditEventWithId  –  редактирование  события  по  id  + //id, + all params at as name, picture etc
 
 
-Comment.postCommentWithEventId  –  добавление  комментария  в  +
+getDailyPost  /setDailyPost  (String)  –  ежедневн + // url : /getDailyPost, /setDailyPost params: context
+
+
+Comment.postCommentWithEventId  –  добавление  комментария  в  + //user_id, event_id, body
 соответствующий  массив  у  события,  по  id  записи.    
    
   
-Event.getCommentsForEventId  (?)  –  получение  массива  комментариев  к  данному  + 
+Event.getCommentsForEventId  (?)  –  получение  массива  комментариев  к  данному  + //event_id
 событию.  
   
 Event.getFavoritesEventsForUserIdWithCount  –  получение  избранных  событий  + //user_id, count
@@ -56,12 +85,109 @@ User.editTagsForUsetId  –  изменение  массива  тегов.    
 User.EditPasswordForUserIdWithOldPassword  –  изменение  пароля,  с  проверкой  + //old_password, new_password, user_id
 старого  пароля.    (or  get/set)  
   
-User.EditCharacterNameForUserId  –  изменение  персонажа  пользователя.    
+User.EditCharacterNameForUserId  –  изменение  персонажа  пользователя.    + //user_id, characterName
   
-User.DeleteFavoriteEventWithIndex    -­‐  удаление  записи  из  массива  избранных  
+User.DeleteFavoriteEventWithIndex    -­‐  удаление  записи  из  массива  избранных  + //id is index favorite_tags
 записей  по  индексу.    
   
-User.getCityForUserId/setCityForUserId    -­‐  получение/запись  названия  города  
+User.getCityForUserId/setCityForUserId    -­‐  получение/запись  названия  города  + //user_id / user_id, city
 пользователя.  
   
-User.setLoginForUserId  –  изменение  логина  (имени)  пользователя.  
+User.setLoginForUserId  –  изменение  логина  (имени)  пользователя.  + //user_id, login
+
+
+================= примеры отправки форм ===================
+
+все запросы в будут в POST методе. 
+ 
+Большинство примеров по отправке форм можно найти в /app/assests/javascript/application.js and API.js соответственно. 
+Можно просто отслеживать в отладчике, к примеру гугл хрома передаваемые параметры и по примеру писать. 
+
+
+For get favoritiesEvents (getFavoritesEventsWithUserIdWithCount): 
+/getFavoriteEvents/?user_id=1&count=1
+
+в рельсах он выглядит как: 
+{"utf8"=>"✓",
+ "authenticity_token"=>"5WRHL+ag+43QJBGr7J/Ako+/kN0DSEe3Po7FhZXV37o=",
+ "favority"=>{"user_id"=>"1",
+ "count"=>"1"},
+ "format"=>"json"}
+
+Далее пример параметров будет в виде: 
+
+{"utf8"=>"✓",
+ "authenticity_token"=>"5WRHL+ag+43QJBGr7J/Ako+/kN0DSEe3Po7FhZXV37o=",
+ "comment"=>{"user_id"=>"1",
+ "event_id"=>"1",
+ "body"=>"first_comment"},
+ "format"=>"json"}
+
+
+For create Comments 
+
+url : /comments.json
+params: 
+
+{"utf8"=>"✓",
+ "authenticity_token"=>"5WRHL+ag+43QJBGr7J/Ako+/kN0DSEe3Po7FhZXV37o=",
+ "comment"=>{"user_id"=>"1",
+ "event_id"=>"1",
+ "body"=>"first_comment"},
+ "format"=>"json"}
+
+
+
+для создания события Event
+
+events/new in post 
+
+
+{"utf8"=>"✓",
+ "authenticity_token"=>"5WRHL+ag+43QJBGr7J/Ako+/kN0DSEe3Po7FhZXV37o=",
+ "event"=>{"name"=>"1234",
+ "picture"=>#<ActionDispatch::Http::UploadedFile:0x000000021570f0 @tempfile=#<Tempfile:/tmp/RackMultipart20150509-29103-v4xzb2>,
+ @original_filename="Screenshot - 04.04.2015 - 23:58:58.png",
+ @content_type="image/png",
+ @headers="Content-Disposition: form-data; name=\"event[picture]\"; filename=\"Screenshot - 04.04.2015 - 23:58:58.png\"\r\nContent-Type: image/png\r\n">,
+ "adress"=>"1234",
+ "date"=>"1234",
+ "time"=>"1234",
+ "description"=>"1234",
+ "price"=>"1234",
+ "popularity"=>"1234",
+ "user_id"=>"1"},
+ "commit"=>"Create Event"}
+
+
+
+
+
+  get 'login' => 'sessions#new', as: :login
+  post 'login' => 'sessions#create'
+  get 'logout' => 'sessions#destroy', as: :logout
+
+
+  get /registration
+  post /registration
+
+  get 'getEventsByDateWithCountAndTag' => 'events#getEventsByDateWithCountAndTag' #!
+  get 'getEventsByMounthWithCountAndTag' => 'events#getEventsByMounthWithCountAndTag'
+  get 'getEventsByTagWithCount' => 'events#getEventsByTagWithCount'
+
+  get 'getFavoriteEvents' => 'favorities#index', :as => :getFavotityEvents #params: user_id and count
+  post 'addFavoriteEvent' => 'favorities#create'
+  post 'deleteFavoriteEvent' => 'favorities#destroy'
+
+  post 'EditPasswordForUserId' => 'users#update_password'
+  post 'getCityForUserId' => 'users#getCity'
+  post 'setCityForUserId' => 'users#setCity'
+  post 'getCharacterName' => 'users#getCharacterName'
+  post 'setCharacterName' => 'users#setCharacterName'
+  post 'setLogin' => 'users#setLogin'
+
+  post 'addAdminByPK' => 'users#addAdmin'
+  post 'deleteAdminByPK' => 'users#deleteAdmin'
+
+  get 'getDailyPost' => 'daily_posts#show'
+  post 'setDailyPost' => 'daily_posts#update'

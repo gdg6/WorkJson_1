@@ -129,6 +129,6 @@ class UsersController < ApplicationController
   end
 
   def reg_params
-    params.require(:registration).permit(:login, :email, :password, :password_confirmation, :characterName, :city, :admin, :provider, :url)
+    params.require(:registration).permit(:login, :email, :password, :password_confirmation, :characterName, :city, :provider, :url)
   end
 end

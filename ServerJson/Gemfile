@@ -36,7 +36,6 @@ gem 'haml-rails'
 gem 'paperclip'
 
 gem 'protected_attributes'
-# gem 'twitter-bootstrap-rails'
 gem 'devise'
 gem 'omniauth'
 gem 'omniauth-facebook'

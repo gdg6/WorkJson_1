@@ -58,8 +58,8 @@ class EventsController < ApplicationController
     @event.description = params[:event][:description]
     @event.price= params[:event][:price].to_i
     @event.popularity = params[:event][:popularity].to_i
-    # @event.picture = params[:event][:picture]
-      render :json => {'save_success' => (@event.save ? 'SUCCESS' : 'FAIL')}
+    @event.picture = params[:event][:picture]
+    save_with_check(@event)
   end
 
   # PATCH/PUT /events/1
@@ -74,14 +74,14 @@ class EventsController < ApplicationController
     @event.description = params[:event][:description]
     @event.price= params[:event][:price].to_i
     @event.popularity = params[:event][:popularity].to_i
-    # @event.picture = params[:event][:picture]
-    render :json => {'save_success' => (@event.save ? 'SUCCESS' : 'FAIL')}
+    @event.picture = params[:event][:picture]
+    save_with_check(@event)
   end
 
   # DELETE /events/1
   # DELETE /events/1.json
   def destroy
-    return render :json => {'save_success' => 'FAIL', 'err' => 'NOT_ADMIN'} unless @current_user.admin
+    return render :json => {'destroy_success' => 'FAIL', 'err' => 'NOT_ADMIN'} unless @current_user.admin
     @event.destroy
     render :json => {'destroy_success' => 'SUCCESS'}
   end

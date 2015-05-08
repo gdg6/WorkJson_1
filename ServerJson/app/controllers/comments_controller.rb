@@ -27,6 +27,7 @@ class CommentsController < ApplicationController
   # POST /comments.json
   def create
     @comment = Comment.new
+    raise params.to_s
     @comment.body = params[:comment][:body]
     @comment.user_id = params[:comment][:user_id].to_i
     @comment.event_id = params[:comment][:event_id].to_i
