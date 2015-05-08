@@ -1,15 +1,12 @@
 class EventsController < ApplicationController
   before_action :set_event, only: [:show, :edit, :update, :destroy]
   before_action :check_auth
+  before_action :check_admin, :only => [:update, :create, :destroy]
 
   # GET /events
   # GET /events.json
   def index
     render :json => Event.all
-  end
-
-  def test
-
   end
 
   # GET /events/1
@@ -33,10 +30,13 @@ class EventsController < ApplicationController
     return render :json => Event.where("events.id IN (?) AND events.date = ?", event_ids, params[:date]).last(count)
   end
 
-
+  #FIXME
   def getEventsByMounthWithCountAndTag
+    count = params[:count].to_i > 0 ? params[:count].to_i : 10
     event_ids = EventsToTag.select(:event_id).where(:tag_id => params[:tag_id]).load
-    return render :json => Event.where("events.id IN (?) AND events.date = ?", event_ids, params[:date]).last(count)
+    from_date = (params[:date].to_i / 100) * 100 #19790500
+    to_date = (from_date % 10000 >= 1200 ? from_date + 10000 : from_date + 100)
+    return render :json => Event.where("events.id IN (?) AND events.date > ? AND events.date < ?", event_ids, from_date, to_date).last(count)
   end
 
   def getEventsByTagWithCount

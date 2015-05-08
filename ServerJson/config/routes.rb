@@ -34,7 +34,6 @@ Rails.application.routes.draw do
   get 'getEventsByMounthWithCountAndTag' => 'events#getEventsByMounthWithCountAndTag'
   get 'getEventsByTagWithCount' => 'events#getEventsByTagWithCount'
 
-
   get 'getFavoriteEvents' => 'favorities#index', :as => :getFavotityEvents #params: user_id and count
   post 'addFavoriteEvent' => 'favorities#create'
   post 'deleteFavoriteEvent' => 'favorities#destroy'
@@ -44,9 +43,6 @@ Rails.application.routes.draw do
   post 'setCityForUserId' => 'users#setCity'
   post 'getCharacterName' => 'users#getCharacterName'
   post 'setCharacterName' => 'users#setCharacterName'
-
-
-
   post 'setLogin' => 'users#setLogin'
 
   post 'addAdminByPK' => 'users#addAdmin'
@@ -54,5 +50,8 @@ Rails.application.routes.draw do
 
   get 'getDailyPost' => 'daily_posts#show'
   post 'setDailyPost' => 'daily_posts#update'
+
+  get '*unmatched_route', :to => 'application#not_found_404'
+  post '*unmatched_route', :to => 'application#not_found_404'
 
 end

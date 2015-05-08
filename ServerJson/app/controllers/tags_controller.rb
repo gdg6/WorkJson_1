@@ -11,9 +11,7 @@ class TagsController < ApplicationController
     rescue
       @err="NOT_USER"
     end
-
     return render :json => {"err" => "NOT_USER"} if @err != nil
-
     return render :json => Tag.select(:id, :context).where(:user_id => params[:user_id].to_i).limit(count).load
   end
 

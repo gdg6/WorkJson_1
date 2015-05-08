@@ -24,6 +24,10 @@ class ApplicationController < ActionController::Base
     return render :json => {"page" => "TEMPLATE_MISSING"}
   end
 
+  def save_with_check(obj)
+    render :json => {"save_success" => obj.save ? 'SUCCESS' : 'FAIL', 'err' => @err}
+  end
+
   def ensure_signup_complete
     return if action_name == 'finish_signup'
     if current_user && !current_user.email_verified?

@@ -46,8 +46,6 @@ class User < ActiveRecord::Base
     # "state"=>"4d1cb76be48973faf7061ff88b7671a108eddce4ae75658f"
     user = User.where(:url => access_token.info.urls.Vkontakte).first
     return user if user
-    # begin
-    raise access_token.to_s
       u = User.new
         u.provider = access_token.provider
         u.url = access_token.info.urls.Vkontakte
@@ -55,13 +53,7 @@ class User < ActiveRecord::Base
         u.characterName = access_token.extra.raw_info.first_name
         u.email = ("https://vk.com/write" + access_token.uid.to_s) # vk don't give email :(
         u.password = Devise.friendly_token[0,20]
-      raise u.email
-      u.save!
-
-    # rescue Exception => e
-      # return nil
-    # end
-    # return u
+    return  u.save ? u : nil
   end
 
 
@@ -79,6 +71,5 @@ class User < ActiveRecord::Base
   def set_default_sign_count
     self.sign_in_count ||= 0
   end
-
 
 end

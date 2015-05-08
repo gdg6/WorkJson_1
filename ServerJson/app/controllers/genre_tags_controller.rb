@@ -20,13 +20,13 @@ class GenreTagsController < ApplicationController
 
   def create
     @genre_tag = GenreTag.new
-    @genre_tag.title = params[:genre_tag][:title]
-    render :json => {'save_success' => (@genre_tag.save ? 'SUCCESS' : 'FAIL')}
+    @genre_tag.title = params[:genre_tag][:title] unless params[:genre_tag][:title].nil?
+    return save_with_check(@genre_tag)
   end
 
   def update
-    @genre_tag.update(genre_tag_params)
-    respond_with(@genre_tag)
+    @genre_tag.title = params[:title] unless params[:title].nil?
+    return save_with_check(@genre_tag)
   end
 
   def destroy

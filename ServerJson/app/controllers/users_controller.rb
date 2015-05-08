@@ -34,7 +34,7 @@ class UsersController < ApplicationController
     @user.characterName = params[:registration][:characterName]
     save_success = @user.save
     session[:user_id] = @user_id if save_success
-    render :json => {'reg' => save_success ? 'YES' : 'NO'}
+    return render :json => {'reg' => (save_success ? 'YES' : 'NO')}
   end
 
   include BCrypt
@@ -42,7 +42,7 @@ class UsersController < ApplicationController
   def update_password
     old_pass = BCrypt::Password.create(params[:old_password])
     @user.password = params[:new_password] if old_pass == @user.password_digest
-    render :json => {"save_success" => @user.save ? 'SUCCESS' : 'FAIL'}
+    save_with_check(@user)
   end
 
   def getCity
@@ -51,7 +51,7 @@ class UsersController < ApplicationController
 
   def setCity
     @user.city = params[:city] if params[:city] != nil
-    render :json => {"save_success" => @user.save ? 'SUCCESS' : 'FAIL'}
+    save_with_check(@user)
   end
 
 
@@ -61,7 +61,7 @@ class UsersController < ApplicationController
 
   def setCharacterName
     @user.characterName = params[:characterName] if params[:characterName] != nil
-    render :json => {"save_success" => @user.save ? 'SUCCESS' : 'FAIL'}
+    save_with_check(@user)
   end
 
   def setLogin
@@ -84,24 +84,9 @@ class UsersController < ApplicationController
   def deleteAdmin
     if @current_user.admin and @current_user.id != @user.id
       @user.admin=false
-      return render :json => {"save_success" => @user.save ? 'SUCCESS' : 'FAIL'}
+      return save_with_check(@user)
     end
     render :json => {"save_success" => 'FAIL', 'err' => 'NOT_ADMIN'}
-  end
-
-  # PATCH/PUT /users/1
-  # PATCH/PUT /users/1.json
-  def update
-    respond_to do |format|
-      if @user.update(user_params)
-        sign_in(@user == current_user ? @user : current_user, :bypass => true)
-        format.html { redirect_to @user, notice: 'User was successfully updated.' }
-        format.json { render :show, status: :ok, location: @user }
-      else
-        format.html { render :edit }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
-      end
-    end
   end
 
   # GET/PATCH /users/:id/finish_signup
