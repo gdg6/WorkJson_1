@@ -25,7 +25,6 @@ class User < ActiveRecord::Base
   def self.find_for_facebook_oauth(access_token)
     user = User.where(:url => access_token.info.urls.Facebook).first
     return user if user
-    begin    
       u = User.new
         u.provider = access_token.provider
         u.url = access_token.info.urls.Facebook
@@ -33,11 +32,7 @@ class User < ActiveRecord::Base
         u.characterName = access_token.extra.raw_info.first_name
         u.email = access_token.extra.raw_info.email
         u.password = Devise.friendly_token[0,20]
-      u.save!      
-    rescue Exception => e
-      return nil
-    end
-    return u
+      return  u.save ? u : nil
   end
 
 

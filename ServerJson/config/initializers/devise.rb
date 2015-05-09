@@ -2,8 +2,10 @@
 # Many of these configuration options can be set straight in your model.
 Devise.setup do |config|
 
-  config.omniauth :facebook, '750901265022718', '6fc803c94f4d22e97d798ffb030aed31'
-  config.omniauth :vkontakte, '4902656', 'JoTfMuWBiDjbcq0OlASo'
+  config.omniauth :facebook, '750901265022718', '6fc803c94f4d22e97d798ffb030aed31' #for production
+  # config.omniauth :facebook, '753606344752210', '3da14c6088b1ee7a8d192f50d7fc73bd' #for test
+
+  config.omniauth :vkontakte, '4902656', 'JoTfMuWBiDjbcq0OlASo' #for production
 
 
   # The secret key used by Devise. Devise uses this key to generate
