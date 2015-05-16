@@ -3,8 +3,8 @@ class User < ActiveRecord::Base
   has_secure_password
   validates :login, uniqueness: true
   validates :password, length: {minimum: 6, allow_blank: true}
-  # validates :admin, presence: true
   validates :sign_in_count, presence: true
+  validates :email, uniqueness: true, on: :create
 
   has_many :comments, dependent: :destroy
   has_many :services, :dependent => :destroy
@@ -12,6 +12,7 @@ class User < ActiveRecord::Base
   has_many :favorities, :dependent => :destroy
 
   before_validation :set_default_sign_count
+
   #
   # # Include default devise modules. Others available are:
   # # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
@@ -57,8 +58,7 @@ class User < ActiveRecord::Base
   end
 
   def self.edit?(u)
-    u && u.admin?
-    return 1
+    return u && u.admin?
   end
 
   private

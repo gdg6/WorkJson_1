@@ -33,7 +33,7 @@ Rails.application.routes.draw do
   get 'getEventsByMounthWithCountAndTag' => 'events#getEventsByMounthWithCountAndTag'
   get 'getEventsByTagWithCount' => 'events#getEventsByTagWithCount'
 
-  get 'getFavoriteEvents' => 'favorities#index', :as => :getFavotityEvents #params: user_id and count
+  get 'getFavoriteEvents' => 'favorities#index', :as => :getFavotityEvents
   post 'addFavoriteEvent' => 'favorities#create'
   post 'deleteFavoriteEvent' => 'favorities#destroy'
 

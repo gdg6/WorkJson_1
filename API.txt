@@ -3,10 +3,6 @@
 В случае любой ошибки присутствует ключ "err" c описанием ошибки
 
 
-
-post /registration - регистрация пользователя (обычная) по всем параметрам описанным в тз. Кроме admin (по умолчанию false)
-
-
 User.getFavoritesEventsWithUserIdWithCount  (по  умолчанию  count  =  10  –  количество  запрашиваемых  записей)  + 
 /getFavoriteEvents/?user_id=1&count=1
 
@@ -103,6 +99,36 @@ User.setLoginForUserId  –  изменение  логина  (имени)  п�
 Большинство примеров по отправке форм можно найти в /app/assests/javascript/application.js and API.js соответственно. 
 Можно просто отслеживать в отладчике, к примеру гугл хрома передаваемые параметры и по примеру писать. 
 
+Так же в отправке данных должно содержаться: 
+utf8:	✓
+authenticity_token:	
+
+
+
+//===============================  Авторизация ============================= 
+/login - post
+Параметры: 
+login - login or email
+password
+
+//============================== Выход ====================================
+/logout - get
+
+
+//============================  Регистрация пользователя ==================
+
+post /registration - регистрация пользователя (обычная) по всем параметрам описанным в тз. Кроме admin (по умолчанию false)
+Параметры:
+login 
+email
+password
+password_confirmation
+Charactername
+city
+
+пример возрата: 
+{'reg':'NO', 'err':'NO_VALID_EMAIL'}
+{'reg':'YES', 'err': nil}
 
 For get favoritiesEvents (getFavoritesEventsWithUserIdWithCount): 
 /getFavoriteEvents/?user_id=1&count=1
@@ -137,12 +163,10 @@ params:
  "format"=>"json"}
 
 
-
+//=============================  Event  =======================
 для создания события Event
 
-events/new in post 
-
-
+/events.json - POST 
 {"utf8"=>"✓",
  "authenticity_token"=>"5WRHL+ag+43QJBGr7J/Ako+/kN0DSEe3Po7FhZXV37o=",
  "event"=>{"name"=>"1234",
@@ -163,13 +187,52 @@ events/new in post
 
 
 
+//=======================================   Жанры тегов   =======================================
+//Создание нового жанра тегов
+/genre_tags.json - POST
+Параметры:
+genre_tag[title]:	'sport'
+
+
+//получение списка жанров 
+/genre_tags/ - в данный момент как get запрос 
+Пример отвтета: [{"id":1,"title":"sport","created_at":"2015-05-15T17:07:21.357Z","updated_at":"2015-05-15T17:07:21.357Z"}]
+
+
+//Удаление жанра
+/genre_tags/1.json - тип запроса  DELETE 
+Пример ответа: 
+{'destroy_success' : 'SUCCESS' или 'FAIL'}
+
+
+//редактирование жанра
+/genre_tags/1.json PATCH/PUT 
+Параметры: 
+genre_tag[title]
+Пример ответа:
+ {'update_success':'SUCCESS' или'FAIL'}
+
+
+
+
+
+
+Набор роутов: 
+
+  resources :tags
+
+  resources :genre_tags
+
+  resources :comments
+
+  resources :events
+
   get 'login' => 'sessions#new', as: :login
   post 'login' => 'sessions#create'
   get 'logout' => 'sessions#destroy', as: :logout
-
-
-  get /registration
-  post /registration
+ 
+  get 'registration' => 'users#new', as: :registration
+  post 'registration' => 'users#create'
 
   get 'getEventsByDateWithCountAndTag' => 'events#getEventsByDateWithCountAndTag' #!
   get 'getEventsByMounthWithCountAndTag' => 'events#getEventsByMounthWithCountAndTag'
@@ -191,3 +254,5 @@ events/new in post
 
   get 'getDailyPost' => 'daily_posts#show'
   post 'setDailyPost' => 'daily_posts#update'
+
+ 

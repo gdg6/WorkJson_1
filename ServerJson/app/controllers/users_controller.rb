@@ -32,9 +32,10 @@ class UsersController < ApplicationController
   def create
     @user = User.new(reg_params)
     @user.characterName = params[:registration][:characterName]
+    return render :json => {'reg' => 'NO', 'err' => 'NO_VALID_EMAIL'} unless email_valid(@user)
     save_success = @user.save
     session[:user_id] = @user_id if save_success
-    return render :json => {'reg' => (save_success ? 'YES' : 'NO')}
+    return render :json => {'reg' => (save_success ? 'YES' : 'NO'), 'err' => @err}
   end
 
   include BCrypt
@@ -50,7 +51,7 @@ class UsersController < ApplicationController
   end
 
   def setCity
-    @user.city = params[:city] if params[:city] != nil
+    @user.city = params[:city].to_i if params[:city] != nil
     save_with_check(@user)
   end
 
@@ -121,6 +122,10 @@ class UsersController < ApplicationController
     rescue
       return render :json => {"user" => "NOT_FOUND"}
     end
+  end
+
+  def email_valid (user)
+    return user.email =~ /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
