@@ -5,16 +5,6 @@ class Event < ActiveRecord::Base
 	has_many :events_to_tags, :dependent => :destroy
 	has_many :tags, :through => :events_to_tags
 
-	before_create :setUrl
-	before_save :setUrl
-
 	has_attached_file :picture, :styles => { :medium => "1024x760", :thumb => "300x300>" }, :default_url => "missing.png"
 	validates_attachment_content_type :picture, :content_type => /\Aimage\/.*\Z/, attachment_size: { less_than: 5.megabytes }
-
-	private
-
-	def setUrl
-		self.url=self.picture.url(:medium)
-	end
-
 end

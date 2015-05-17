@@ -2,6 +2,7 @@ class EventsController < ApplicationController
   before_action :set_event, only: [:show, :edit, :update, :destroy]
   before_action :check_auth
   before_action :check_admin, :only => [:update, :create, :destroy]
+  after_action  :setUrl, only: [:create, :update]
 
   # GET /events
   # GET /events.json
@@ -87,6 +88,12 @@ class EventsController < ApplicationController
   end
 
   private
+
+    def setUrl
+      @event.url = @event.picture.url(:medium)
+      @event.save
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_event
       @event = Event.find(params[:id])
