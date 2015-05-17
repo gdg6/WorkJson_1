@@ -30,6 +30,12 @@ J = {
         J.testDailyPost();
     },
 
+    //postReg : function () {
+    //
+    //},
+
+
+
     testDailyPost: function () {
         //set (and create if not exist)
         //J.setDailyPost();

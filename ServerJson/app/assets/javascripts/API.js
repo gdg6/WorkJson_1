@@ -79,6 +79,10 @@ API = {
         API.post("/setDailyPost.json", params, callback, err);
     },
 
+    postReg: function(params, callback, err) {
+        API.post("/registration.json", params, callback, err);
+    },
+
 
     //=====================  AJAX  ============================
     put: function(url, params, callback, err) {

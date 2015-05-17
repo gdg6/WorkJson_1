@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150508064722) do
+ActiveRecord::Schema.define(version: 20150517205035) do
 
   create_table "comments", force: true do |t|
     t.integer  "event_id"
@@ -45,6 +45,7 @@ ActiveRecord::Schema.define(version: 20150508064722) do
     t.string   "picture_content_type"
     t.integer  "picture_file_size"
     t.datetime "picture_updated_at"
+    t.string   "url"
   end
 
   add_index "events", ["user_id"], name: "index_events_on_user_id"
