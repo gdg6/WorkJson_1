@@ -90,7 +90,7 @@ ActiveRecord::Schema.define(version: 20150508064722) do
     t.string   "login",                                  null: false
     t.string   "password_digest",                        null: false
     t.string   "characterName",                          null: false
-    t.string   "city"
+    t.integer  "city",                   default: 0
     t.boolean  "admin",                  default: false
     t.string   "provider"
     t.string   "url"
@@ -103,8 +103,6 @@ ActiveRecord::Schema.define(version: 20150508064722) do
     t.integer  "sign_in_count",          default: 0,     null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
-    t.string   "current_sign_in_ip"
-    t.string   "last_sign_in_ip"
   end
 
 end
