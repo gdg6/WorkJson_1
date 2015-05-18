@@ -5,7 +5,7 @@ namespace :baseTasks do
   end
 
   desc "createUrlInEvent"
-  task :createUrlInEvent do
+  task :createUrlInEvent => :environment do
     Event.all.each{|x| x.url = x.picture.url(:medium); x.save}
     p "ok"
   end

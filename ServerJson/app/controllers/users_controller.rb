@@ -1,8 +1,10 @@
 require 'bcrypt'
 
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit, :update, :destroy, :update_password, :getCity, :setCity, :getCharacterName, :setCharacterName, :setLogin, :addAdmin, :deleteAdmin]
+  before_action :set_user, only: [:show, :edit, :update, :destroy]
   before_action :check_auth, :except => [:new, :create]
+  before_action :set_user_by_current, :only => [:update_password, :getCity, :setCity, :getCharacterName, :setCharacterName, :setLogin, :addAdmin, :deleteAdmin] 
+
   # FIXME must be check_edit for edit profile user. Is can do only self user or admin
   # before_action :check_edit, :only => []
   respond_to :json, :html
@@ -115,7 +117,11 @@ class UsersController < ApplicationController
   end
 
   private
-  # Use callbacks to share common setup or constraints between actions.
+  
+   def set_user_by_current
+	@user = @current_user
+   end
+# Use callbacks to share common setup or constraints between actions.
   def set_user
     begin
       @user = User.find(params[:user_id])
