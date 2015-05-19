@@ -66,8 +66,8 @@ class EventsController < ApplicationController
     @event.popularity = params[:event][:popularity].to_i
     @event.picture = params[:event][:picture]
     @event.city_id = params[:event][:city_id].to_i
-    return save_with_tags(@event) if params[:character_id]
-    save_with_check(@event)
+    return save_with_tags(@event) if params[:character_id].to_i > 0
+    return save_with_check(@event)
   end
 
   # PATCH/PUT /events/1
@@ -107,7 +107,7 @@ class EventsController < ApplicationController
       ett.tag_id=x
       ett.save
     end
-    return {'save_success'=>'SUCCESS','err'=> @err }
+    return render :json => {'save_success'=>'SUCCESS','err'=> @err }
   end
 
     def setUrl
