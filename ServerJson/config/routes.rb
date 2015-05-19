@@ -1,8 +1,8 @@
 Rails.application.routes.draw do
 
-  resources :tags
+  resources :characters, :except => [:destroy, :edit]
 
-  resources :genre_tags
+  resources :tags, :except => [:destroy]
 
   resources :comments
 
@@ -23,11 +23,15 @@ Rails.application.routes.draw do
   root :to => "events#index"
 
   get 'login' => 'sessions#new', as: :login
+  post 'login_by_social' => 'sessions#create_by_social'
   post 'login' => 'sessions#create'
   get 'logout' => 'sessions#destroy', as: :logout
- 
+
+
+
   get 'registration' => 'users#new', as: :registration
   post 'registration' => 'users#create'
+
 
   get 'getEventsByDateWithCountAndTag' => 'events#getEventsByDateWithCountAndTag' #!
   get 'getEventsByMounthWithCountAndTag' => 'events#getEventsByMounthWithCountAndTag'

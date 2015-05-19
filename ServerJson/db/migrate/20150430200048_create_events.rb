@@ -9,6 +9,7 @@ class CreateEvents < ActiveRecord::Migration
       t.string :description
       t.integer :price
       t.integer :popularity
+      t.string :url
 
       t.timestamps
     end

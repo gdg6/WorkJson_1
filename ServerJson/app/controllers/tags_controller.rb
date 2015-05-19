@@ -1,6 +1,6 @@
 class TagsController < ApplicationController
   before_action :set_tag, only: [:show, :edit, :update, :destroy]
-  before_action :check_auth
+  # before_action :check_auth
 
   respond_to :json, :html
 
@@ -11,7 +11,7 @@ class TagsController < ApplicationController
     rescue
       @err="NOT_USER"
     end
-    return render :json => {"err" => "NOT_USER"} if @err != nil
+    return render :json => {"err" => @err} if @err != nil
     return render :json => Tag.select(:id, :context).where(:user_id => params[:user_id].to_i).limit(count).load
   end
 
@@ -27,12 +27,14 @@ class TagsController < ApplicationController
   end
 
   def create
-    @tag = Tag.new(tag_params)
+    @tag = Tag.new
     @tag.context = params[:tag][:context].to_s
-    @tag.user_id = params[:tag][:user_id].to_i if User.where(:id => params[:tag][:user_id].to_i).take
-    @tag.genre_tag_id = params[:tag][:genre_tag_id].to_i if GenreTag.where(:id => params[:tag][:genre_tag_id].to_i).take
-    render :json => {'save_success' => ( @tag.save ? 'SUCCESS' : 'FAIL')}
-
+    ok1 = @tag.save
+    @tags_to_character = TagsToCharacter.new
+    @tags_to_character.character = Character.find(params[:chraracter_id])
+    @tags_to_character.tag = @tag
+    ok2 = @tags_to_character.save
+    render :json => {'save_success' => ( ok1 && ok2 ? 'SUCCESS' : 'FAIL')}
   end
 
   def update
@@ -50,6 +52,6 @@ class TagsController < ApplicationController
     end
 
     def tag_params
-      params.require(:tag).permit(:context, :genre_tag_id, :user_id)
+      params.require(:tag).permit(:context)
     end
 end

@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class GenreTagTest < ActiveSupport::TestCase
+class TagsToCharacterTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

@@ -13,16 +13,10 @@
     = f.text_field :context
 
   .field
-    = f.label :user_id
-    = f.number_field :user_id
-
-  .field
-    = f.label :genre_tag_id
-    = f.number_field :genre_tag_id
-
+    = label_tag :character_id
+    = number_field_tag :chraracter_id
   .actions
     = link_to 'Save', '#', :class => "sys-add-tag"
-    -#= f.submit 'Save'
 
 
 = link_to 'Back', tags_path

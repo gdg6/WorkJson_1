@@ -6,7 +6,6 @@ class UsersController < ApplicationController
   before_action :set_user_by_current, :only => [:update_password, :getCity, :setCity, :getCharacterName, :setCharacterName, :setLogin, :addAdmin, :deleteAdmin] 
 
   # FIXME must be check_edit for edit profile user. Is can do only self user or admin
-  # before_action :check_edit, :only => []
   respond_to :json, :html
 
   # GET /users
@@ -140,6 +139,6 @@ class UsersController < ApplicationController
   end
 
   def reg_params
-    params.require(:registration).permit(:login, :email, :password, :password_confirmation, :characterName, :city, :provider, :url)
+    params.require(:registration).permit(:login, :email, :password, :password_confirmation, :character_id, :city, :provider, :url)
   end
 end

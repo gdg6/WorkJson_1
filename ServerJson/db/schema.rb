@@ -11,7 +11,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150517205035) do
+ActiveRecord::Schema.define(version: 20150519083912) do
+
+  create_table "characters", force: true do |t|
+    t.string   "title"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "comments", force: true do |t|
     t.integer  "event_id"
@@ -39,13 +45,13 @@ ActiveRecord::Schema.define(version: 20150517205035) do
     t.string   "description"
     t.integer  "price"
     t.integer  "popularity"
+    t.string   "url"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "picture_file_name"
     t.string   "picture_content_type"
     t.integer  "picture_file_size"
     t.datetime "picture_updated_at"
-    t.string   "url"
   end
 
   add_index "events", ["user_id"], name: "index_events_on_user_id"
@@ -78,23 +84,28 @@ ActiveRecord::Schema.define(version: 20150517205035) do
 
   create_table "tags", force: true do |t|
     t.string   "context"
-    t.integer  "genre_tag_id"
-    t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "tags", ["genre_tag_id"], name: "index_tags_on_genre_tag_id"
-  add_index "tags", ["user_id"], name: "index_tags_on_user_id"
+  create_table "tags_to_characters", force: true do |t|
+    t.integer  "tag_id"
+    t.integer  "character_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "tags_to_characters", ["character_id"], name: "index_tags_to_characters_on_character_id"
+  add_index "tags_to_characters", ["tag_id"], name: "index_tags_to_characters_on_tag_id"
 
   create_table "users", force: true do |t|
     t.string   "login",                                  null: false
     t.string   "password_digest",                        null: false
-    t.string   "characterName",                          null: false
+    t.integer  "character_id",                           null: false
     t.integer  "city",                   default: 0
     t.boolean  "admin",                  default: false
     t.string   "provider"
-    t.string   "url"
+    t.integer  "provider_user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "email",                  default: "",    null: false
@@ -105,5 +116,7 @@ ActiveRecord::Schema.define(version: 20150517205035) do
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
   end
+
+  add_index "users", ["character_id"], name: "index_users_on_character_id"
 
 end
