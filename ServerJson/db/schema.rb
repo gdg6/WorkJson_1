@@ -76,12 +76,6 @@ ActiveRecord::Schema.define(version: 20150519083912) do
   add_index "favorities", ["event_id"], name: "index_favorities_on_event_id"
   add_index "favorities", ["user_id"], name: "index_favorities_on_user_id"
 
-  create_table "genre_tags", force: true do |t|
-    t.string   "title"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "tags", force: true do |t|
     t.string   "context"
     t.datetime "created_at"

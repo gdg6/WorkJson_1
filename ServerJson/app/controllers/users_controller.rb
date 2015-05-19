@@ -3,7 +3,7 @@ require 'bcrypt'
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
   before_action :check_auth, :except => [:new, :create]
-  before_action :set_user_by_current, :only => [:update_password, :getCity, :setCity, :getCharacterName, :setCharacterName, :setLogin, :addAdmin, :deleteAdmin] 
+  before_action :set_user_by_current, :only => [:update_password, :getCity, :setCity, :getCharacterName, :setCharacterName, :setLogin, :addAdmin, :deleteAdmin]
 
   # FIXME must be check_edit for edit profile user. Is can do only self user or admin
   respond_to :json, :html
@@ -28,12 +28,30 @@ class UsersController < ApplicationController
   def edit
   end
 
+  #FIXME - must be refactoring
   # POST /users
   # POST /users.json
   def create
+    # raise params.to_s
     @user = User.new(reg_params)
-    @user.characterName = params[:registration][:characterName]
+    @user.character_id = params[:character_id].to_i ? params[:character_id].to_i : create_character(params[:character]).to_i
     return render :json => {'reg' => 'NO', 'err' => 'NO_VALID_EMAIL'} unless email_valid(@user)
+    unless uniq_user(params)
+      return render :json => {'reg' => 'NO', 'err' => 'REPLACE_LOGIN_OR_EMAIL'}
+    end
+    save_success = false
+    if !params[:soc].nil?
+      soc = create_by_soc(@user, params[:soc])
+      if soc == 0
+        save_success = @user.save
+        session[:user_id] = @user_id if save_success
+      elsif soc == 1
+        @err = 'NO_CORRECT_ACCESS_TOKEN'
+      elsif soc == 2
+        @err = 'USER_SOC_REPLACE'
+      end
+      return render :json => {'reg' => (save_success ? 'YES' : 'NO'), 'err' => @err}
+    end
     save_success = @user.save
     session[:user_id] = @user_id if save_success
     return render :json => {'reg' => (save_success ? 'YES' : 'NO'), 'err' => @err}
@@ -116,11 +134,41 @@ class UsersController < ApplicationController
   end
 
   private
-  
-   def set_user_by_current
-	@user = @current_user
-   end
-# Use callbacks to share common setup or constraints between actions.
+
+  def uniq_user(argv)
+    return User.where("login = ? OR email = ?", argv[:registration][:login], argv[:registration][:email]).take.nil? ? true : false
+  end
+
+  def create_by_soc(user, argv)
+    BCrypt::Engine.hash_secret(argv[:id].to_s, "$2a$10$TlxTfAg8QmFMzuY97EiTJu") == argv[:access_token].to_s
+    return 3 if argv[:type] != 'fb' && argv[:type] != 'vk'
+    user.provider_user_id = argv[:id].to_i
+    user.provider = argv[:type]
+    tmp_user = User.where("provider_user_id  = ? AND provider = ?", argv[:id], argv[:type]).take
+    tmp_user.nil? ? (user.provider_user_id > 0 ? 0 : 1) : 2
+  end
+
+  def create_character(argv)
+    return nil if argv.nil?
+    @character = Character.new
+    @character.title='user'
+    @character.save
+    tags_ids = []
+    TagsToCharacter.select(:tag_id).where('character_id IN (?)', argv[:character_arr].to_s).load.each { |x| tags_ids << x.to_i }
+    tags_ids.each do |x|
+      @TTC = TagsToCharacter.new
+      @TTC.tag_id = x.to_i
+      @TTC.character_id=@character.id
+      @TTC.save
+    end
+    return @character.id
+  end
+
+  def set_user_by_current
+    @user = @current_user
+  end
+
+  # Use callbacks to share common setup or constraints between actions.
   def set_user
     begin
       @user = User.find(params[:user_id])
@@ -135,10 +183,10 @@ class UsersController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def user_params
-    params.require(:user).permit(:login, :email, :password, :password_confirmation, :characterName, :city, :admin, :provider, :url)
+    params.require(:user).permit(:login, :email, :password, :password_confirmation, :character_id, :city, :admin, :provider, :url)
   end
 
   def reg_params
-    params.require(:registration).permit(:login, :email, :password, :password_confirmation, :character_id, :city, :provider, :url)
+    params.require(:registration).permit(:login, :email, :password, :password_confirmation, :city)
   end
 end
