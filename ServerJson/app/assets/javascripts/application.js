@@ -28,35 +28,14 @@ J = {
         J.favorite();
         J.testUsers();
         J.testDailyPost();
-        //J.testRegPost();
+        J.testRegPost();
     },
 
-    //postReg : function () {
-    //
-    //},
-//{
-//    character_id = 1,
-//
-//        soc = {
-//            type = 'vk';
-//    id = 11111;
-//    access_token = '$asd$f$as$fasd$f'
-//}
-//
-//registration = {
-//    city = 1;
-//email = "testemail@test.ru";
-//login = testlogin;
-//password = 11111111;
-//"password_confirmation" = 11111111;
-//};
-//
-//}
 
     //'soc':{'type':'vk', 'id':'123123', 'access_token':'$2a$10$TlxTfAg8QmFMzuY97EiTJuOk30Tz.xLcokXuGeTBHxHp.F2IqNyY2'},
     testRegPost: function () {
-        API.postReg({'character_id':1,
-        'registration':{'city':1, 'email':'zhulvern-93@mail.ru', 'login':'gdg7', 'password':'111111', 'password_confirmation':'111111'}},
+        API.postReg({'character_id':0, 'character':{'character_arr':'1, 2'},
+        'registration':{'city':1, 'email':'zhulvern-94@mail.ru', 'login':'gdg8', 'password':'111111', 'password_confirmation':'111111'}},
         function(code) {
             alert(code.reg);
         } ,

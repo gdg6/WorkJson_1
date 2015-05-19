@@ -34,7 +34,7 @@ class UsersController < ApplicationController
   def create
     # raise params.to_s
     @user = User.new(reg_params)
-    @user.character_id = params[:character_id].to_i ? params[:character_id].to_i : create_character(params[:character]).to_i
+    @user.character_id = params[:character_id].to_i > 0 ? params[:character_id].to_i : create_character(params[:character]).to_i
     return render :json => {'reg' => 'NO', 'err' => 'NO_VALID_EMAIL'} unless email_valid(@user)
     unless uniq_user(params)
       return render :json => {'reg' => 'NO', 'err' => 'REPLACE_LOGIN_OR_EMAIL'}
@@ -154,7 +154,7 @@ class UsersController < ApplicationController
     @character.title='user'
     @character.save
     tags_ids = []
-    TagsToCharacter.select(:tag_id).where('character_id IN (?)', argv[:character_arr].to_s).load.each { |x| tags_ids << x.to_i }
+    TagsToCharacter.select(:tag_id).where("character_id IN (?)", argv[:character_arr].split(", ")).load.each { |x| tags_ids << x.tag_id.to_i }
     tags_ids.each do |x|
       @TTC = TagsToCharacter.new
       @TTC.tag_id = x.to_i
