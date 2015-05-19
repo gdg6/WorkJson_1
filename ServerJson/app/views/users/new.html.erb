@@ -13,6 +13,11 @@
         </div>
     <% end %>
 
+    <div>
+      <%= f.label 'character' %><br>
+      <%= select_tag :character_id, options_for_select(session_character_list) %>
+    </div>
+
     <div class="field">
       <%= f.label :login %><br>
       <%= f.text_field :login %>
@@ -25,18 +30,17 @@
       <%= f.label :password %><br>
       <%= f.password_field :password %>
     </div>
+
     <div class="field">
       <%= f.label :password_confirmation %><br>
       <%= f.password_field :password_confirmation %>
     </div>
     <div class="field">
-      <%= f.label :characterName %><br>
-      <%= f.text_field :characterName %>
-    </div>
-    <div class="field">
       <%= f.label :city %><br>
       <%= f.number_field :city %>
     </div>
+
+
     <div class="actions">
       <%= link_to 'Save', "#", class: "sys-reg-user" %>
     </div>
