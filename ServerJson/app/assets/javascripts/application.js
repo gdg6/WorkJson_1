@@ -28,7 +28,7 @@ J = {
         J.favorite();
         J.testUsers();
         J.testDailyPost();
-        J.testRegPost();
+        //J.testRegPost();
     },
 
 
