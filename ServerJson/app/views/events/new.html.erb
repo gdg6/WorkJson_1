@@ -46,8 +46,8 @@
       <%= f.number_field :popularity %>
     </div>
     <div class="field">
-      <%= f.label :user_id %><br>
-      <%= f.number_field :user_id %>
+      <%= f.label :city %><br>
+      <%= f.select :city_id, options_for_select(cities_list) %>
     </div>
     <div class="actions">
       <%= f.submit %>

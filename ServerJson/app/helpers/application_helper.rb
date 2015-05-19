@@ -6,4 +6,10 @@ module ApplicationHelper
     return res
   end
 
+  def cities_list
+    res = []
+    City.select(:id, :name).all.each{|x| res << [x.name, x.id]}
+    return res
+  end
+
 end

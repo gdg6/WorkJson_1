@@ -11,10 +11,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150519083912) do
+ActiveRecord::Schema.define(version: 20150519150632) do
 
   create_table "characters", force: true do |t|
     t.string   "title"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "cities", force: true do |t|
+    t.string   "name",       null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -45,6 +51,7 @@ ActiveRecord::Schema.define(version: 20150519083912) do
     t.string   "description"
     t.integer  "price"
     t.integer  "popularity"
+    t.integer  "city_id"
     t.string   "url"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -54,6 +61,7 @@ ActiveRecord::Schema.define(version: 20150519083912) do
     t.datetime "picture_updated_at"
   end
 
+  add_index "events", ["city_id"], name: "index_events_on_city_id"
   add_index "events", ["user_id"], name: "index_events_on_user_id"
 
   create_table "events_to_tags", force: true do |t|
@@ -96,7 +104,7 @@ ActiveRecord::Schema.define(version: 20150519083912) do
     t.string   "login",                                  null: false
     t.string   "password_digest",                        null: false
     t.integer  "character_id",                           null: false
-    t.integer  "city",                   default: 0
+    t.integer  "city_id"
     t.boolean  "admin",                  default: false
     t.string   "provider"
     t.integer  "provider_user_id"
@@ -112,5 +120,6 @@ ActiveRecord::Schema.define(version: 20150519083912) do
   end
 
   add_index "users", ["character_id"], name: "index_users_on_character_id"
+  add_index "users", ["city_id"], name: "index_users_on_city_id"
 
 end

@@ -27,11 +27,11 @@ Rails.application.routes.draw do
   post 'login' => 'sessions#create'
   get 'logout' => 'sessions#destroy', as: :logout
 
-
-
   get 'registration' => 'users#new', as: :registration
   post 'registration' => 'users#create'
+  post 'getCities'  => 'cities#index'
 
+  post 'getEventByCityAndCharacter' => 'events#getEventByCityAndCharacter'
 
   get 'getEventsByDateWithCountAndTag' => 'events#getEventsByDateWithCountAndTag' #!
   get 'getEventsByMounthWithCountAndTag' => 'events#getEventsByMounthWithCountAndTag'

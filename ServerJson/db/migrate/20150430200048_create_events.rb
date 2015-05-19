@@ -9,6 +9,7 @@ class CreateEvents < ActiveRecord::Migration
       t.string :description
       t.integer :price
       t.integer :popularity
+      t.belongs_to :city, :index => true
       t.string :url
 
       t.timestamps

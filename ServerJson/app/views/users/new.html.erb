@@ -37,7 +37,7 @@
     </div>
     <div class="field">
       <%= f.label :city %><br>
-      <%= f.number_field :city %>
+      <%= f.select :city_id, options_for_select(cities_list) %>
     </div>
 
 

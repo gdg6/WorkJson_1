@@ -1,7 +1,7 @@
 class EventsController < ApplicationController
   before_action :set_event, only: [:show, :edit, :update, :destroy]
   before_action :check_auth
-  before_action :check_admin, :only => [:update, :create, :destroy]
+  before_action :check_admin, :only => [:update, :create, :destroy, :new]
   after_action  :setUrl, only: [:create, :update]
 
   # GET /events
@@ -23,6 +23,11 @@ class EventsController < ApplicationController
 
   # GET /events/1/edit
   def edit
+  end
+
+  def getEventByCityAndCharacter
+    count = params[:count].to_i > 0 ? params[:count].to_i : 10
+    render :json =>  Event.where("city_id = ? AND id IN (?)", @current_user.city_id, EventsToTag.select(:event_id).where("tag_id IN (?)", TagsToCharacter.select(:tag_id).where(:character_id => @current_user.character_id).load).load).load
   end
 
   def getEventsByDateWithCountAndTag
@@ -51,7 +56,7 @@ class EventsController < ApplicationController
   def create
     return render :json => {'save_success' => 'FAIL', 'err' => 'NOT_ADMIN'} unless @current_user.admin
     @event = Event.new(event_params)
-    @event.user_id = params[:event][:user_id].to_i
+    @event.user_id = @current_user.id
     @event.name = params[:event][:name]
     @event.adress = params[:event][:adress]
     @event.date = params[:event][:date]
@@ -60,6 +65,7 @@ class EventsController < ApplicationController
     @event.price= params[:event][:price].to_i
     @event.popularity = params[:event][:popularity].to_i
     @event.picture = params[:event][:picture]
+    @event.city_id = params[:event][:city_id].to_i
     save_with_check(@event)
   end
 

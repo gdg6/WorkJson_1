@@ -32,8 +32,8 @@ class UsersController < ApplicationController
   # POST /users
   # POST /users.json
   def create
-    # raise params.to_s
     @user = User.new(reg_params)
+    @user.city_id = params[:registration][:city_id].to_i
     @user.character_id = params[:character_id].to_i > 0 ? params[:character_id].to_i : create_character(params[:character]).to_i
     return render :json => {'reg' => 'NO', 'err' => 'NO_VALID_EMAIL'} unless email_valid(@user)
     unless uniq_user(params)
@@ -187,6 +187,6 @@ class UsersController < ApplicationController
   end
 
   def reg_params
-    params.require(:registration).permit(:login, :email, :password, :password_confirmation, :city)
+    params.require(:registration).permit(:login, :email, :password, :password_confirmation)
   end
 end
