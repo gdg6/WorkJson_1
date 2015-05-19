@@ -6,51 +6,19 @@ class User < ActiveRecord::Base
   validates :sign_in_count, presence: true
   validates :email, uniqueness: true, on: :create
 
+  belongs_to :city
+  belongs_to :character
   has_many :comments, dependent: :destroy
   has_many :services, :dependent => :destroy
   has_many :events, :dependent => :destroy
   has_many :favorities, :dependent => :destroy
+  has_many :events, :through => :favorities
 
   before_validation :set_default_sign_count
-
-  #
-  # # Include default devise modules. Others available are:
-  # # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
-  # devise :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :confirmable, :lockable, :omniauth_providers => [:facebook, :vkontakte]
-  devise :omniauthable, :omniauth_providers => [:facebook, :vkontakte]
 
   # # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me
   attr_accessible :login, :provider, :url
-
-  def self.find_for_facebook_oauth(access_token)
-    user = User.where(:url => access_token.info.urls.Facebook).first
-    return user if user
-      u = User.new
-        u.provider = access_token.provider
-        u.url = access_token.info.urls.Facebook
-        u.login = access_token.extra.raw_info.name
-        u.characterName = access_token.extra.raw_info.first_name
-        u.email = access_token.extra.raw_info.email
-        u.password = Devise.friendly_token[0,20]
-      return  u.save ? u : nil
-  end
-
-
-  def self.find_for_vkontakte_oauth(access_token)
-    #    code"=>"27130c3fba500ecd0e",
-    # "state"=>"4d1cb76be48973faf7061ff88b7671a108eddce4ae75658f"
-    user = User.where(:url => access_token.info.urls.Vkontakte).first
-    return user if user
-      u = User.new
-        u.provider = access_token.provider
-        u.url = access_token.info.urls.Vkontakte
-        u.login = access_token.extra.raw_info.screen_name
-        u.characterName = access_token.extra.raw_info.first_name
-        u.email = ("https://vk.com/write" + access_token.uid.to_s) # vk don't give email :(
-        u.password = Devise.friendly_token[0,20]
-    return  u.save ? u : nil
-  end
 
 
   def admin?

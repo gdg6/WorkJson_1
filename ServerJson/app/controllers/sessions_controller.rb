@@ -1,5 +1,3 @@
-require 'json'
-
 #Здесь происходит именно авторизация а не регистрация пользователей
 class SessionsController < ApplicationController
 
@@ -28,8 +26,7 @@ class SessionsController < ApplicationController
 
   def destroy
     session.delete(:user_id)
-    # render :json => {"auth" => "LOGOUT"}
-    redirect_to :login
+    render :json => {"auth" => "LOGOUT"}
   end
 
 end

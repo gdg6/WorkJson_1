@@ -1,65 +1,34 @@
 require 'json'
 
 class FavoritiesController < ApplicationController
-  before_action :set_favority, only: [:show, :edit, :update, :destroy]
+  before_action :set_favority, only: [:destroy]
+  before_action :check_auth
   respond_to :json
 
   def index
-    user = nil
     count = params[:count].to_i; count = count > 0 ? count : 10
-    begin
-      user = User.find(params[:user_id].to_i)
-    rescue
-      return render :json => {"user" => "NOT_FOUND"}
-    end
-
-    begin
-      # FIXME
-      @events = Event.where("events.id IN (?)", Favority.where(:user_id => 1).select(:event_id).uniq).last(count)
-    rescue
-      return render :json => {"@events" => "NOT_FOUND"}
-    end
-    render :json => @events
-  end
-
-  def new
-    @favority = Favority.new
-    respond_with(@favority)
+    return render :json => @current_user.events.first(count)
   end
 
   def create
     @favority = Favority.new
     @favority.event_id = params[:favority][:event_id].to_i if params[:favority][:event_id] != nil
-    @favority.user_id = params[:favority][:user_id].to_i if params[:favority][:event_id] != nil
-    event = nil
-    begin
-        event = Event.find(@favority.event_id)
-    rescue
-      @err = "NOT_EVENT"
-    end
-    begin
-      User.find(@favority.user_id)
-    rescue
-      @err = "NOT_USER"
-    end
-     return render :json =>  Hash['save_success', 'FAIL', "err", @err] if @err != nil
-     event.popularity += 1
-     event.save
-     return render :json => Hash['save_success', (@favority.save ? 'SUCCESS' : 'FAIL')]
+    @favority.user_id = @current_user.id
+    event = Event.find(@favority.event_id).take
+    return render :json =>  Hash['save_success', 'FAIL', "err", "NOT_EVENT"] unless event
+    event.popularity += 1
+    event.save
+    save_with_check(@favority)
   end
 
   def destroy
     @favority.destroy
-    event = nil
-    begin
-      event = Event.find(@favority.event_id)
-    rescue
-      @err = "NOT_EVENT"
-    end
-    return render :json =>  Hash['delete_success', 'FAIL', "err", @err] if @err != nil
+    # return render :json =>
+    event = Event.find(@favority.event_id).take
+    return render :json =>  Hash['delete_success', 'FAIL', "err", "NOT_EVENT"] unless event
     event.popularity -= 1
     event.save
-    render :json => Hash['delete_success', 'SUCCESS']
+    render :json => {'delete_success' => 'SUCCESS'}
   end
 
   private

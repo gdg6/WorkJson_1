@@ -3,16 +3,11 @@ require 'bcrypt'
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
   before_action :check_auth, :except => [:new, :create]
+  before_action :check_admin, :only => [:destroy]
   before_action :set_user_by_current, :only => [:update_password, :getCity, :setCity, :getCharacterName, :setCharacterName, :setLogin, :addAdmin, :deleteAdmin]
 
   # FIXME must be check_edit for edit profile user. Is can do only self user or admin
   respond_to :json, :html
-
-  # GET /users
-  # GET /users.json
-  def index
-    @users = User.all
-  end
 
   # GET /users/1
   # GET /users/1.json
@@ -107,20 +102,6 @@ class UsersController < ApplicationController
       return save_with_check(@user)
     end
     render :json => {"save_success" => 'FAIL', 'err' => 'NOT_ADMIN'}
-  end
-
-  # GET/PATCH /users/:id/finish_signup
-  def finish_signup
-    # authorize! :update, @user
-    if request.patch? && params[:user] #&& params[:user][:email]
-      if @user.update(user_params)
-        @user.skip_reconfirmation!
-        sign_in(@user, :bypass => true)
-        redirect_to @user, notice: 'Your profile was successfully updated.'
-      else
-        @show_errors = true
-      end
-    end
   end
 
   # DELETE /users/1

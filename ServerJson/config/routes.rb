@@ -8,17 +8,7 @@ Rails.application.routes.draw do
 
   resources :events
 
-
-  namespace :users do
-    get 'omniauth_callbacks/facebook'
-  end
-
-  namespace :users do
-    get 'omniauth_callbacks/vkontakte'
-  end
-
-  devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
-  resources :users, :only => [:index, :destroy]
+  resources :users, :only => [:destroy]
 
   root :to => "events#index"
 
@@ -38,8 +28,8 @@ Rails.application.routes.draw do
   get 'getEventsByTagWithCount' => 'events#getEventsByTagWithCount'
 
   get 'getFavoriteEvents' => 'favorities#index', :as => :getFavotityEvents
-  post 'addFavoriteEvent' => 'favorities#create'
-  post 'deleteFavoriteEvent' => 'favorities#destroy'
+  post 'addFavoriteEvent' => 'favorities#create' # only event_id
+  post 'deleteFavoriteEvent' => 'favorities#destroy' #id
 
   post 'EditPasswordForUserId' => 'users#update_password'
   post 'getCityForUserId' => 'users#getCity'
@@ -51,7 +41,7 @@ Rails.application.routes.draw do
   post 'addAdminByPK' => 'users#addAdmin'
   post 'deleteAdminByPK' => 'users#deleteAdmin'
 
-  get 'getDailyPost' => 'daily_posts#show'
+  post 'getDailyPost' => 'daily_posts#show'
   post 'setDailyPost' => 'daily_posts#update'
 
   get '*unmatched_route', :to => 'application#not_found_404'

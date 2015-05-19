@@ -66,6 +66,7 @@ class EventsController < ApplicationController
     @event.popularity = params[:event][:popularity].to_i
     @event.picture = params[:event][:picture]
     @event.city_id = params[:event][:city_id].to_i
+    return save_with_tags(@event) if params[:character_id]
     save_with_check(@event)
   end
 
@@ -94,6 +95,20 @@ class EventsController < ApplicationController
   end
 
   private
+
+  def save_with_tags(obj)
+    save_ok = obj.save
+    return render :json => {'save_success'=>'FAIL','err'=> 'NOT_SAVE' } unless save_ok
+    tags_ids = []
+    TagsToCharacter.select(:tag_id).where(:character_id => params[:character_id].to_i).load.each{|x| tags_ids << x.tag_id.to_i}
+    tags_ids.each do |x|
+     ett =  EventsToTag.new
+      ett.event_id=obj.id
+      ett.tag_id=x
+      ett.save
+    end
+    return {'save_success'=>'SUCCESS','err'=> @err }
+  end
 
     def setUrl
       @event.url = @event.picture.url(:medium)

@@ -49,7 +49,12 @@
       <%= f.label :city %><br>
       <%= f.select :city_id, options_for_select(cities_list) %>
     </div>
+    <div class="field">
+      <%= label_tag 'Character' %><br>
+      <%= select_tag :character_id, options_for_select(session_character_list) %>
+    </div>
     <div class="actions">
+      <%= label_tag 'Сохранить' %>
       <%= f.submit %>
       <!--<%= link_to 'Save', '#', :class=>"sys-add-event" %>-->
     </div>
