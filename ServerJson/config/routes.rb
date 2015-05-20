@@ -12,42 +12,47 @@ Rails.application.routes.draw do
 
   root :to => "events#index"
 
+  #============ SESSIONS ============
   get 'login' => 'sessions#new', as: :login
   post 'login_by_social' => 'sessions#create_by_social'
   post 'login' => 'sessions#create'
   get 'logout' => 'sessions#destroy', as: :logout
 
+
+  # =========== USERS ================
   get 'registration' => 'users#new', as: :registration
   post 'registration' => 'users#create'
-  post 'getProfileInfo' => 'users#getProfileInfo'
+  post 'getProfileInfo' => 'users#get_profile_info'
+  post 'setPassword' => 'users#set_password'
+  post 'setCity' => 'users#set_city'
+  post 'setCharacter' => 'users#set_character'
+  post 'addAdminByPK' => 'users#addAdmin'
+  post 'deleteAdminByPK' => 'users#deleteAdmin'
 
+
+  #=========== CITIES ===============
   post 'getCities'  => 'cities#index'
 
+
+  #=========== EVENTS ===============
   post 'getEventByCityAndCharacter' => 'events#getEventByCityAndCharacter'
+  post 'getEventsByDateWithCountAndTag' => 'events#getEventsByDateWithCountAndTag' #!
+  post 'getEventsByMounthWithCountAndTag' => 'events#getEventsByMounthWithCountAndTag'
+  post 'getEventsByTagWithCount' => 'events#getEventsByTagWithCount'
 
-  get 'getEventsByDateWithCountAndTag' => 'events#getEventsByDateWithCountAndTag' #!
-  get 'getEventsByMounthWithCountAndTag' => 'events#getEventsByMounthWithCountAndTag'
-  get 'getEventsByTagWithCount' => 'events#getEventsByTagWithCount'
 
+  #========== FAVORITIES EVENT ======
   get 'getFavoriteEvents' => 'favorities#index', :as => :getFavotityEvents
   post 'addFavoriteEvent' => 'favorities#create' # only event_id
   post 'deleteFavoriteEvent' => 'favorities#destroy' #id
 
 
-
-  post 'EditPasswordForUserId' => 'users#update_password'
-  post 'getCityForUserId' => 'users#getCity'
-  post 'setCityForUserId' => 'users#setCity'
-  post 'getCharacterName' => 'users#getCharacterName'
-  post 'setCharacterName' => 'users#setCharacterName'
-  post 'setLogin' => 'users#setLogin'
-
-  post 'addAdminByPK' => 'users#addAdmin'
-  post 'deleteAdminByPK' => 'users#deleteAdmin'
-
+  #========= DALY POST ==============
   post 'getDailyPost' => 'daily_posts#show'
   post 'setDailyPost' => 'daily_posts#update'
 
+
+  #======== ERROR SERVER ===========
   get '*unmatched_route', :to => 'application#not_found_404'
   post '*unmatched_route', :to => 'application#not_found_404'
 

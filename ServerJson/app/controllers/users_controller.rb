@@ -1,10 +1,10 @@
 require 'bcrypt'
 
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
-  before_action :check_auth, :except => [:new, :create, :getProfileInfo]
+  before_action :set_user, only: [:show, :edit,  :destroy]
+  before_action :check_auth, :except => [:new, :create, :get_profile_info, :set_character, :set_city, :set_password]
   before_action :check_admin, :only => [:destroy]
-  before_action :set_user_by_current, :only => [:update_password, :getCity, :setCity, :getCharacterName, :setCharacterName, :setLogin, :addAdmin, :deleteAdmin]
+  before_action :set_user_by_current, :only => [:addAdmin, :deleteAdmin]
 
   # FIXME must be check_edit for edit profile user. Is can do only self user or admin
   respond_to :json, :html
@@ -57,45 +57,28 @@ class UsersController < ApplicationController
 
   #get profile current user. Only select field
   #character must be valid
-  def getProfileInfo
+  def get_profile_info
     res = {}
     res[:user] = User.select(:login, :city_id, :email).find(session[:user_id])
     res[:character] = Character.select(:id, :title).find(@current_user.character_id)
     return render :json => res
   end
 
-  def update_password
+  def set_password
     old_pass = BCrypt::Password.create(params[:old_password])
-    @user.password = params[:new_password] if old_pass == @user.password_digest
+    return render :json => {'save_success' => 'FAIL', 'err' => 'NOT_EQUAL_PASS_AND_CONF'} if params[:new_password] != params[:confirm_password]
+    @current_user.password = params[:new_password] if old_pass == @current_user.password_digest
+    save_with_check(@current_user)
+  end
+
+  def set_city
+    @current_user.city = params[:city_id].to_i if params[:city_id] != nil
     save_with_check(@user)
   end
 
-  def getCity
-    render :json => {'city' => @user.city}
-  end
-
-  def setCity
-    @user.city = params[:city].to_i if params[:city] != nil
+  def set_character
+    @current_user.character_id = params[:character_id].to_i if params[:character_id] != nil
     save_with_check(@user)
-  end
-
-
-  def getCharacterName
-    render :json => {'characterName' => @user.characterName}
-  end
-
-  def setCharacterName
-    @user.characterName = params[:characterName] if params[:characterName] != nil
-    save_with_check(@user)
-  end
-
-  def setLogin
-    permit = false
-    if @current_user == @user.id or @current_user.admin
-      @user.login = params[:login] if !params[:login].nil?
-      permit = @user.save
-    end
-    render :json => {"save_success" => permit ? 'SUCCESS' : 'FAIL'}
   end
 
   def addAdmin
