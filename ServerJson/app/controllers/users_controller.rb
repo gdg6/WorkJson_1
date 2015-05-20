@@ -54,6 +54,16 @@ class UsersController < ApplicationController
 
   include BCrypt
 
+
+  #get profile current user. Only select field
+  #character must be valid
+  def getProfileInfo
+    res = {}
+    res[:user] = User.select(:login, :city_id, :email).find(session[:user_id])
+    res[:character] = Character.select(:id, :title).find(@current_user.character_id)
+    return render :json => res
+  end
+
   def update_password
     old_pass = BCrypt::Password.create(params[:old_password])
     @user.password = params[:new_password] if old_pass == @user.password_digest

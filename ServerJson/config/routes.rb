@@ -19,6 +19,8 @@ Rails.application.routes.draw do
 
   get 'registration' => 'users#new', as: :registration
   post 'registration' => 'users#create'
+  post 'getProfileInfo' => 'users#getProfileInfo'
+
   post 'getCities'  => 'cities#index'
 
   post 'getEventByCityAndCharacter' => 'events#getEventByCityAndCharacter'
@@ -30,6 +32,8 @@ Rails.application.routes.draw do
   get 'getFavoriteEvents' => 'favorities#index', :as => :getFavotityEvents
   post 'addFavoriteEvent' => 'favorities#create' # only event_id
   post 'deleteFavoriteEvent' => 'favorities#destroy' #id
+
+
 
   post 'EditPasswordForUserId' => 'users#update_password'
   post 'getCityForUserId' => 'users#getCity'
