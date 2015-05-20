@@ -2,7 +2,7 @@ require 'bcrypt'
 
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
-  before_action :check_auth, :except => [:new, :create]
+  before_action :check_auth, :except => [:new, :create, :getProfileInfo]
   before_action :check_admin, :only => [:destroy]
   before_action :set_user_by_current, :only => [:update_password, :getCity, :setCity, :getCharacterName, :setCharacterName, :setLogin, :addAdmin, :deleteAdmin]
 
