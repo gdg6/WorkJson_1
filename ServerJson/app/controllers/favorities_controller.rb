@@ -1,5 +1,3 @@
-require 'json'
-
 class FavoritiesController < ApplicationController
   before_action :set_favority, only: [:destroy]
   before_action :check_auth

@@ -1,18 +1,9 @@
 class CharactersController < ApplicationController
-  before_action :set_character, only: [:show, :edit, :update, :destroy]
-
-  respond_to :html, :json
+  before_action :check_admin, :except => [:create, :update]
+  before_action :set_character, only: [:update]
 
   def index
    render :json => Character.select(:id, :title).all
-  end
-
-  def show
-    render :json => @character
-  end
-
-  def new
-    @character = Character.new
   end
 
   def create

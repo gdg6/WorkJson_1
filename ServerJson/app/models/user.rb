@@ -8,8 +8,7 @@ class User < ActiveRecord::Base
 
   belongs_to :city
   belongs_to :character
-  has_many :comments, dependent: :destroy
-  has_many :services, :dependent => :destroy
+  has_many :comments, :dependent => :destroy
   has_many :events, :dependent => :destroy
   has_many :favorities, :dependent => :destroy
   has_many :events, :through => :favorities
