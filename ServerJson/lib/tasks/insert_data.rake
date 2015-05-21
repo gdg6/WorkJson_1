@@ -1,6 +1,6 @@
 namespace :insertData do
 
-  cities = ['Москва', 'Санкт-Петербург', 'Новосибирск', 'Екатеринбург', 'Нижний Новгород', 'Хабаровск', 'Казань']
+  cities = %w(Москва Санкт-Петербург Казань)
   desc "createCities"
   task :createCities => :environment do
     cities.each do |c|
