@@ -13,12 +13,8 @@ class User < ActiveRecord::Base
   has_many :favorities, :dependent => :destroy
   has_many :events, :through => :favorities
 
+
   before_validation :set_default_sign_count
-
-  # # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me
-  attr_accessible :login, :provider, :url
-
 
   def admin?
     return self.admin

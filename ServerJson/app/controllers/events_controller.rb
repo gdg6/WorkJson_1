@@ -57,15 +57,6 @@ class EventsController < ApplicationController
     return render :json => {'save_success' => 'FAIL', 'err' => 'NOT_ADMIN'} unless @current_user.admin
     @event = Event.new(event_params)
     @event.user_id = @current_user.id
-    @event.name = params[:event][:name]
-    @event.adress = params[:event][:adress]
-    @event.date = params[:event][:date]
-    @event.time = params[:event][:time]
-    @event.description = params[:event][:description]
-    @event.price= params[:event][:price].to_i
-    @event.popularity = params[:event][:popularity].to_i
-    @event.picture = params[:event][:picture]
-    @event.city_id = params[:event][:city_id].to_i
     return save_with_tags(@event) if params[:character_id].to_i > 0
     return save_with_check(@event)
   end

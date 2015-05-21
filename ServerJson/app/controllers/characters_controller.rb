@@ -1,28 +1,27 @@
 class CharactersController < ApplicationController
-  before_action :check_admin, :except => [:create, :update]
+  before_action :check_admin, :except => [:index]
   before_action :set_character, only: [:update]
 
   def index
-   render :json => Character.select(:id, :title).all
+    render :json => Character.select(:id, :title).all
   end
 
   def create
-    @character = Character.new
-    @character.title = params[:character][:title].to_s
+    @character = Character.new(character_params)
     save_with_check(@character)
   end
 
   def update
-    @character.title = params[:title] unless params[:title].nil?
+    @character.update(character_params)
     save_with_check(@character)
   end
 
   private
-    def set_character
-      @character = Character.find(params[:id])
-    end
+  def set_character
+    @character = Character.find(params[:id])
+  end
 
-    def character_params
-      params.require(:character).permit(:title)
-    end
+  def character_params
+    params.require(:character).permit(:title)
+  end
 end

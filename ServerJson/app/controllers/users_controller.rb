@@ -1,26 +1,17 @@
 require 'bcrypt'
 
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit,  :destroy]
+  before_action :set_user, only: [:show, :edit,  :destroy, :addAdmin, :deleteAdmin]
   before_action :check_auth, :except => [:new, :create, :get_profile_info, :set_character, :set_city, :set_password]
   before_action :check_admin, :only => [:destroy]
-  before_action :set_user_by_current, :only => [:addAdmin, :deleteAdmin]
 
   # FIXME must be check_edit for edit profile user. Is can do only self user or admin
   respond_to :json, :html
 
-  # GET /users/1
-  # GET /users/1.json
-  def show
-  end
 
   # GET /users/new
   def new
     @user = User.new
-  end
-
-  # GET /users/1/edit
-  def edit
   end
 
   #FIXME - must be refactoring
@@ -28,7 +19,6 @@ class UsersController < ApplicationController
   # POST /users.json
   def create
     @user = User.new(reg_params)
-    @user.city_id = params[:registration][:city_id].to_i
     @user.character_id = params[:character_id].to_i > 0 ? params[:character_id].to_i : create_character(params[:character]).to_i
     return render :json => {'reg' => 'NO', 'err' => 'NO_VALID_EMAIL'} unless email_valid(@user)
     unless uniq_user(params)
@@ -73,15 +63,15 @@ class UsersController < ApplicationController
 
   def set_city
     @current_user.city = params[:city_id].to_i if params[:city_id] != nil
-    save_with_check(@user)
+    save_with_check(@current_user)
   end
 
   def set_character
     @current_user.character_id = params[:character_id].to_i if params[:character_id] != nil
-    save_with_check(@user)
+    save_with_check(@current_user)
   end
 
-  def addAdmin
+  def add_admin
     if @current_user.admin
       @user.admin = true
       return render :json => {"save_success" => @user.save ? 'SUCCESS' : 'FAIL'}
@@ -89,9 +79,9 @@ class UsersController < ApplicationController
     render :json => {"save_success" => 'FAIL', 'err' => 'NOT_ADMIN'}
   end
 
-  def deleteAdmin
+  def delete_admin
     if @current_user.admin and @current_user.id != @user.id
-      @user.admin=false
+      @user.admin = false
       return save_with_check(@user)
     end
     render :json => {"save_success" => 'FAIL', 'err' => 'NOT_ADMIN'}
@@ -138,17 +128,10 @@ class UsersController < ApplicationController
     return @character.id
   end
 
-  def set_user_by_current
-    @user = @current_user
-  end
-
   # Use callbacks to share common setup or constraints between actions.
   def set_user
-    begin
-      @user = User.find(params[:user_id])
-    rescue
-      return render :json => {"user" => "NOT_FOUND"}
-    end
+      @user = User.where(params[:user_id]).take
+      return render :json => {"user" => "NOT_FOUND"} unless @user
   end
 
   def email_valid (user)
@@ -161,6 +144,6 @@ class UsersController < ApplicationController
   end
 
   def reg_params
-    params.require(:registration).permit(:login, :email, :password, :password_confirmation)
+    params.require(:registration).permit(:login, :email, :password, :password_confirmation, :city_id)
   end
 end

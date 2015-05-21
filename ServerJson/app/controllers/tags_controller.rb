@@ -1,30 +1,17 @@
 class TagsController < ApplicationController
   before_action :set_tag, only: [:show, :edit, :update, :destroy]
   before_action :check_auth
-  before_action :check_admin, only: [:create, :update, :destroy, :edit, :new]
+  before_action :check_admin, only: [:create, :update, :edit, :new]
 
   respond_to :json, :html
 
   #FIXME
   def index
-    count = params[:count].to_i > 0 ? params[:count].to_i : 10
-    render :json => Tag.select(:id, :context).where("id IN (?)", TagsToCharacter.select(:tag_id).where(:character_id => @current_user.character_id)).load
-  end
-
-  def show
-    render :json => @tag
-  end
-
-  def new
-    @tag = Tag.new
-  end
-
-  def edit
+    render :json => @current_user.character.tags.load
   end
 
   def create
-    @tag = Tag.new
-    @tag.context = params[:tag][:context].to_s
+    @tag = Tag.new(tag_params)
     ok1 = @tag.save
     @tags_to_character = TagsToCharacter.new
     @tags_to_character.character = Character.find(params[:chraracter_id])
@@ -34,12 +21,7 @@ class TagsController < ApplicationController
   end
 
   def update
-    render :json => {'update_success' => ( @tag.update(tag_params) ? 'SUCCESS' : 'FAIL')}
-  end
-
-  def destroy
-    @tag.destroy
-    respond_with(@tag)
+    render :json => {'update_success' => ( @tag.update(tag_params) ? 'SUCCESS' : 'FAIL'), 'err' => @err}
   end
 
   private

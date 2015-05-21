@@ -5,27 +5,17 @@ class FavoritiesController < ApplicationController
 
   def index
     count = params[:count].to_i; count = count > 0 ? count : 10
-    return render :json => @current_user.events.first(count)
+    render :json => @current_user.events.first(count)
   end
 
   def create
-    @favority = Favority.new
-    @favority.event_id = params[:favority][:event_id].to_i if params[:favority][:event_id] != nil
+    @favority = Favority.new(favority_params)
     @favority.user_id = @current_user.id
-    event = Event.find(@favority.event_id).take
-    return render :json =>  Hash['save_success', 'FAIL', "err", "NOT_EVENT"] unless event
-    event.popularity += 1
-    event.save
-    save_with_check(@favority)
+     save_with_check(@favority)
   end
 
   def destroy
-    @favority.destroy
-    # return render :json =>
-    event = Event.find(@favority.event_id).take
-    return render :json =>  Hash['delete_success', 'FAIL', "err", "NOT_EVENT"] unless event
-    event.popularity -= 1
-    event.save
+    @favority.destroy if @favority.user_id == @current_user.id || @current_user.admin
     render :json => {'delete_success' => 'SUCCESS'}
   end
 
@@ -36,6 +26,6 @@ class FavoritiesController < ApplicationController
   end
 
   def favority_params
-    params.require(:favority).permit(:event_id, :user_id)
+    params.require(:favority).permit(:event_id)
   end
 end

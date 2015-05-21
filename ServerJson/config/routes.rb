@@ -1,8 +1,8 @@
 Rails.application.routes.draw do
 
-  resources :characters, :except => [:destroy, :edit]
+  resources :characters
 
-  resources :tags, :except => [:destroy]
+  resources :tags
 
   resources :comments
 
@@ -10,7 +10,7 @@ Rails.application.routes.draw do
 
   resources :users, :only => [:destroy]
 
-  root :to => "events#index"
+  root :to => 'application#not_found_404'
 
   #============ SESSIONS ============
   get 'login' => 'sessions#new', as: :login
@@ -26,8 +26,8 @@ Rails.application.routes.draw do
   post 'setPassword' => 'users#set_password'
   post 'setCity' => 'users#set_city'
   post 'setCharacter' => 'users#set_character'
-  post 'addAdminByPK' => 'users#addAdmin'
-  post 'deleteAdminByPK' => 'users#deleteAdmin'
+  post 'addAdminByPK' => 'users#add_admin'
+  post 'deleteAdminByPK' => 'users#delete_admin'
 
 
   #=========== CITIES ===============
@@ -42,7 +42,7 @@ Rails.application.routes.draw do
 
 
   #========== FAVORITIES EVENT ======
-  get 'getFavoriteEvents' => 'favorities#index', :as => :getFavotityEvents
+  post 'getFavoriteEvents' => 'favorities#index', :as => :getFavotityEvents
   post 'addFavoriteEvent' => 'favorities#create' # only event_id
   post 'deleteFavoriteEvent' => 'favorities#destroy' #id
 

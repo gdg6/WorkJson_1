@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
   rescue_from ActionView::MissingTemplate, :with => :missing_tamplete
 
   def load_current_user
-    @current_user = User.where(id: session[:user_id].to_i).take
+    @current_user = User.where(:id => session[:user_id]).take
   end
 
   def check_auth

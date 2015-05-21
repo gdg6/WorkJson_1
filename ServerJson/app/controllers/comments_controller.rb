@@ -26,11 +26,8 @@ class CommentsController < ApplicationController
   # POST /comments
   # POST /comments.json
   def create
-    @comment = Comment.new
-    raise params.to_s
-    @comment.body = params[:comment][:body]
-    @comment.user_id = params[:comment][:user_id].to_i
-    @comment.event_id = params[:comment][:event_id].to_i
+    @comment = Comment.new(comment_params)
+    @comment.user_id = @current_user.id
     render :json => {'save_success' =>  @comment.save ? 'SUCCESS' : 'FAIL'}
   end
 
@@ -51,7 +48,7 @@ class CommentsController < ApplicationController
   # DELETE /comments/1
   # DELETE /comments/1.json
   def destroy
-    @comment.destroy
+    @comment.destroy if @comment.user_id == @current_user.id or @current_user.admin
     render :json => {"destroy_success" => 'SUCCESS'}
   end
 
@@ -64,6 +61,6 @@ class CommentsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def comment_params
-      params.require(:comment).permit(:event_id, :user_id, :body)
+      params.require(:comment).permit(:event_id, :body)
     end
 end

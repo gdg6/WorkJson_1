@@ -32,13 +32,7 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'json'
 
 gem 'haml-rails'
-
+gem 'kaminari'
 gem 'paperclip'
-
-gem 'protected_attributes'
-gem 'devise'
-gem 'omniauth'
-gem 'omniauth-facebook'
-gem 'omniauth-vkontakte'
 gem 'bootstrap-sass'
 gem 'font-awesome-rails'
