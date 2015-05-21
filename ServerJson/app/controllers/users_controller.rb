@@ -62,7 +62,7 @@ class UsersController < ApplicationController
   end
 
   def set_city
-    @current_user.city = params[:city_id].to_i if params[:city_id] != nil
+    @current_user.city_id = params[:city_id].to_i if params[:city_id] != nil
     save_with_check(@current_user)
   end
 
