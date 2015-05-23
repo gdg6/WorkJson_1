@@ -5,7 +5,7 @@ class CommentsController < ApplicationController
   # GET /comments
   # GET /comments.json
   def index
-   return  render :json => Comment.select(:id, :body, :user_id, :updated_at).where(:event_id => params[:event_id].to_i).load
+   return  render :json => Comment.select(:id, :body, :login, :updated_at).where(:event_id => params[:event_id].to_i).load
   end
 
   # GET /comments/1
@@ -27,7 +27,6 @@ class CommentsController < ApplicationController
   # POST /comments.json
   def create
     @comment = Comment.new(comment_params)
-    @comment.user_id = @current_user.id
     render :json => {'save_success' =>  @comment.save ? 'SUCCESS' : 'FAIL'}
   end
 

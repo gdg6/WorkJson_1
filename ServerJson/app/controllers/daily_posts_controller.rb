@@ -1,8 +1,9 @@
+# В тз сказано, что DailyPost должен существовать в единственном экхземлпяре.
+
 class DailyPostsController < ApplicationController
 
   before_action :set_daily_post, :only => [:show, :update]
-  before_action :check_auth
-  before_action :check_admin, :only => [:update]
+  before_action :check_admin, :except => [:show]
 
   def show
     render :json => {"daily_post" => @daily_post.context}

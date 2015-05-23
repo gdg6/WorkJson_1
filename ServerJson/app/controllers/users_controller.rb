@@ -1,7 +1,7 @@
 require 'bcrypt'
 
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit,  :destroy, :addAdmin, :deleteAdmin]
+  before_action :set_user, only: [:show, :edit,  :destroy, :add_admin, :delete_admin]
   before_action :check_auth, :except => [:new, :create, :get_profile_info, :set_character, :set_city, :set_password]
   before_action :check_admin, :only => [:destroy]
 
@@ -19,27 +19,27 @@ class UsersController < ApplicationController
   # POST /users.json
   def create
     @user = User.new(reg_params)
-    @user.character_id = params[:character_id].to_i > 0 ? params[:character_id].to_i : create_character(params[:character]).to_i
-    return render :json => {'reg' => 'NO', 'err' => 'NO_VALID_EMAIL'} unless email_valid(@user)
+    @user.character_id = (params[:character_id] ? create_character(params[:character]) :  params[:character_id]).to_i
+    return render json: {'reg' => 'NO', 'err' => 'NO_VALID_EMAIL'} unless email_valid(@user)
     unless uniq_user(params)
-      return render :json => {'reg' => 'NO', 'err' => 'REPLACE_LOGIN_OR_EMAIL'}
+      return render json: {'reg' => 'NO', 'err' => 'REPLACE_LOGIN_OR_EMAIL'}
     end
     save_success = false
-    if !params[:soc].nil?
+    unless params[:soc].nil?
       soc = create_by_soc(@user, params[:soc])
       if soc == 0
         save_success = @user.save
-        session[:user_id] = @user_id if save_success
+        session[:user_id] = @user.id if save_success
       elsif soc == 1
         @err = 'NO_CORRECT_ACCESS_TOKEN'
       elsif soc == 2
         @err = 'USER_SOC_REPLACE'
       end
-      return render :json => {'reg' => (save_success ? 'YES' : 'NO'), 'err' => @err}
+      return render json: {'reg' => (save_success ? 'YES' : 'NO'), 'err' => @err}
     end
     save_success = @user.save
     session[:user_id] = @user_id if save_success
-    return render :json => {'reg' => (save_success ? 'YES' : 'NO'), 'err' => @err}
+    render json: {'reg' => (save_success ? 'YES' : 'NO'), 'err' => @err}
   end
 
   include BCrypt
@@ -51,13 +51,15 @@ class UsersController < ApplicationController
     res = {}
     res[:user] = User.select(:login, :city_id, :email).where(id: session[:user_id]).take
     res[:character] = Character.select(:id, :title).where(id: @current_user.character_id).take
-    return render :json => res
+    render json: res
   end
 
   def set_password
     old_pass = BCrypt::Password.create(params[:old_password])
-    return render :json => {'save_success' => 'FAIL', 'err' => 'NOT_EQUAL_PASS_AND_CONF'} if params[:new_password] != params[:confirm_password]
-    @current_user.password = params[:new_password] if old_pass == @current_user.password_digest
+    @err = 'NOT_EQUAL_PASS_AND_CONF' unless params[:new_password] == params[:confirm_password]
+    @err = 'OLD_PASSWORD' unless old_pass == @current_user.password_digest
+    return render json: {'save_success' => 'FAIL', 'err' => @err} unless @err
+    @current_user.password = params[:new_password]
     save_with_check(@current_user)
   end
 
@@ -76,7 +78,7 @@ class UsersController < ApplicationController
       @user.admin = true
       return render :json => {"save_success" => @user.save ? 'SUCCESS' : 'FAIL'}
     end
-    render :json => {"save_success" => 'FAIL', 'err' => 'NOT_ADMIN'}
+    render json: {"save_success" => 'FAIL', 'err' => 'NOT_ADMIN'}
   end
 
   def delete_admin
@@ -84,7 +86,7 @@ class UsersController < ApplicationController
       @user.admin = false
       return save_with_check(@user)
     end
-    render :json => {"save_success" => 'FAIL', 'err' => 'NOT_ADMIN'}
+    render json: {"save_success" => 'FAIL', 'err' => 'NOT_ADMIN'}
   end
 
   # DELETE /users/1
@@ -100,16 +102,16 @@ class UsersController < ApplicationController
   private
 
   def uniq_user(argv)
-    return User.where("login = ? OR email = ?", argv[:registration][:login], argv[:registration][:email]).take.nil? ? true : false
+    User.where('login = ? OR email = ?', argv[:registration][:login], argv[:registration][:email]).take ? false : true
   end
 
   def create_by_soc(user, argv)
-    BCrypt::Engine.hash_secret(argv[:id].to_s, "$2a$10$TlxTfAg8QmFMzuY97EiTJu") == argv[:access_token].to_s
+    BCrypt::Engine.hash_secret(argv[:id].to_s, '$2a$10$TlxTfAg8QmFMzuY97EiTJu') == argv[:access_token].to_s
     return 3 if argv[:type] != 'fb' && argv[:type] != 'vk'
     user.provider_user_id = argv[:id].to_i
     user.provider = argv[:type]
-    tmp_user = User.where("provider_user_id  = ? AND provider = ?", argv[:id], argv[:type]).take
-    tmp_user.nil? ? (user.provider_user_id > 0 ? 0 : 1) : 2
+    tmp_user = User.where('provider_user_id  = ? AND provider = ?', argv[:id], argv[:type]).take
+    tmp_user ? 2 : (user.provider_user_id > 0 ? 0 : 1)
   end
 
   def create_character(argv)
@@ -125,17 +127,17 @@ class UsersController < ApplicationController
       @TTC.character_id=@character.id
       @TTC.save
     end
-    return @character.id
+    @character.id
   end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_user
       @user = User.where(params[:user_id]).take
-      return render :json => {"user" => "NOT_FOUND"} unless @user
+      render json: {'user' => 'NOT_FOUND'} unless @user
   end
 
   def email_valid (user)
-    return user.email =~ /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
+    user.email =~ /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

@@ -55,7 +55,6 @@ class EventsController < ApplicationController
   # POST /events
   # POST /events.json
   def create
-    return render :json => {'save_success' => 'FAIL', 'err' => 'NOT_ADMIN'} unless @current_user.admin
     @event = Event.new(event_params)
     @event.user_id = @current_user.id
     return save_with_tags(@event) if params[:character_id].to_i > 0
@@ -65,8 +64,7 @@ class EventsController < ApplicationController
   # PATCH/PUT /events/1
   # PATCH/PUT /events/1.json
   def update
-    return render :json => {'save_success' => 'FAIL', 'err' => 'NOT_ADMIN'} unless @current_user.admin
-    @event.user_id = params[:event][:user_id].to_i
+    @event.user_id = @current_user.id
     @event.name = params[:event][:name]
     @event.adress = params[:event][:adress]
     @event.date = params[:event][:date]
@@ -81,7 +79,6 @@ class EventsController < ApplicationController
   # DELETE /events/1
   # DELETE /events/1.json
   def destroy
-    return render :json => {'destroy_success' => 'FAIL', 'err' => 'NOT_ADMIN'} unless @current_user.admin
     @event.destroy
     render :json => {'destroy_success' => 'SUCCESS'}
   end

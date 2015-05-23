@@ -7,7 +7,8 @@ class TagsController < ApplicationController
 
   #FIXME
   def index
-    render :json => @current_user.character.tags.load
+    render :json => Tag.select(:id, :context).where(:id => TagsToCharacter.select(:tag_id).where(:character_id=>@current_user.character_id)) # 2 in 1 request ~= 0.5 ms
+    # render :json => @current_user.character.tags.load # 3 easy commits request 0.3 0.2 0.2
   end
 
   def create
@@ -17,7 +18,8 @@ class TagsController < ApplicationController
     @tags_to_character.character = Character.find(params[:chraracter_id])
     @tags_to_character.tag = @tag
     ok2 = @tags_to_character.save
-    render :json => {'save_success' => ( ok1 && ok2 ? 'SUCCESS' : 'FAIL'), 'err' => @err}
+    @err = 'PROBLEM_SAVE' unless ok1 && ok2
+    render :json => {'save_success' => ( @err.nil? ? 'SUCCESS' : 'FAIL'), 'err' => @err}
   end
 
   def update
