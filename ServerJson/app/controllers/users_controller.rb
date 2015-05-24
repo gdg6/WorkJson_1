@@ -49,7 +49,7 @@ class UsersController < ApplicationController
   #character must be valid
   def get_profile_info
     res = {}
-    res[:user] = User.select(:login, :city_id, :email).where(id: session[:user_id]).take
+    res[:user] = User.select(:login, :city_id, :email, :admin).where(id: session[:user_id]).take
     res[:character] = Character.select(:id, :title).where(id: @current_user.character_id).take
     render json: res
   end

@@ -39,6 +39,7 @@ Rails.application.routes.draw do
   post 'getEventsByDateWithCountAndTag' => 'events#getEventsByDateWithCountAndTag' #!
   post 'getEventsByMounthWithCountAndTag' => 'events#getEventsByMounthWithCountAndTag'
   post 'getEventsByTagWithCount' => 'events#getEventsByTagWithCount'
+  post 'getEventByCityAndCharacterWithDate' => 'events#getEventByCityAndCharacterWithDate'
 
 
   #========== FAVORITIES EVENT ======
