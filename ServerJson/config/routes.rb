@@ -35,7 +35,7 @@ Rails.application.routes.draw do
 
 
   #=========== EVENTS ===============
-  get 'getEventByCityAndCharacter' => 'events#getEventByCityAndCharacter'
+  post 'getEventByCityAndCharacter' => 'events#getEventByCityAndCharacter'
   post 'getEventsByDateWithCountAndTag' => 'events#getEventsByDateWithCountAndTag' #!
   post 'getEventsByMounthWithCountAndTag' => 'events#getEventsByMounthWithCountAndTag'
   post 'getEventsByTagWithCount' => 'events#getEventsByTagWithCount'
