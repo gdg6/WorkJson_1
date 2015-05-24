@@ -26,6 +26,16 @@
       <%= f.text_field :adress %>
     </div>
     <div class="field">
+      <%= f.label :longitude %><br>
+      <%= f.number_field :longitude, :step => '0.00000000001' %>
+    </div>
+    <div class="field">
+      <%= f.label :latitude %><br>
+      <%= f.number_field :latitude,  :step => '0.00000000001' %>
+    </div>
+
+
+    <div class="field">
       <%= f.label :date %><br>
       <%= f.number_field :date %>
     </div>
@@ -53,6 +63,8 @@
       <%= label_tag 'Character' %><br>
       <%= select_tag :character_id, options_for_select(session_character_list) %>
     </div>
+
+
     <div class="actions">
       <%= label_tag 'Сохранить' %>
       <%= f.submit %>

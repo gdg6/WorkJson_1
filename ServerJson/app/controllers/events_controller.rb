@@ -73,6 +73,8 @@ class EventsController < ApplicationController
     @event.price= params[:event][:price].to_i
     @event.popularity = params[:event][:popularity].to_i
     @event.picture = params[:event][:picture]
+    @event.longitude = params[:event][:longitude].to_f
+    @event.latitude = params[:event][:latitude].to_f
     save_with_check(@event)
   end
 
@@ -111,6 +113,6 @@ class EventsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def event_params
-      params.require(:event).permit(:user_id, :name, :adress, :date, :time, :description, :price, :popularity, :picture )
+      params.require(:event).permit(:user_id, :name, :adress, :date, :time, :description, :price, :popularity, :picture, :longitude, :latitude )
     end
 end
