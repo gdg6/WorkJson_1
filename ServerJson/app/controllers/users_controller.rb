@@ -19,8 +19,9 @@ class UsersController < ApplicationController
   # POST /users.json
   def create
     @user = User.new(reg_params)
-    @user.character_id = (params[:character_id].nil? ? create_character(params[:character]) :  params[:character_id]).to_i
+    @user.character_id = params[:character_id].to_i == 0 ? create_character(params[:character]).to_i :  params[:character_id].to_i
     return render json: {'reg' => 'NO', 'err' => 'NO_VALID_EMAIL'} unless email_valid(@user)
+    return render json: {'reg' => 'NO', 'err' => 'BAD_CHARACTER'} if @user.character_id == 0
     unless uniq_user(params)
       return render json: {'reg' => 'NO', 'err' => 'REPLACE_LOGIN_OR_EMAIL'}
     end
@@ -55,9 +56,9 @@ class UsersController < ApplicationController
   end
 
   def set_password
-    old_pass = BCrypt::Password.create(params[:old_password])
+    #old_pass = BCrypt::Password.create(params[:old_password])
     @err = 'NOT_EQUAL_PASS_AND_CONF' unless params[:new_password] == params[:confirm_password]
-    @err = 'OLD_PASSWORD' unless old_pass == @current_user.password_digest
+    #@err = 'OLD_PASSWORD' unless old_pass == @current_user.password_digest
     return render json: {'save_success' => 'FAIL', 'err' => @err} unless @err
     @current_user.password = params[:new_password]
     save_with_check(@current_user)
