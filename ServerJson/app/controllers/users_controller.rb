@@ -19,7 +19,7 @@ class UsersController < ApplicationController
   # POST /users.json
   def create
     @user = User.new(reg_params)
-    @user.character_id = (params[:character_id] ? create_character(params[:character]) :  params[:character_id]).to_i
+    @user.character_id = (params[:character_id].nil? ? create_character(params[:character]) :  params[:character_id]).to_i
     return render json: {'reg' => 'NO', 'err' => 'NO_VALID_EMAIL'} unless email_valid(@user)
     unless uniq_user(params)
       return render json: {'reg' => 'NO', 'err' => 'REPLACE_LOGIN_OR_EMAIL'}
