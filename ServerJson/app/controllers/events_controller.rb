@@ -35,9 +35,9 @@ class EventsController < ApplicationController
     return render :json => [] unless params[:date]
     c = params[:count].to_i > 0 ? params[:count].to_i : 10
     p = params[:page].to_i > 0 ? params[:page].to_i : 1
-    ttc = TagsToCharacter.select(:tag_id).where(:character_id => @current_user.character_id).load
-    ett = EventsToTag.select(:event_id).where("tag_id IN (?)", ttc).load
-    render :json =>  Event.where("city_id = ? AND id IN (?) AND date = ?", @current_user.city_id, ett,  params[:date]).page(p).per(c).load
+    # ttc = TagsToCharacter.select(:tag_id).where(character_id: @current_user.character_id).load
+    # ett = EventsToTag.select(:event_id).where(tag_id: ttc).load
+    render :json =>  Event.where(city_id: @current_user.city_id, id:EventsToTag.select(:event_id).where(tag_id: TagsToCharacter.select(:tag_id).where(character_id: @current_user.character_id).load).load,  date:params[:date]).page(p).per(c).load
   end
 
   def getEventsByDateWithCountAndTag

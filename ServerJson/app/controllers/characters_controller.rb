@@ -12,14 +12,20 @@ class CharactersController < ApplicationController
       character = {}
       character[:id] = x.id
       character[:title] = x.title
-      tags_context = []
-      x.tags.each do |t|
-        tags_context << t.context # not good use dynamic list
+      tags_context = StringIO.new #string buffer
+      for i in 0...x.tags.size - 1
+        tags_context << x.tags[i].context # not good use dynamic list
+        tags_context << ', '
       end
-      character[:tags] = tags_context
+      tags_context << x.tags[-1].context # not good use dynamic list
+      # x.tags.each do |t|
+      #   tags_context << t.context # not good use dynamic list
+      # end
+      character[:tags] = tags_context.string
       characters << character
     end
     render :json => {'characters'=>characters}
+    # render :json => characters[0][:tags].size
   end
 
   def create

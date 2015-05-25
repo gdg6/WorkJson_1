@@ -7,7 +7,7 @@ class TagsController < ApplicationController
 
   #FIXME
   def index
-    render :json => Tag.select(:id, :context).where(:id => TagsToCharacter.select(:tag_id).where(:character_id=>@current_user.character_id)) # 2 in 1 request ~= 0.5 ms
+    render :json => Tag.select(:id, :context).where(:id => TagsToCharacter.select(:tag_id).where(:character_id=>@current_user.character_id)).load # 2 in 1 request ~= 0.5 ms
     # render :json => @current_user.character.tags.load # 3 easy commits request 0.3 0.2 0.2
   end
 
