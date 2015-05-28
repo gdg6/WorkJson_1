@@ -1,8 +1,12 @@
 class EventsController < ApplicationController
+  attr_reader :arg_page, :arg_count, :arg_date
+
   before_action :set_event, only: [:show, :edit, :update, :destroy]
-  before_action :check_auth
-  before_action :check_admin, :only => [:update, :create, :destroy, :new]
-  after_action  :setUrl, only: [:create, :update]
+  before_action :check_auth, except: [:get_events_guest, :get_events_date_guest]
+  before_action :check_admin, only: [:update, :create, :destroy, :new]
+  after_action :setUrl, only: [:create, :update]
+  before_action :set_page_and_count, only: [:get_events, :get_events_date, :get_events_guest, :get_events_date_guest]
+  before_action :set_date, only: [:get_events_date, :get_events_date_guest]
 
   # GET /events
   # GET /events.json
@@ -25,19 +29,30 @@ class EventsController < ApplicationController
   def edit
   end
 
-  def getEventByCityAndCharacter
-    c = params[:count].to_i > 0 ? params[:count].to_i : 10
-    p = params[:page].to_i > 0 ? params[:page].to_i : 1
-    render :json =>  Event.where("city_id = ? AND id IN (?)", @current_user.city_id, EventsToTag.select(:event_id).where("tag_id IN (?)", TagsToCharacter.select(:tag_id).where(:character_id => @current_user.character_id).load).load).page(p).per(c)
+  # This getEventByCityAndCharacter for @current_user
+  def get_events
+    getEventByCityAndCharacter(@current_user.city_id, @current_user.character_id);
   end
 
-  def getEventByCityAndCharacterWithDate
-    return render :json => [] unless params[:date]
-    c = params[:count].to_i > 0 ? params[:count].to_i : 10
-    p = params[:page].to_i > 0 ? params[:page].to_i : 1
-    # ttc = TagsToCharacter.select(:tag_id).where(character_id: @current_user.character_id).load
-    # ett = EventsToTag.select(:event_id).where(tag_id: ttc).load
-    render :json =>  Event.where(city_id: @current_user.city_id, id:EventsToTag.select(:event_id).where(tag_id: TagsToCharacter.select(:tag_id).where(character_id: @current_user.character_id).load).load,  date:params[:date]).page(p).per(c).load
+  # This getEventByCityAndCharacterWithDate for @current_user
+  def get_events_date
+     getEventByCityAndCharacterWithDate(@current_user.city_id, @current_user.character_id, @arg_date)
+  end
+
+  # This getEventByCityAndCharacter for guest
+  def get_events_guest
+    city_id = params[:city_id].to_i
+    character_id = params[:character_id].to_i
+    return render :json => [] if city_id == 0 or character_id == 0
+    getEventByCityAndCharacter(city_id, character_id)
+  end
+
+  # This getEventByCityAndCharacterWithDate for guest
+  def get_events_date_guest
+    city_id = params[:city_id].to_i
+    character_id = params[:character_id].to_i
+    return render :json => [] if city_id == 0 or character_id == 0
+    getEventByCityAndCharacterWithDate(city_id, character_id, @arg_date)
   end
 
   def getEventsByDateWithCountAndTag
@@ -98,30 +113,48 @@ class EventsController < ApplicationController
 
   def save_with_tags(obj)
     save_ok = obj.save
-    return render :json => {'save_success'=>'FAIL','err'=> 'NOT_SAVE' } unless save_ok
+    return render :json => {'save_success' => 'FAIL', 'err' => 'NOT_SAVE'} unless save_ok
     tags_ids = []
-    TagsToCharacter.select(:tag_id).where(:character_id => params[:character_id].to_i).load.each{|x| tags_ids << x.tag_id.to_i}
+    TagsToCharacter.select(:tag_id).where(:character_id => params[:character_id].to_i).load.each { |x| tags_ids << x.tag_id.to_i }
     tags_ids.each do |x|
-     ett =  EventsToTag.new
+      ett = EventsToTag.new
       ett.event_id=obj.id
       ett.tag_id=x
       ett.save
     end
-    return render :json => {'save_success'=>'SUCCESS','err'=> @err }
+    return render :json => {'save_success' => 'SUCCESS', 'err' => @err}
   end
 
-    def setUrl
-      @event.url = @event.picture.url(:medium)
-      @event.save
-    end
+  def setUrl
+    @event.url = @event.picture.url(:medium)
+    @event.save
+  end
 
-    # Use callbacks to share common setup or constraints between actions.
-    def set_event
-      @event = Event.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_event
+    @event = Event.find(params[:id])
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def event_params
-      params.require(:event).permit(:user_id, :name, :adress, :date, :time, :description, :price, :popularity, :picture, :longitude, :latitude )
-    end
+  def set_date
+    @arg_date = params[:date]
+    return render :json => [] if @arg_date.nil?
+  end
+
+  def set_page_and_count
+    @arg_count = params[:count].to_i > 0 ? params[:count].to_i : 10
+    @arg_page = params[:page].to_i > 0 ? params[:page].to_i : 1
+  end
+
+  def getEventByCityAndCharacter(city_id, character_id)
+    render :json => Event.where("city_id = ? AND id IN (?)", city_id, EventsToTag.select(:event_id).where("tag_id IN (?)", TagsToCharacter.select(:tag_id).where(character_id: character_id).load).load).page(@arg_page).per(@arg_count)
+  end
+
+  def getEventByCityAndCharacterWithDate(city_id, character_id, date)
+    render :json => Event.where(city_id: city_id, id: EventsToTag.select(:event_id).where(tag_id: TagsToCharacter.select(:tag_id).where(character_id: character_id).load).load, date: date).page(@arg_page).per(@arg_count).load
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def event_params
+    params.require(:event).permit(:user_id, :name, :adress, :date, :time, :description, :price, :popularity, :picture, :longitude, :latitude)
+  end
 end
