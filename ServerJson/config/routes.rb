@@ -6,7 +6,7 @@ Rails.application.routes.draw do
 
   resources :comments
 
-  resources :events
+  resources :events, :except=>[:index]
 
   resources :users, :only => [:destroy]
 

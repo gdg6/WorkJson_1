@@ -21,5 +21,11 @@ test:
   database: db/test.sqlite3
 
 production:
-  <<: *default
-  database: db/production.sqlite3
+  adapter: postgresql
+  encoding: unicode
+  database: gorod_map
+  pool: 5
+  username: MyGorodMap
+  # password: e4pj6vity
+  host: localhost
+  port: 6000
