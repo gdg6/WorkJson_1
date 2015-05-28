@@ -13,6 +13,8 @@ group :production do
 	gem 'pg'
 end
 
+gem 'rake', '~>10.4.2'
+
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.3'
 # Use Uglifier as compressor for JavaScript assets

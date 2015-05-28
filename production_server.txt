@@ -1,0 +1,16 @@
+Droplet Name: gorodmap
+IP/Hostname: 46.101.138.56
+Password: cbxswmcpigmd
+
+rake db:migrate RAILS_ENV="production"  
+RAILS_ENV=production rake secret - генерирует ключ
+export SECRET_KEY_BASE=сгенерированный ключ. 
+
+/usr/lib/postgresql/9.4/bin/pg_ctl -D /home/db -l logfile start
+
+
+su MyGorodMap
+/usr/lib/postgresql/9.4/bin/pg_ctl -D /home/db -o "-F -p 6000" -l logfile start
+psql -h localhost -d gorod_map -U MyGorodMap -p 6000
+
+
