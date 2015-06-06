@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150523215743) do
+ActiveRecord::Schema.define(version: 20150606100153) do
 
   create_table "characters", force: true do |t|
     t.string   "title"
@@ -41,7 +41,10 @@ ActiveRecord::Schema.define(version: 20150523215743) do
     t.string   "context"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "city_id"
   end
+
+  add_index "daily_posts", ["city_id"], name: "index_daily_posts_on_city_id"
 
   create_table "events", force: true do |t|
     t.integer  "user_id"

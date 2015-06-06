@@ -2,9 +2,15 @@
 
 API = {
 
+
+
     //=================  Test request =========================
     registration : function(params, callback, err) {
       API.post("/registration.json", params,  callback, err);
+    },
+
+    updateDailyPost : function(params, callback, err) {
+        API.post("/setDailyPost.json", params,  callback, err);
     },
 
     addEvent : function(params, callback, err) {

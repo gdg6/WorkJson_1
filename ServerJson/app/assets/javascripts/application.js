@@ -28,7 +28,19 @@ J = {
         J.favorite();
         J.testUsers();
         J.testDailyPost();
+        //J.testUpdateDailyPost();
         //J.testRegPost();
+    },
+
+
+    testUpdateDailyPost : function() {
+        API.updateDailyPost({'daily_post':{'city_id':2, 'context':'123'}},
+        function(code) {
+            alert(code.reg);
+        } ,
+        function (code) {
+            alert(code);
+        });
     },
 
 

@@ -52,6 +52,7 @@ Rails.application.routes.draw do
 
   #========= DALY POST ==============
   post 'getDailyPost' => 'daily_posts#show'
+  post 'getDailyPostGuest' => 'daily_posts#show_guest'
   post 'setDailyPost' => 'daily_posts#update'
 
 

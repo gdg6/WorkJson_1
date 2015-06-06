@@ -90,6 +90,7 @@ GEM
       activesupport (>= 3.0.0)
       cocaine (~> 0.5.3)
       mime-types
+    pg (0.18.1)
     rack (1.5.3)
     rack-test (0.6.3)
       rack (>= 1.0)
@@ -163,7 +164,9 @@ DEPENDENCIES
   json
   kaminari
   paperclip
+  pg
   rails (= 4.1.7)
+  rake (~> 10.4.2)
   sass-rails (~> 4.0.3)
   sdoc (~> 0.4.0)
   spring
