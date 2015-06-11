@@ -30,7 +30,7 @@ J = {
         J.testDailyPost();
         //J.testUpdateDailyPost();
         //J.testRegPost();
-        J.testUpdateCharacterUser();
+        //J.testUpdateCharacterUser();
     },
 
 
