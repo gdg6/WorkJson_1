@@ -18,14 +18,10 @@ class CharactersController < ApplicationController
         tags_context << ', '
       end
       tags_context << x.tags[-1].context # not good use dynamic list
-      # x.tags.each do |t|
-      #   tags_context << t.context # not good use dynamic list
-      # end
       character[:tags] = tags_context.string
       characters << character
     end
     render :json => {'characters'=>characters}
-    # render :json => characters[0][:tags].size
   end
 
   def create

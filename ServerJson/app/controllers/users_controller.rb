@@ -2,12 +2,11 @@ require 'bcrypt'
 
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit,  :destroy, :add_admin, :delete_admin]
-  before_action :check_auth, :except => [:new, :create, :get_profile_info, :set_character, :set_city, :set_password]
+  before_action :check_auth, :except => [:new, :create]
   before_action :check_admin, :only => [:destroy]
 
   # FIXME must be check_edit for edit profile user. Is can do only self user or admin
   respond_to :json, :html
-
 
   # GET /users/new
   def new
@@ -56,9 +55,7 @@ class UsersController < ApplicationController
   end
 
   def set_password
-    #old_pass = BCrypt::Password.create(params[:old_password])
     @err = 'NOT_EQUAL_PASS_AND_CONF' unless params[:new_password] == params[:confirm_password]
-    #@err = 'OLD_PASSWORD' unless old_pass == @current_user.password_digest
     return render json: {'save_success' => 'FAIL', 'err' => @err} unless @err
     @current_user.password = params[:new_password]
     save_with_check(@current_user)
@@ -69,15 +66,34 @@ class UsersController < ApplicationController
     save_with_check(@current_user)
   end
 
+
+  # First 7 character must be in database. They constants.
+  # If @current_user.character_id NOT IN [1..7], they we must delete other tags for him character
   def set_character
-    @current_user.character_id = params[:character_id].to_i if params[:character_id] != nil
+    character_id = params[:character_id].to_i
+    if character_id == 0 || character_id > 7
+      return render :json => {'save_success'=> 'FAIL', 'err' => 'FAIL_PARAMS'} if params[:character].nil?
+      if @current_user.character_id > 7
+        character = Character.where(id:@current_user.character_id).take
+        TagsToCharacter.where(:character_id => character.id).all.each{|x| x.delete} unless character.nil?
+        character.delete unless character.nil?
+      end
+      @current_user.character_id = create_character(params[:character]).to_i
+    else
+       if @current_user.character_id > 7
+          character = Character.where(id:@current_user.character_id).take
+          TagsToCharacter.where(:character_id => character.id).all.each{|x| x.delete} unless character.nil?
+          character.delete unless character.nil?
+       end
+       @current_user.character_id = character_id
+    end
     save_with_check(@current_user)
   end
 
   def add_admin
     if @current_user.admin
       @user.admin = true
-      return render :json => {"save_success" => @user.save ? 'SUCCESS' : 'FAIL'}
+      return save_with_check(@user)
     end
     render json: {"save_success" => 'FAIL', 'err' => 'NOT_ADMIN'}
   end

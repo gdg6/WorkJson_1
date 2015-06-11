@@ -30,30 +30,52 @@ J = {
         J.testDailyPost();
         //J.testUpdateDailyPost();
         //J.testRegPost();
+        J.testUpdateCharacterUser();
     },
 
 
-    testUpdateDailyPost : function() {
-        API.updateDailyPost({'daily_post':{'city_id':2, 'context':'123'}},
-        function(code) {
-            alert(code.reg);
-        } ,
+    testUpdateCharacterUser: function () {
+        API.updateCharacter({
+            'character_id':1,
+            'character':{'character_arr':'1, 3'}},
         function (code) {
-            alert(code);
+            alert(code.save_success + " " + code.err);
+        },
+        function (code) {
+            alert(code.err);
+
         });
+    },
+
+    testUpdateDailyPost: function () {
+        API.updateDailyPost({'daily_post': {'city_id': 2, 'context': '123'}},
+            function (code) {
+                alert(code.reg);
+            },
+            function (code) {
+                alert(code);
+            });
     },
 
 
     //'soc':{'type':'vk', 'id':'123123', 'access_token':'$2a$10$TlxTfAg8QmFMzuY97EiTJuOk30Tz.xLcokXuGeTBHxHp.F2IqNyY2'},
     testRegPost: function () {
-        API.postReg({'character_id':0, 'character':{'character_arr':'1, 2'},
-        'registration':{'city':1, 'email':'zhulvern-94@mail.ru', 'login':'gdg8', 'password':'111111', 'password_confirmation':'111111'}},
-        function(code) {
-            alert(code.reg);
-        } ,
-        function (code) {
-            alert(code);
-        }
+        API.postReg({
+                'character_id': 0, 'character': {'character_arr': '1, 2'},
+                'registration': {
+                    'city': 1,
+                    'email': 'zhulvern-94@mail.ru',
+                    'login': 'gdg8',
+                    'password': '111111',
+                    'password_confirmation': '111111'
+                }
+            },
+            function (code) {
+                alert(code.reg);
+            },
+            function (code) {
+                alert(code);
+            }
         );
     },
 
