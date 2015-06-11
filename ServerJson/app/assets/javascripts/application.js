@@ -31,6 +31,7 @@ J = {
         //J.testUpdateDailyPost();
         //J.testRegPost();
         //J.testUpdateCharacterUser();
+    //
     },
 
 
