@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150606100153) do
+ActiveRecord::Schema.define(version: 20150620204932) do
 
   create_table "characters", force: true do |t|
     t.string   "title"
@@ -52,7 +52,7 @@ ActiveRecord::Schema.define(version: 20150606100153) do
     t.string   "adress"
     t.integer  "date"
     t.string   "time"
-    t.string   "description"
+    t.string   "description",          limit: 300
     t.integer  "price"
     t.integer  "popularity"
     t.integer  "city_id"
