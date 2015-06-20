@@ -32,4 +32,5 @@ class ApplicationController < ActionController::Base
   def save_with_check(obj)
     render :json => {"save_success" => obj.save ? 'SUCCESS' : 'FAIL', 'err' => @err}
   end
+
 end

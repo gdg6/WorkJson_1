@@ -89,17 +89,7 @@ class EventsController < ApplicationController
   # PATCH/PUT /events/1.json
   def update
     @event.user_id = @current_user.id
-    @event.name = params[:event][:name]
-    @event.adress = params[:event][:adress]
-    @event.date = params[:event][:date]
-    @event.time = params[:event][:time]
-    @event.description = params[:event][:description]
-    @event.price= params[:event][:price].to_i
-    @event.popularity = params[:event][:popularity].to_i
-    @event.picture = params[:event][:picture]
-    @event.longitude = params[:event][:longitude].to_f
-    @event.latitude = params[:event][:latitude].to_f
-    save_with_check(@event)
+    render :json => {'update_success' => (@event.update(event_params) ? 'SUCCESS' : 'FAIL'), 'err' => @err}
   end
 
   # DELETE /events/1
@@ -118,8 +108,8 @@ class EventsController < ApplicationController
     TagsToCharacter.select(:tag_id).where(:character_id => params[:character_id].to_i).load.each { |x| tags_ids << x.tag_id.to_i }
     tags_ids.each do |x|
       ett = EventsToTag.new
-      ett.event_id=obj.id
-      ett.tag_id=x
+      ett.event_id = obj.id
+      ett.tag_id = x
       ett.save
     end
     return render :json => {'save_success' => 'SUCCESS', 'err' => @err}

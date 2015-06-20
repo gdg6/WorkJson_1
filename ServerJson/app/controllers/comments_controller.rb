@@ -27,6 +27,7 @@ class CommentsController < ApplicationController
   # POST /comments.json
   def create
     @comment = Comment.new(comment_params)
+    @comment.user_id = @current_user.id
     render :json => {'save_success' =>  @comment.save ? 'SUCCESS' : 'FAIL'}
   end
 
@@ -60,6 +61,6 @@ class CommentsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def comment_params
-      params.require(:comment).permit(:event_id, :body)
+      params.require(:comment).permit(:event_id, :body, :login)
     end
 end
