@@ -1,6 +1,15 @@
 Rails.application.routes.draw do
 
-  resources :characters
+  namespace :admin do
+    resources :admins
+    get '' => 'admins#index'
+    get 'cities' => 'cities#index'
+    get 'cities/new' => 'cities#new', as: :city_new
+    post 'cities/new' => 'cities#create'
+  end
+
+  resources :characters, :except=>[:index, :show, :delete]
+  post 'characters' => 'characters#index'
 
   resources :tags
 

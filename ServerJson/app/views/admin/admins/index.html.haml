@@ -1,0 +1,19 @@
+.row
+  .list-group-item-heading
+    %i= 'Login'
+  .list-group
+    - @admin_admins.each do |admin|
+      .list-group-item
+        %i= admin.login
+        .pull-right
+          =link_to 'Show', admin
+          =link_to 'Edit', edit_admin_admin_path(admin)
+          =link_to 'Destroy', admin, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+= paginate @admin_admins
+
+.margin-top-20
+= link_to new_admin_admin_path, {:class=>'btn btn-primary btn-visited'} do
+  %i{:class=>'glyphicon  glyphicon-plus'}
+    %span
+      New Admin

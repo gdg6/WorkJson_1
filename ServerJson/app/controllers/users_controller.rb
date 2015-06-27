@@ -6,7 +6,7 @@ class UsersController < ApplicationController
   before_action :check_admin, :only => [:destroy]
 
   # FIXME must be check_edit for edit profile user. Is can do only self user or admin
-  respond_to :json, :html
+  respond_to :json
 
   # GET /users/new
   def new
@@ -43,7 +43,6 @@ class UsersController < ApplicationController
   end
 
   include BCrypt
-
 
   #get profile current user. Only select field
   #character must be valid
@@ -90,6 +89,7 @@ class UsersController < ApplicationController
     save_with_check(@current_user)
   end
 
+  # change role user in system
   def add_admin
     if @current_user.admin
       @user.admin = true
@@ -98,6 +98,7 @@ class UsersController < ApplicationController
     render json: {"save_success" => 'FAIL', 'err' => 'NOT_ADMIN'}
   end
 
+  # change role user in system
   def delete_admin
     if @current_user.admin and @current_user.id != @user.id
       @user.admin = false

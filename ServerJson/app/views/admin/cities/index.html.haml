@@ -1,0 +1,19 @@
+.row
+  .list-group-item-heading
+    %i= 'Название'
+  .list-group
+    - @cities.each do |city|
+      .list-group-item
+        %i= city.name
+        .pull-right
+          =link_to 'Show', '#'
+          =link_to 'Edit', "/admin/city/#{city.id}/edit"
+          =link_to 'Destroy', "cities/#{city.id}", :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+= paginate @cities
+
+.margin-top-20
+= link_to '/admin/cities/new', {:class=>'btn btn-primary btn-visited'} do
+  %i{:class=>'glyphicon  glyphicon-plus'}
+    %span
+      New City

@@ -1,0 +1,8 @@
+%h2 New City
+
+.narrow
+  =form_for '/admin/cities/new' do |f|
+    .form-group
+      =f.label 'Название'
+      =f.text_field :name, class: 'form-control'
+      =f.submit 'Сохранить', class: 'btn btn-primary btn-md'

@@ -8,11 +8,6 @@ class EventsController < ApplicationController
   before_action :set_page_and_count, only: [:get_events, :get_events_date, :get_events_guest, :get_events_date_guest]
   before_action :set_date, only: [:get_events_date, :get_events_date_guest]
 
-  # GET /events
-  # GET /events.json
-  def index
-    render :json => Event.all
-  end
 
   # GET /events/1
   # GET /events/1.json
