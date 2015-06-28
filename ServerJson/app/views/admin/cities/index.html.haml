@@ -6,14 +6,16 @@
       .list-group-item
         %i= city.name
         .pull-right
-          =link_to 'Show', '#'
-          =link_to 'Edit', "/admin/city/#{city.id}/edit"
-          =link_to 'Destroy', "cities/#{city.id}", :method => :delete, :data => { :confirm => 'Are you sure?' }
+          =link_to "/admin/city/#{city.id}/edit" do
+            =fa_icon 'edit'
+          =link_to "cities/#{city.id}", :method => :delete, :data => { :confirm => 'Are you sure?' } do
+            = fa_icon 'trash'
+      %br
 
 = paginate @cities
 
 .margin-top-20
 = link_to '/admin/cities/new', {:class=>'btn btn-primary btn-visited'} do
-  %i{:class=>'glyphicon  glyphicon-plus'}
-    %span
-      New City
+  = fa_icon 'plus'
+  %span
+    New City

@@ -12,10 +12,6 @@ class ApplicationController < ActionController::Base
   def check_auth
     return render :json => {"succes" => "NO_AUTH"} unless @current_user
   end
-  
-  def check_admin
-    return render :json => {"succes" => "NO_ADMIN"} unless @current_user.admin
-  end
 
   def exception_500
     return render :json => {'page' => '500'}

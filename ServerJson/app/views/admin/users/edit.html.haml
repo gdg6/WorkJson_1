@@ -1,0 +1,28 @@
+= form_for @user do |f|
+
+  .form-group
+    = f.label :login
+    = f.text_field :login, :class=>'form-control'
+
+  .form-group
+    = f.label :email
+    = f.text_field :email, :class=>'form-control'
+
+  .form-group
+    = f.label :password
+    = f.password_field :password, :class=>'form-control'
+
+  .form-group
+    = f.label :password_confirmation
+    = f.password_field :password_confirmation, :class=>'form-control'
+
+  .form-group
+    = f.label 'Персонаж'
+    = f.select :character_id, options_for_select(get_list_characters), {}, {:class=>'form-control'}
+
+  .form-group
+    = f.label 'Город проживания'
+    = f.select :city_id, options_for_select(get_list_cities), {}, {:class=>'form-control'}
+
+  .form-actions
+    = f.submit

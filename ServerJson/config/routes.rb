@@ -6,6 +6,14 @@ Rails.application.routes.draw do
     get 'cities' => 'cities#index'
     get 'cities/new' => 'cities#new', as: :city_new
     post 'cities/new' => 'cities#create'
+    get 'login' =>  'sessions#new', as: :login
+    post 'login' => 'sessions#create'
+    get 'logout' => 'sessions#destroy', as: :logout
+    get 'users' => 'users#index'
+    get 'users/:id/edit' => 'users#edit'
+    patch 'user/:id' => 'users#update'
+    get 'users/:id' => 'users#show'
+    get 'characters' => 'characters#index'
   end
 
   resources :characters, :except=>[:index, :show, :delete]
@@ -13,11 +21,11 @@ Rails.application.routes.draw do
 
   resources :tags
 
-  resources :comments
+  resources :comments, :except => [:update, :edit, :show]
 
-  resources :events, :except=>[:index]
+  # resources :events, :except=>[:index]
 
-  resources :users, :only => [:destroy]
+  resources :users, :except => [:destroy]
 
   root :to => 'application#not_found_404'
 
@@ -62,11 +70,10 @@ Rails.application.routes.draw do
   #========= DALY POST ==============
   post 'getDailyPost' => 'daily_posts#show'
   post 'getDailyPostGuest' => 'daily_posts#show_guest'
-  post 'setDailyPost' => 'daily_posts#update'
 
 
   #======== ERROR SERVER ===========
-  get '*unmatched_route', :to => 'application#not_found_404'
-  post '*unmatched_route', :to => 'application#not_found_404'
+  # get '*unmatched_route', :to => 'application#not_found_404'
+  # post '*unmatched_route', :to => 'application#not_found_404'
 
 end

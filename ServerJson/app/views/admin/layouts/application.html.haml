@@ -20,12 +20,14 @@
           %span.icon-bar
           %span.icon-bar
           %span.icon-bar
-        %a.navbar-brand(href="#") WLC
+        %a.navbar-brand(href="#") MyGorodMap
+        %a.navbar-brand.pull-right(href="/admmin/logout") Выход
+
         .collapse.navbar-collapse.navbar-ex1-collapse
           %ul.nav.navbar-nav.side-nav
             %li= link_to ' События', '#'
-            %li= link_to ' Персонажи', '#'
-            %li= link_to ' Пользователи', '#'
+            %li= link_to ' Персонажи', '/admin/characters',  :class=> "#{ (controller_name == 'characters' ? 'active' : '')}"
+            %li= link_to ' Пользователи', '/admin/users',  :class=> "#{ (controller_name == 'users' ? 'active' : '')}"
             %li= link_to 'Новость дня', '#'
             %li= link_to 'Города', '/admin/cities',  :class=> "#{ (controller_name == 'cities' ? 'active' : '')}"
             %li= link_to ' Администраторы', '/admin/admins',  :class=> "#{ (controller_name == 'admins' ? 'active' : '')}"

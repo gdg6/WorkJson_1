@@ -1,0 +1,26 @@
+.row
+  .list-group-item-heading
+    %i= 'Логин'
+    %i= 'Персонаж'
+    %i= 'Город'
+    %i= 'Соц сеть'
+
+  .list-group
+    - @users.each do |user|
+      .list-group-item
+        %i= user.login
+        %i= user.character.title
+        %i= user.city.name
+        %i= user.provider
+        .pull-right
+          =link_to "/admin/users/#{user.id}" do
+            =fa_icon 'eye'
+          =link_to "/admin/users/#{user.id}/edit" do
+            = fa_icon 'edit'
+          =link_to  "admin/users/#{user.id}", :method => :delete, :data => { :confirm => 'Are you sure?' } do
+            = fa_icon 'trash'
+      %br
+
+
+= paginate @users
+

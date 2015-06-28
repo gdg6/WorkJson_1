@@ -15,7 +15,7 @@ class FavoritiesController < ApplicationController
   end
 
   def destroy
-    @favority.destroy if @favority.user_id == @current_user.id || @current_user.admin
+    @favority.destroy if @favority.user_id == @current_user.id
     render :json => {'delete_success' => 'SUCCESS'}
   end
 

@@ -13,9 +13,10 @@
 
 ActiveRecord::Schema.define(version: 20150627182527) do
 
-  create_table "admin_admins", force: true do |t|
+  create_table "admins", force: true do |t|
     t.string   "login"
     t.string   "password_digest", null: false
+    t.integer  "role"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -36,9 +37,9 @@ ActiveRecord::Schema.define(version: 20150627182527) do
     t.integer  "event_id"
     t.integer  "user_id"
     t.string   "body",       null: false
+    t.string   "login",      null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "login"
   end
 
   add_index "comments", ["event_id"], name: "index_comments_on_event_id"
@@ -46,9 +47,9 @@ ActiveRecord::Schema.define(version: 20150627182527) do
 
   create_table "daily_posts", force: true do |t|
     t.string   "context"
+    t.integer  "city_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "city_id"
   end
 
   add_index "daily_posts", ["city_id"], name: "index_daily_posts_on_city_id"
@@ -64,14 +65,14 @@ ActiveRecord::Schema.define(version: 20150627182527) do
     t.integer  "popularity"
     t.integer  "city_id"
     t.string   "url"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.float    "longitude"
+    t.float    "latitude"
     t.string   "picture_file_name"
     t.string   "picture_content_type"
     t.integer  "picture_file_size"
     t.datetime "picture_updated_at"
-    t.float    "longitude"
-    t.float    "latitude"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "events", ["city_id"], name: "index_events_on_city_id"
@@ -114,20 +115,20 @@ ActiveRecord::Schema.define(version: 20150627182527) do
   add_index "tags_to_characters", ["tag_id"], name: "index_tags_to_characters_on_tag_id"
 
   create_table "users", force: true do |t|
-    t.string   "login",                                  null: false
-    t.string   "password_digest",                        null: false
-    t.integer  "character_id",                           null: false
+    t.string   "login",                                 null: false
+    t.string   "password_digest",                       null: false
+    t.integer  "character_id",                          null: false
     t.integer  "city_id"
-    t.boolean  "admin",                  default: false
+    t.boolean  "active",                 default: true
     t.string   "provider"
     t.integer  "provider_user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "email",                  default: "",    null: false
+    t.string   "email",                  default: "",   null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          default: 0,     null: false
+    t.integer  "sign_in_count",          default: 0,    null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
   end

@@ -5,7 +5,7 @@ class CreateUsers < ActiveRecord::Migration
       t.string     :password_digest, :null => false
       t.belongs_to :character,       :index => true, :null => false
       t.belongs_to :city,            :index => true
-      t.boolean    :admin,           :default => false
+      t.boolean    :active,           :default => true
 
       # for vk and facebook
       t.string :provider

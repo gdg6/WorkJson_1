@@ -1,5 +1,5 @@
 class CommentsController < ApplicationController
-  before_action :set_comment, only: [:show, :edit, :update, :destroy]
+  before_action :set_comment, only: [:show, :edit, :destroy]
   before_action :check_auth
 
   # GET /comments
@@ -8,19 +8,9 @@ class CommentsController < ApplicationController
    return  render :json => Comment.select(:id, :body, :login, :updated_at).where(:event_id => params[:event_id].to_i).load
   end
 
-  # GET /comments/1
-  # GET /comments/1.json
-  def show
-    return render :json => @comment
-  end
-
   # GET /comments/new
   def new
     @comment = Comment.new
-  end
-
-  # GET /comments/1/edit
-  def edit
   end
 
   # POST /comments
@@ -28,28 +18,13 @@ class CommentsController < ApplicationController
   def create
     @comment = Comment.new(comment_params)
     @comment.user_id = @current_user.id
-    render :json => {'save_success' =>  @comment.save ? 'SUCCESS' : 'FAIL'}
-  end
-
-  # PATCH/PUT /comments/1
-  # PATCH/PUT /comments/1.json
-  def update
-    respond_to do |format|
-      if @comment.update(comment_params)
-        format.html { redirect_to @comment, notice: 'Comment was successfully updated.' }
-        format.json { render :show, status: :ok, location: @comment }
-      else
-        format.html { render :edit }
-        format.json { render json: @comment.errors, status: :unprocessable_entity }
-      end
-    end
+    save_with_check(@comment)
   end
 
   # DELETE /comments/1
   # DELETE /comments/1.json
   def destroy
-    @comment.destroy if @comment.user_id == @current_user.id or @current_user.admin
-    render :json => {"destroy_success" => 'SUCCESS'}
+    render :json => {"destroy_success" => (@comment.destroy ? 'SUCCESS' : 'FAIL'), 'err' => error.to_s} if @comment.user_id == @current_user.id
   end
 
   private

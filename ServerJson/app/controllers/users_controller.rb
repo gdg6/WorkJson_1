@@ -1,9 +1,6 @@
-require 'bcrypt'
-
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit,  :destroy, :add_admin, :delete_admin]
+  before_action :set_user, only: [:show, :edit]
   before_action :check_auth, :except => [:new, :create]
-  before_action :check_admin, :only => [:destroy]
 
   # FIXME must be check_edit for edit profile user. Is can do only self user or admin
   respond_to :json
@@ -89,33 +86,6 @@ class UsersController < ApplicationController
     save_with_check(@current_user)
   end
 
-  # change role user in system
-  def add_admin
-    if @current_user.admin
-      @user.admin = true
-      return save_with_check(@user)
-    end
-    render json: {"save_success" => 'FAIL', 'err' => 'NOT_ADMIN'}
-  end
-
-  # change role user in system
-  def delete_admin
-    if @current_user.admin and @current_user.id != @user.id
-      @user.admin = false
-      return save_with_check(@user)
-    end
-    render json: {"save_success" => 'FAIL', 'err' => 'NOT_ADMIN'}
-  end
-
-  # DELETE /users/1
-  # DELETE /users/1.json
-  def destroy
-    @user.destroy
-    respond_to do |format|
-      format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
-      format.json { head :no_content }
-    end
-  end
 
   private
 

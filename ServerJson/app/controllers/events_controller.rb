@@ -1,28 +1,11 @@
 class EventsController < ApplicationController
+
   attr_reader :arg_page, :arg_count, :arg_date
 
-  before_action :set_event, only: [:show, :edit, :update, :destroy]
   before_action :check_auth, except: [:get_events_guest, :get_events_date_guest]
-  before_action :check_admin, only: [:update, :create, :destroy, :new]
-  after_action :setUrl, only: [:create, :update]
   before_action :set_page_and_count, only: [:get_events, :get_events_date, :get_events_guest, :get_events_date_guest]
   before_action :set_date, only: [:get_events_date, :get_events_date_guest]
 
-
-  # GET /events/1
-  # GET /events/1.json
-  def show
-    render :json => @event
-  end
-
-  # GET /events/new
-  def new
-    @event = Event.new
-  end
-
-  # GET /events/1/edit
-  def edit
-  end
 
   # This getEventByCityAndCharacter for @current_user
   def get_events
@@ -71,28 +54,6 @@ class EventsController < ApplicationController
     return render :json => Event.where("events.id IN (?)", event_ids).last(count)
   end
 
-  # POST /events
-  # POST /events.json
-  def create
-    @event = Event.new(event_params)
-    @event.user_id = @current_user.id
-    return save_with_tags(@event) if params[:character_id].to_i > 0
-    return save_with_check(@event)
-  end
-
-  # PATCH/PUT /events/1
-  # PATCH/PUT /events/1.json
-  def update
-    @event.user_id = @current_user.id
-    render :json => {'update_success' => (@event.update(event_params) ? 'SUCCESS' : 'FAIL'), 'err' => @err}
-  end
-
-  # DELETE /events/1
-  # DELETE /events/1.json
-  def destroy
-    @event.destroy
-    render :json => {'destroy_success' => 'SUCCESS'}
-  end
 
   private
 
@@ -110,10 +71,7 @@ class EventsController < ApplicationController
     return render :json => {'save_success' => 'SUCCESS', 'err' => @err}
   end
 
-  def setUrl
-    @event.url = @event.picture.url(:medium)
-    @event.save
-  end
+
 
   # Use callbacks to share common setup or constraints between actions.
   def set_event

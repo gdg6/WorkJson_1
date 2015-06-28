@@ -4,6 +4,7 @@ class CreateComments < ActiveRecord::Migration
       t.belongs_to :event, :index => true
       t.belongs_to :user, :index => true
       t.string :body, :null => false
+      t.string :login, :null => false
 
       t.timestamps
     end

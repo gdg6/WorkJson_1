@@ -16,12 +16,8 @@ class User < ActiveRecord::Base
 
   before_validation :set_default_sign_count
 
-  def admin?
-    return self.admin
-  end
-
   def self.edit?(u)
-    return u && u.admin?
+    return u && u.active
   end
 
   private
