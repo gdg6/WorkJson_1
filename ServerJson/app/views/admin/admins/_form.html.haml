@@ -6,11 +6,17 @@
         - @admin_admin.errors.full_messages.each do |msg|
           %li= msg
 
-  .field
-    = f.label :login
-    = f.text_field :login
-  .field
-    = f.label :password
-    = f.text_field :password
+  .form-group
+    = f.label 'Логин'
+    = f.text_field :login, :class => 'form-control'
+
+  .form-group
+    = f.label 'Пароль'
+    = f.text_field :password, :class => 'form-control'
+  - if @current_admin.role == 0
+    .form-group
+      = f.label 'Роль'
+      = f.select :role,  options_for_select(get_list_roles), {}, :class=>'form-control'
+  .margin-top-20
   .actions
-    = f.submit 'Save'
+    = f.submit 'Сахранить'

@@ -1,16 +1,11 @@
 class Admin::AdminsController < Admin::ApplicationController
   before_action :set_admin_admin, only: [:show, :edit, :update, :destroy]
-
+  before_action :check_auth
 
   # GET /admin/admins
   # GET /admin/admins.json
   def index
     @admin_admins = Admin::Admin.page(params[:page]).per(15).load
-  end
-
-  # GET /admin/admins/1
-  # GET /admin/admins/1.json
-  def show
   end
 
   # GET /admin/admins/new
@@ -55,11 +50,12 @@ class Admin::AdminsController < Admin::ApplicationController
   # DELETE /admin/admins/1
   # DELETE /admin/admins/1.json
   def destroy
-    @admin_admin.destroy
-    respond_to do |format|
-      format.html { redirect_to admin_admins_url, notice: 'Admin was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    # @admin_admin.destroy
+    # respond_to do |format|
+    #   format.html { redirect_to admin_admins_url, notice: 'Admin was successfully destroyed.' }
+    #   format.json { head :no_content }
+    # end
+    render :json => {'success'=>'ok'}
   end
 
   private
@@ -70,6 +66,6 @@ class Admin::AdminsController < Admin::ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def admin_admin_params
-      params.require(:admin_admin).permit(:login, :password)
+      params.require(:admin_admin).permit(:login, :password, :role)
     end
 end

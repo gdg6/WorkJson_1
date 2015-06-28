@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
 
   namespace :admin do
-    resources :admins
+    resources :admins, :except => [:show]
     get '' => 'admins#index'
     get 'cities' => 'cities#index'
     get 'cities/new' => 'cities#new', as: :city_new
@@ -15,6 +15,7 @@ Rails.application.routes.draw do
     get 'users/:id' => 'users#show'
     get 'characters' => 'characters#index'
     get 'events' => 'events#index'
+    delete 'admins/:id' => 'admins#destroy'
   end
 
   resources :characters, :except=>[:index, :show, :delete]

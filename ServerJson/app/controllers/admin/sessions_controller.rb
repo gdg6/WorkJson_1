@@ -11,13 +11,13 @@ class Admin::SessionsController < Admin::ApplicationController
       session[:admin_id] = @admin.id
       redirect_to '/admin'
     else
-      redirect_to '/admins/login'
+      redirect_to '/admin/login'
     end
   end
 
   def destroy
-    session.delete(:user_id)
-    render json: {success: 'LOGOUT'}
+    session.delete(:admin_id)
+    redirect_to '/admin/login'
   end
 
 end

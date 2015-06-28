@@ -283,3 +283,23 @@ ul.alert-dropdown {
   margin-top: 60px;
   background-color: #66afe9;
 }
+
+.list-group-item > .block-100 {
+  width: 150px;
+  //float: left;
+  padding-left: 20px;
+  overflow-y: hidden;
+  white-space: nowrap;
+  display: inline-block;
+}
+
+
+.list-group-item > .pull-right{
+  margin-top: 0px;
+}
+
+.list-group-item-heading > h2 {
+  display: inline-block;
+  margin-right: 10px;
+}
+
