@@ -14,6 +14,7 @@ Rails.application.routes.draw do
     patch 'user/:id' => 'users#update'
     get 'users/:id' => 'users#show'
     get 'characters' => 'characters#index'
+    get 'events' => 'events#index'
   end
 
   resources :characters, :except=>[:index, :show, :delete]

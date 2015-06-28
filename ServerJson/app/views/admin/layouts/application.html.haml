@@ -25,7 +25,7 @@
 
         .collapse.navbar-collapse.navbar-ex1-collapse
           %ul.nav.navbar-nav.side-nav
-            %li= link_to ' События', '#'
+            %li= link_to ' События', '/admin/events',  :class=> "#{ (controller_name == 'events' ? 'active' : '')}"
             %li= link_to ' Персонажи', '/admin/characters',  :class=> "#{ (controller_name == 'characters' ? 'active' : '')}"
             %li= link_to ' Пользователи', '/admin/users',  :class=> "#{ (controller_name == 'users' ? 'active' : '')}"
             %li= link_to 'Новость дня', '#'

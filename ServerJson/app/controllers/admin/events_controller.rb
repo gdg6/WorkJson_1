@@ -1,4 +1,6 @@
 class Admin::EventsController < Admin::ApplicationController
+
+  before_action :check_auth
   before_action :set_event, only: [:edit, :update, :destroy, :show]
 
   # GET /events/new
@@ -12,6 +14,10 @@ class Admin::EventsController < Admin::ApplicationController
 
   # GET /events/1/edit
   def edit
+  end
+
+  def index
+    @events = Event.page(params[:page]).per(30)
   end
 
   # POST /events

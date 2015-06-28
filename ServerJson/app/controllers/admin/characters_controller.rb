@@ -1,5 +1,8 @@
 class Admin::CharactersController < Admin::ApplicationController
 
+  before_action :check_auth
+  before_action :set_character, :only => [:update]
+
   def create
     @character = Character.new(character_params)
     save_with_check(@character)

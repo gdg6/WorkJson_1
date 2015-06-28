@@ -1,14 +1,19 @@
 .row
   .list-group-item-heading
     %i= 'Login'
+    %i= 'Права доступа'
   .list-group
     - @admin_admins.each do |admin|
       .list-group-item
         %i= admin.login
+        -#%i= admin.roles
         .pull-right
-          =link_to 'Show', admin
-          =link_to 'Edit', edit_admin_admin_path(admin)
-          =link_to 'Destroy', admin, :method => :delete, :data => { :confirm => 'Are you sure?' }
+          =link_to admin do
+            = fa_icon 'eye'
+          =link_to edit_admin_admin_path(admin) do
+            = fa_icon 'edit'
+          =link_to  admin, :method => :delete, :data => { :confirm => 'Are you sure?' } do
+            = fa_icon 'trash'
 
 = paginate @admin_admins
 
