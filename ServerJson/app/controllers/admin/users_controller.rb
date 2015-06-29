@@ -12,7 +12,10 @@ class Admin::UsersController < Admin::ApplicationController
   end
 
   def destroy
-
+    @user.destroy
+    respond_to do |format|
+      format.html { redirect_to '/admin/users', notice: 'Admin was successfully destroyed.' }
+    end
   end
 
   def update
@@ -28,7 +31,7 @@ class Admin::UsersController < Admin::ApplicationController
   private
 
   def set_user
-    @user = Admin::User.find(params[:id])
+    @user = User.find(params[:id])
   end
 
   def email_valid (user)
@@ -36,7 +39,7 @@ class Admin::UsersController < Admin::ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:login, :email, :password, :password_confirmation, :character_id, :city, :admin, :provider, :url)
+    params.require(:user).permit(:login, :email, :password, :password_confirmation, :character_id, :city_id, :admin, :provider, :url)
   end
 
 end

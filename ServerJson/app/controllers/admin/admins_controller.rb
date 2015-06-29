@@ -24,11 +24,9 @@ class Admin::AdminsController < Admin::ApplicationController
 
     respond_to do |format|
       if @admin_admin.save
-        format.html { redirect_to @admin_admin, notice: 'Admin was successfully created.' }
-        format.json { render :show, status: :created, location: @admin_admin }
+        format.html { redirect_to '/admin/admins', notice: 'Admin was successfully created.' }
       else
-        format.html { render :new }
-        format.json { render json: @admin_admin.errors, status: :unprocessable_entity }
+        format.html { redirect_to '/admin/admins/new', notice: error.to_s }
       end
     end
   end
@@ -38,11 +36,9 @@ class Admin::AdminsController < Admin::ApplicationController
   def update
     respond_to do |format|
       if @admin_admin.update(admin_admin_params)
-        format.html { redirect_to @admin_admin, notice: 'Admin was successfully updated.' }
-        format.json { render :show, status: :ok, location: @admin_admin }
+        format.html { redirect_to '/admin/admins', notice: 'Admin was successfully updated.' }
       else
         format.html { render :edit }
-        format.json { render json: @admin_admin.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -50,12 +46,10 @@ class Admin::AdminsController < Admin::ApplicationController
   # DELETE /admin/admins/1
   # DELETE /admin/admins/1.json
   def destroy
-    # @admin_admin.destroy
-    # respond_to do |format|
-    #   format.html { redirect_to admin_admins_url, notice: 'Admin was successfully destroyed.' }
-    #   format.json { head :no_content }
-    # end
-    render :json => {'success'=>'ok'}
+    @admin_admin.destroy
+    respond_to do |format|
+      format.html { redirect_to admin_admins_url, notice: 'Admin was successfully destroyed.' }
+    end
   end
 
   private

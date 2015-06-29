@@ -1,0 +1,17 @@
+.row
+  .list-group
+    .list-group-item-heading
+    - @events.each do |event|
+      .list-group-item
+        =image_tag event.picture(:thumb), :style=> "float:left;margin: 0px 10px 0px 0px;height:160px"
+
+        %h2= 'Название'
+        %i= event.name
+        %h2= 'Описание'
+        %i= event.description
+
+.margin-top-20
+= link_to '/admin/events/new', {:class=>'btn btn-primary btn-visited'} do
+  = fa_icon 'plus'
+  %span
+    Добавить мероприятие

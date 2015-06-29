@@ -1,17 +1,26 @@
 .row
   .list-group-item-heading
-    %i= 'Логин'
-    %i= 'Персонаж'
-    %i= 'Город'
-    %i= 'Соц сеть'
+    %h2= 'Id'
+    %h2= 'Логин'
+    %h2= 'Персонаж'
+    %h2= 'Город'
+    %h2= 'Email'
+    %h2= 'Соц сеть'
 
   .list-group
     - @users.each do |user|
       .list-group-item
-        %i= user.login
-        %i= user.character.title
-        %i= user.city.name
-        %i= user.provider
+        %b= user.id
+        .block-100
+          %i= user.login
+        .block-100
+          %i= user.character.title
+        .block-100
+          %i= user.city.name
+        .block-100
+          %i= user.email
+        .block-100
+          %i= user.provider
         .pull-right
           =link_to "/admin/users/#{user.id}" do
             =fa_icon 'eye'

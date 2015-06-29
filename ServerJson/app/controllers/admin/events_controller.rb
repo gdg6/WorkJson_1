@@ -24,7 +24,7 @@ class Admin::EventsController < Admin::ApplicationController
   # POST /events.json
   def create
     @event = Event.new(event_params)
-    @event.user_id = @current_user.id
+    @event.user_id = @current_admin.id
     return save_with_tags(@event) if params[:character_id].to_i > 0
     return save_with_check(@event)
   end
@@ -32,7 +32,7 @@ class Admin::EventsController < Admin::ApplicationController
   # PATCH/PUT /events/1
   # PATCH/PUT /events/1.json
   def update
-    @event.user_id = @current_user.id
+    @event.user_id = @current_admin.id
     render :json => {'update_success' => (@event.update(event_params) ? 'SUCCESS' : 'FAIL'), 'err' => @err}
   end
 
@@ -48,7 +48,7 @@ class Admin::EventsController < Admin::ApplicationController
 
   def save_with_tags(obj)
     save_ok = obj.save
-    return render :json => {'save_success' => 'FAIL', 'err' => 'NOT_SAVE'} unless save_ok
+    return redirect_to '/admin/events' unless save_ok
     tags_ids = []
     TagsToCharacter.select(:tag_id).where(:character_id => params[:character_id].to_i).load.each { |x| tags_ids << x.tag_id.to_i }
     tags_ids.each do |x|
@@ -57,7 +57,7 @@ class Admin::EventsController < Admin::ApplicationController
       ett.tag_id = x
       ett.save
     end
-    return render :json => {'save_success' => 'SUCCESS', 'err' => @err}
+    redirect_to '/admin/events'
   end
 
   # Use callbacks to share common setup or constraints between actions.
@@ -73,6 +73,10 @@ class Admin::EventsController < Admin::ApplicationController
   def set_date
     @arg_date = params[:date]
     return render :json => [] if @arg_date.nil?
+  end
+
+  def event_params
+    params.require(:event).permit(:user_id, :name, :adress, :date, :city_id, :time, :description, :price, :popularity, :picture, :longitude, :latitude)
   end
 
 end

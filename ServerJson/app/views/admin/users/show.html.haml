@@ -1,0 +1,25 @@
+.row
+  .list-group
+    .list-group-item
+      %h2= 'Логин'
+      %p
+      %i= @user.login
+      %h2= 'Email'
+      %p
+      %i= @user.email
+      %h2= 'Город'
+      %p
+      %i= @user.city.name
+      %h2= 'Соц сеть'
+      %p
+      %i= (@user.provider ? @user.provider : 'Нет данных')
+      %h2= 'Персонаж'
+      %p
+      %i= @user.character.title
+      %h2= 'Данному персонажу соответствуют теги'
+      %p
+      %i= @user.character.tags.map{|t| t.context}
+      %h2= 'Заблокирован'
+      %p
+      %i= !@user.active ? 'Да' : 'Нет'
+

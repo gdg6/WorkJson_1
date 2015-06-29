@@ -1,8 +1,8 @@
 = form_for @user do |f|
 
   .form-group
-    = f.label :login
-    = f.text_field :login, :class=>'form-control'
+    =f.label "Login"
+    =f.text_field :login,  :class=>'form-control'
 
   .form-group
     = f.label :email
@@ -24,5 +24,9 @@
     = f.label 'Город проживания'
     = f.select :city_id, options_for_select(get_list_cities), {}, {:class=>'form-control'}
 
+  .form-group
+    = f.label 'Активен'
+    = f.check_box :active, :class=>'checkbox'
+
   .form-actions
-    = f.submit
+    = f.submit 'Сохранить'

@@ -11,23 +11,29 @@ Rails.application.routes.draw do
     get 'logout' => 'sessions#destroy', as: :logout
     get 'users' => 'users#index'
     get 'users/:id/edit' => 'users#edit'
-    patch 'user/:id' => 'users#update'
     get 'users/:id' => 'users#show'
     get 'characters' => 'characters#index'
     get 'events' => 'events#index'
+    get 'events/new' => 'events#new'
     delete 'admins/:id' => 'admins#destroy'
+    delete 'admin/users/:id' => 'users#destroy'
+
   end
 
   resources :characters, :except=>[:index, :show, :delete]
   post 'characters' => 'characters#index'
 
+  resources :users, :except => [:destroy, :update]
+
+  patch 'users/:id' => 'admin/users#update'
+  patch 'users_edit/:id' => 'users#update'
+
+  get 'events/new' => 'admin/events#new', as: :events
+  post 'events/new' => 'admin/events#create'
   resources :tags
 
   resources :comments, :except => [:update, :edit, :show]
 
-  # resources :events, :except=>[:index]
-
-  resources :users, :except => [:destroy]
 
   root :to => 'application#not_found_404'
 

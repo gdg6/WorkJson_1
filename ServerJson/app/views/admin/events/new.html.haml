@@ -1,0 +1,54 @@
+.narrow
+  = form_for(@event) do |f|
+
+    .form-group
+      = f.label :name
+      = f.text_field :name, class: 'form-control'
+
+    .form-group
+      = f.label :picture
+      = f.file_field :picture, class: 'form-control'
+
+    .form-group
+      = f.label :adress
+      = f.text_field :adress, class: 'form-control'
+
+    .form-group
+      =f.label :longitude
+      = f.number_field :longitude, :step => '0.00000000001', class: 'form-control'
+
+    .form-group
+      = f.label :latitude
+      = f.number_field :latitude,  :step => '0.00000000001', class: 'form-control'
+
+    .form-group
+      = f.label :date
+      = f.number_field :date, class: 'form-control'
+
+    .form-group
+      = f.label :time
+      = f.text_field :time, class: 'form-control'
+
+    .form-group
+      = f.label :description
+      = f.text_field :description, class: 'form-control'
+
+    .form-group
+      = f.label :price
+      = f.number_field :price, class: 'form-control'
+    .form-group
+
+      = f.label :popularity
+      = f.number_field :popularity, class: 'form-control'
+    .form-group
+
+      = f.label :city
+      = f.select :city_id, options_for_select(cities_list), {}, {class: 'form-control'}
+    .form-group
+      = label_tag 'Character'
+      = select_tag :character_id, options_for_select(session_character_list), class: 'form-control'
+
+    .form-actions
+      =label_tag 'Сохранить'
+      = f.submit
+

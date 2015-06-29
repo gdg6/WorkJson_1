@@ -300,6 +300,18 @@ ul.alert-dropdown {
 
 .list-group-item-heading > h2 {
   display: inline-block;
-  margin-right: 10px;
+  margin-right: 4%;
 }
 
+.mobile-menu {
+  display:block;
+  overflow:hidden;
+  white-space:nowrap;
+}
+
+.form-admin-login {
+  z-index: 9999;
+  position: absolute;
+  align-content: center;
+  width: 350px;
+}

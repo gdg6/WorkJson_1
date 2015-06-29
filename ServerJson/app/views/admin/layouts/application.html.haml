@@ -16,20 +16,20 @@
     #wrapper
       %nav.navbar.navbar-inverse.navbar-fixed-top{:role=>'navigation'}
         -#.container
-        %button.navbar-toggle(type="button" data-toggle="collapse" data-target=".navbar-responsive-collapse")
+        %button.navbar-toggle(type="button" data-toggle="collapse" data-target=".navbar-ex1-collapse")
           %span.icon-bar
           %span.icon-bar
           %span.icon-bar
-        %a.navbar-brand(href="#") MyGorodMap
+        %a.navbar-brand(href="#") GorodMap
         - if @current_admin
-          %a.navbar-brand.pull-right(href="/admin/logout") Выход
-          %a.navbar-brand.pull-right(href="/admin/admins/#{@current_admin.id}/edit") #{@current_admin.login} | #{ROLES(@current_admin.role)}
+          .mobile-menu
+            %a.navbar-brand.pull-right(href="/admin/logout") Выход
+            %a.navbar-brand.pull-right(href="/admin/admins/#{@current_admin.id}/edit") #{@current_admin.login} | #{ROLES(@current_admin.role)}
           .collapse.navbar-collapse.navbar-ex1-collapse
             %ul.nav.navbar-nav.side-nav
               %li= link_to ' События', '/admin/events',  :class=> "#{ (controller_name == 'events' ? 'active' : '')}"
               %li= link_to ' Персонажи', '/admin/characters',  :class=> "#{ (controller_name == 'characters' ? 'active' : '')}"
               %li= link_to ' Пользователи', '/admin/users',  :class=> "#{ (controller_name == 'users' ? 'active' : '')}"
-              %li= link_to 'Новость дня', '#'
               %li= link_to 'Города', '/admin/cities',  :class=> "#{ (controller_name == 'cities' ? 'active' : '')}"
               %li= link_to ' Администраторы', '/admin/admins',  :class=> "#{ (controller_name == 'admins' ? 'active' : '')}"
       #page-wraper
