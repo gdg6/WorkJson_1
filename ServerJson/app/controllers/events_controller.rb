@@ -36,10 +36,10 @@ class EventsController < ApplicationController
   def getEventsByDateWithCountAndTag
     count = params[:count].to_i > 0 ? params[:count].to_i : 10
     event_ids = EventsToTag.select(:event_id).where(:tag_id => params[:tag_id]).load
-    return render :json => Event.where("events.id IN (?) AND events.date = ?", event_ids, params[:date]).last(count)
+    return render :json => Event.where("events.id IN (?) AND events.start_date >= ?", event_ids, (DateTime.civil_from_format :local, params[:year], params[:month], params[:day]) ).last(count)
   end
 
-  #FIXME
+  #FIXME - must be DateTime
   def getEventsByMounthWithCountAndTag
     count = params[:count].to_i > 0 ? params[:count].to_i : 10
     event_ids = EventsToTag.select(:event_id).where(:tag_id => params[:tag_id]).load
@@ -96,8 +96,4 @@ class EventsController < ApplicationController
     render :json => Event.where(city_id: city_id, id: EventsToTag.select(:event_id).where(tag_id: TagsToCharacter.select(:tag_id).where(character_id: character_id).load).load, date: date).page(@arg_page).per(@arg_count).load
   end
 
-  # Never trust parameters from the scary internet, only allow the white list through.
-  def event_params
-    params.require(:event).permit(:user_id, :name, :adress, :date, :city_id, :time, :description, :price, :popularity, :picture, :longitude, :latitude)
-  end
 end

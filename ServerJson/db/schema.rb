@@ -15,7 +15,7 @@ ActiveRecord::Schema.define(version: 20150627182527) do
 
   create_table "admins", force: true do |t|
     t.string   "login"
-    t.string   "password_digest", null: false
+    t.string   "password_digest", default: "0", null: false
     t.integer  "role"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -58,8 +58,8 @@ ActiveRecord::Schema.define(version: 20150627182527) do
     t.integer  "user_id"
     t.string   "name"
     t.string   "adress"
-    t.integer  "date"
-    t.string   "time"
+    t.datetime "start_date"
+    t.datetime "end_date"
     t.string   "description",          limit: 300
     t.integer  "price"
     t.integer  "popularity"

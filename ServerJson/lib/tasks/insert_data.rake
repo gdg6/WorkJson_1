@@ -43,15 +43,15 @@ namespace :insertData do
     end
   end
 
-
-  event_names = ['Вечеринка у павлика', "Концерт AC/DC", "Музей партизана"]
-  desc "createTestEvent"
-  task :createTestEvent => :environment do
-    event_names.each do |n|
-      e = Event.new
-      e.name = n
-      # e.adress =
-    end
-  end
+  #
+  # event_names = ['Вечеринка у павлика', "Концерт AC/DC", "Музей партизана"]
+  # desc "createTestEvent"
+  # task :createTestEvent => :environment do
+  #   event_names.each do |n|
+  #     e = Event.new
+  #     e.name = n
+  #     # e.adress =
+  #   end
+  # end
 
 end
