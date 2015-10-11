@@ -21,7 +21,7 @@ Admin = {
                     }
                 },
                 function(code) {
-                    if(code.success == 'ok') {
+                    if(code.success == 'ok') { //wtf?
                         $(this).parent().parent().parent().hide();
                     }
                 })
@@ -32,9 +32,6 @@ Admin = {
     delete_admin: function(id, callback, err) {
         Admin.del('/admin/admins/'+id, {}, callback, err);
     },
-
-
-
 
     //========== AJAX ===========
 
@@ -48,7 +45,20 @@ Admin = {
             success: callback,
             error: err
         });
+    }, 
+
+    post: function (url, params, callback, err) {
+        $.ajax({
+            type: "DELETE",
+            dataType: "json",
+            url: url,
+            data: params,
+            time: 30000,
+            success: callback,
+            error: err
+        });
     }
+
 
 };
 

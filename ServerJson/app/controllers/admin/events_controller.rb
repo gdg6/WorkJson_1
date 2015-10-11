@@ -3,7 +3,7 @@ class Admin::EventsController < Admin::ApplicationController
   before_action :check_auth
   before_action :set_event, only: [:edit, :update, :destroy, :show]
 
-  # GET /events/new
+  # GET /admin/events/new
   def new
     @event = Event.new
   end
@@ -25,15 +25,21 @@ class Admin::EventsController < Admin::ApplicationController
   def create
     @event = Event.new(event_params)
     @event.user_id = @current_admin.id
-    return save_with_tags(@event) if params[:character_id].to_i > 0
-    return save_with_check(@event)
+    
+    save_with_tags(@event) if params[:character_id].to_i > 0
+    save_with_check(@event)
+
+    redirect_to '/admin/events'
+
   end
 
   # PATCH/PUT /events/1
   # PATCH/PUT /events/1.json
   def update
     @event.user_id = @current_admin.id
-    render :json => {'update_success' => (@event.update(event_params) ? 'SUCCESS' : 'FAIL'), 'err' => @err}
+    @event.save
+    redirect_to '/admin/events'
+    # render :json => {'update_success' => (@event.update(event_params) ? 'SUCCESS' : 'FAIL'), 'err' => @err}
   end
 
   # DELETE /events/1

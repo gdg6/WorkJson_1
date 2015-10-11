@@ -6,9 +6,9 @@
       .list-group-item
         %i= city.name
         .pull-right
-          =link_to "/admin/city/#{city.id}/edit" do
+          =link_to "/admin/cities/#{city.id}/edit" do
             =fa_icon 'edit'
-          =link_to "cities/#{city.id}", :method => :delete, :data => { :confirm => 'Are you sure?' } do
+          =link_to "/admin/cities/#{city.id}", :method => :delete, :data => { :confirm => 'Are you sure?' } do
             = fa_icon 'trash'
       %br
 
@@ -18,4 +18,4 @@
 = link_to '/admin/cities/new', {:class=>'btn btn-primary btn-visited'} do
   = fa_icon 'plus'
   %span
-    New City
+    Добавить город

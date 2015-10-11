@@ -9,12 +9,43 @@
           %i= event.name
           %h2= 'Описание'
           %i= event.description
-        .event-admin-second
+
+        .pull-right
           %h2= 'Начало'
+          %i= event.start_date
+          %h2= 'Окончание'
+          %i= event.end_date
+
+        .pull-left
+          %h2= 'Город'
+          %i= event.city.name
+          %h2= 'Популярность'
+          %i= event.popularity  
+          %h2= 'Цена'
+          %i= event.price
+
+        .div{:style=>"margin-left: 50%"}
+          %h2= 'Долгота'
+          %i= event.longitude
+          %h2= 'Широта'
+          %i= event.latitude
+          %h2= 'Ссылка'
+          %i= event.url
+        .clearfix
+        .div{:style=>'height: 25px;'}
+          .pull-right
+            =link_to "/admin/events/#{event.id}/edit" do
+              = fa_icon 'edit'
+            =link_to  "/admin/events/#{event.id}", :method => :delete, :data => { :confirm => 'Are you sure?' } do
+              = fa_icon 'trash'
+      .margin-top-20
 
 
-.margin-top-20
+
+  .margin-top-20
 = link_to '/admin/events/new', {:class=>'btn btn-primary btn-visited'} do
   = fa_icon 'plus'
   %span
     Добавить мероприятие
+
+= paginate @events

@@ -1,11 +1,20 @@
 class Admin::CharactersController < Admin::ApplicationController
 
   before_action :check_auth
-  before_action :set_character, :only => [:update]
+  before_action :set_character, :only => [:update, :edit]
+
+
+  def index
+    @characters = Character.page(params[:page]).per(7)
+  end
 
   def create
     @character = Character.new(character_params)
     save_with_check(@character)
+  end
+
+  def edit 
+
   end
 
   def update
@@ -13,11 +22,10 @@ class Admin::CharactersController < Admin::ApplicationController
     save_with_check(@character)
   end
 
-  def index
-    @characters = Character.page(params[:page]).per(7)
-  end
 
   private
+  
+
   def set_character
     @character = Character.find(params[:id])
   end

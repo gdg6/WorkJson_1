@@ -3,9 +3,11 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :admins, :except => [:show]
     get '' => 'admins#index'
-    get 'cities' => 'cities#index'
+    get 'cities' => 'cities#index', as: :city
     get 'cities/new' => 'cities#new', as: :city_new
     post 'cities/new' => 'cities#create'
+    get 'cities/:id/edit' => 'cities#edit'
+    delete 'cities/:id' => 'cities#destroy'
     get 'login' =>  'sessions#new', as: :login
     post 'login' => 'sessions#create'
     get 'logout' => 'sessions#destroy', as: :logout
@@ -15,8 +17,10 @@ Rails.application.routes.draw do
     get 'characters' => 'characters#index'
     get 'events' => 'events#index'
     get 'events/new' => 'events#new'
+    get 'events/:id/edit' => 'events#edit'
+    delete 'events/:id' => 'event#destroy'
     delete 'admins/:id' => 'admins#destroy'
-    delete 'admin/users/:id' => 'users#destroy'
+    delete 'users/:id' => 'users#destroy'
 
   end
 
@@ -28,8 +32,17 @@ Rails.application.routes.draw do
   patch 'users/:id' => 'admin/users#update'
   patch 'users_edit/:id' => 'users#update'
 
-  get 'events/new' => 'admin/events#new', as: :events
-  post 'events/new' => 'admin/events#create'
+  resources :cities, :except=>[:update, :create]
+  patch 'cities/:id' => 'admin/cities#update'
+  post 'cities' => 'admin/cities#create'
+
+
+  resources :events, :except => [:update, :create]
+  get 'events/new' => 'admin/events#new'#, as: :events
+  post 'events' => 'admin/events#create'
+  patch 'events/:id' => 'admin/events#update'
+
+
   resources :tags
 
   resources :comments, :except => [:update, :edit, :show]
@@ -45,8 +58,8 @@ Rails.application.routes.draw do
 
 
   # =========== USERS ================
-  get 'registration' => 'users#new', as: :registration
-  post 'registration' => 'users#create'
+  # get 'registration' => 'users#new', as: :registration
+  # post 'registration' => 'users#create'
   post 'getProfileInfo' => 'users#get_profile_info'
   post 'setPassword' => 'users#set_password'
   post 'setCity' => 'users#set_city'
@@ -81,7 +94,7 @@ Rails.application.routes.draw do
 
 
   #======== ERROR SERVER ===========
-  # get '*unmatched_route', :to => 'application#not_found_404'
-  # post '*unmatched_route', :to => 'application#not_found_404'
+  get '*unmatched_route', :to => 'application#not_found_404'
+  post '*unmatched_route', :to => 'application#not_found_404'
 
 end

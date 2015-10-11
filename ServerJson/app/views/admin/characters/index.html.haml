@@ -9,13 +9,9 @@
       .list-group-item
         %i= character.title
 
-        .pull-right
-          =link_to "/admin/characters/#{character.id}" do
-            =fa_icon 'eye'
-          =link_to "/admin/characters/#{character.id}/edit" do
-            = fa_icon 'edit'
-          -#=link_to  "admin/characters/#{character.id}", :method => :delete, :data => { :confirm => 'Are you sure?' } do
-          -#  = fa_icon 'trash'
+        / .pull-right
+        /   =link_to "/admin/characters/#{character.id}/edit" do
+        /     = fa_icon 'edit'
       %br
 
 

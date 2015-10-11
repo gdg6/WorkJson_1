@@ -1,0 +1,11 @@
+.narrow
+  =form_for @city do |f|
+    .center-block
+      %h2= 'Редактирование города'
+    .form-group
+      =f.text_field :id, :value=>@city.id, :type=>'hidden'
+    .form-group
+      =f.label 'Название'
+      =f.text_field :name, :value=>@city.name, class: 'form-control'
+    .form-actions
+      =f.submit 'Сохранить', class: 'btn btn-primary btn-md'

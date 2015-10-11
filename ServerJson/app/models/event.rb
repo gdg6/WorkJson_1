@@ -2,7 +2,7 @@ class Event < ActiveRecord::Base
 
 	has_many :comments, dependent: :destroy
 	has_many :favorities, :dependent => :destroy
-
+	belongs_to :city
 	has_many :events_to_tags, :dependent => :destroy
 	has_many :tags, :through => :events_to_tags
 	attr_accessor  :written_on

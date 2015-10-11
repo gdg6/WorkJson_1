@@ -319,11 +319,11 @@ ul.alert-dropdown {
 .event-admin-general {
   display: block;
   float: none;
-  width: 50%;
+  /*width: 50%;*/
 }
 
-.event-admin-second {
-
+.event-admin-general > .event-admin-second {
+    // width: 100%;
 }
 
 .event-admin-img {

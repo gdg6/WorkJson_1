@@ -26,7 +26,7 @@
             =fa_icon 'eye'
           =link_to "/admin/users/#{user.id}/edit" do
             = fa_icon 'edit'
-          =link_to  "admin/users/#{user.id}", :method => :delete, :data => { :confirm => 'Are you sure?' } do
+          =link_to  "/admin/users/#{user.id}", :method => :delete, :data => { :confirm => 'Are you sure?' } do
             = fa_icon 'trash'
       %br
 
