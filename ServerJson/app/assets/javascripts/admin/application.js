@@ -6,6 +6,7 @@ Admin = {
     init: function ()
     {
         Admin.admins();
+        Admin.events();
     },
 
 
@@ -27,6 +28,10 @@ Admin = {
                 })
             }
         );
+    },
+
+    events: function() {
+        
     },
 
     delete_admin: function(id, callback, err) {

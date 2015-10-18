@@ -21,15 +21,20 @@
       = f.label :latitude
       = f.number_field :latitude,  :step => '0.00000000001', class: 'form-control'
 
-    -#.form-group
-    -#  = f.label :start_date
-    -#  = f.datetime :start_date
-      -#= f.datetime_select(:start_date, "written_on")
+    .form-group
+      = f.label :start_date
+      .br
+      = f.date_field :start_date, :min=>"2000-01-02", :class=>"form-control"
+    .form-group
+      = f.label :end_date
+      .br
+      = f.date_field :end_date, :min=>"2000-01-02", :class=>"form-control"      
+
 
 
     .form-group
       = f.label :description
-      = f.text_field :description, class: 'form-control'
+      = f.text_area :description, class: 'form-control'
 
     .form-group
       = f.label :price
@@ -42,6 +47,15 @@
     .form-group
       = f.label :city
       = f.select :city_id, options_for_select(cities_list), {}, {class: 'form-control'}
+    .form
+      = label_tag 'Персонажи'
+      .br
+      .div{:style=>"margin-left:10px;"}
+        - getAllCharacters().each  do |x|
+          = check_box_tag x.title, x.id
+          %i= x.title 
+          .br
+
 
     .form-group
       = label_tag 'Character'

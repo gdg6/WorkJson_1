@@ -37,16 +37,16 @@ class Admin::EventsController < Admin::ApplicationController
   # PATCH/PUT /events/1.json
   def update
     @event.user_id = @current_admin.id
-    @event.save
+    @event.update(event_params)
+    raise params.to_s
     redirect_to '/admin/events'
-    # render :json => {'update_success' => (@event.update(event_params) ? 'SUCCESS' : 'FAIL'), 'err' => @err}
   end
 
   # DELETE /events/1
   # DELETE /events/1.json
   def destroy
     @event.destroy
-    render :json => {'destroy_success' => 'SUCCESS'}
+    redirect_to '/admin/events'
   end
 
 

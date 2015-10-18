@@ -24,6 +24,7 @@
           %h2= 'Цена'
           %i= event.price
 
+
         .div{:style=>"margin-left: 50%"}
           %h2= 'Долгота'
           %i= event.longitude
@@ -36,7 +37,7 @@
           .pull-right
             =link_to "/admin/events/#{event.id}/edit" do
               = fa_icon 'edit'
-            =link_to  "/admin/events/#{event.id}", :method => :delete, :data => { :confirm => 'Are you sure?' } do
+            =link_to  "/admin/events/#{event.id}", :method => :delete, :data => { :confirm => 'Вы уверены?' } do
               = fa_icon 'trash'
       .margin-top-20
 
